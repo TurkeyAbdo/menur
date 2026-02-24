@@ -1,0 +1,185 @@
+{
+  "common": {
+    "appName": "Menur",
+    "home": "Home",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Operation successful",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "viewAll": "View All",
+    "noResults": "No results found",
+    "language": "Language",
+    "arabic": "العربية",
+    "english": "English"
+  },
+  "landing": {
+    "hero": {
+      "title": "Transform Your Restaurant Menu Into a Digital Experience",
+      "subtitle": "Create stunning digital menus, get customizable QR codes, and track scan analytics - all in one platform",
+      "cta": "Start for Free",
+      "secondaryCta": "Watch Demo"
+    },
+    "features": {
+      "title": "Everything You Need to Manage Your Digital Menu",
+      "menuBuilder": {
+        "title": "Menu Builder",
+        "description": "Create professional menus easily with photo support and custom categories"
+      },
+      "qrCodes": {
+        "title": "Custom QR Codes",
+        "description": "Design QR codes with your colors and logo, with unique codes per table"
+      },
+      "analytics": {
+        "title": "Advanced Analytics",
+        "description": "Track scan counts, times, and devices to better understand your customers"
+      },
+      "themes": {
+        "title": "Ready-Made Templates",
+        "description": "Choose from professional templates with light and dark mode support"
+      },
+      "multilingual": {
+        "title": "Multilingual",
+        "description": "Menus in multiple languages to serve all your customers"
+      },
+      "allergens": {
+        "title": "Allergen Information",
+        "description": "Clear icons for allergens and dietary information"
+      }
+    },
+    "pricing": {
+      "title": "Plans for Everyone",
+      "subtitle": "Start free and upgrade as you grow",
+      "monthly": "Monthly",
+      "free": {
+        "name": "Free",
+        "price": "0",
+        "period": "SAR/month"
+      },
+      "basic": {
+        "name": "Basic",
+        "price": "34",
+        "period": "SAR/month"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "109",
+        "period": "SAR/month",
+        "badge": "Most Popular"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "296",
+        "period": "SAR/month"
+      },
+      "vatNote": "All prices include 15% VAT",
+      "startFree": "Start Free",
+      "subscribe": "Subscribe Now",
+      "contactUs": "Contact Us"
+    },
+    "footer": {
+      "description": "The first digital menu platform in Saudi Arabia",
+      "product": "Product",
+      "company": "Company",
+      "support": "Support",
+      "legal": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "contact": "Contact Us",
+      "about": "About Menur",
+      "blog": "Blog",
+      "help": "Help Center",
+      "rights": "All rights reserved"
+    }
+  },
+  "auth": {
+    "loginTitle": "Log In",
+    "signupTitle": "Create New Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "facebook": "Facebook",
+    "loginButton": "Log In",
+    "signupButton": "Sign Up",
+    "errors": {
+      "invalidEmail": "Invalid email address",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "invalidCredentials": "Invalid credentials",
+      "emailExists": "Email already registered"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "overview": "Overview",
+    "menus": "Menus",
+    "qrCodes": "QR Codes",
+    "analytics": "Analytics",
+    "notifications": "Notifications",
+    "settings": "Settings",
+    "billing": "Billing",
+    "locations": "Locations",
+    "totalScans": "Total Scans",
+    "activeMenus": "Active Menus",
+    "totalItems": "Total Items",
+    "thisWeek": "This Week",
+    "createMenu": "Create New Menu",
+    "noMenus": "You haven't created any menus yet"
+  },
+  "menu": {
+    "builder": {
+      "title": "Menu Builder",
+      "menuName": "Menu Name",
+      "menuDescription": "Menu Description",
+      "selectTheme": "Select Theme",
+      "selectLayout": "Select Layout",
+      "scrollable": "Single Scrollable Page",
+      "tabbed": "Multi-Tab Layout",
+      "addCategory": "Add Category",
+      "addItem": "Add Item",
+      "categoryName": "Category Name",
+      "itemName": "Item Name",
+      "itemDescription": "Item Description",
+      "itemPrice": "Price",
+      "itemPhoto": "Item Photo",
+      "allergens": "Allergens",
+      "dietaryTags": "Dietary Tags",
+      "variants": "Sizes & Extras",
+      "variantName": "Option Name",
+      "variantPrice": "Price Difference",
+      "addVariant": "Add Option",
+      "availability": "Available",
+      "unavailable": "Temporarily Unavailable",
+      "dailySpecial": "Daily Special",
+      "timeSlot": "Serving Time",
+      "all": "All Day",
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "dinner": "Dinner",
+      "saveDraft": "Save Draft",
+      "publish": "Publish",
+      "preview": "Preview"
+    }
+  }
+}

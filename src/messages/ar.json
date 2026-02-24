@@ -1,0 +1,185 @@
+{
+  "common": {
+    "appName": "منيور",
+    "home": "الرئيسية",
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب",
+    "logout": "تسجيل الخروج",
+    "dashboard": "لوحة التحكم",
+    "settings": "الإعدادات",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "search": "بحث",
+    "filter": "تصفية",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "success": "تمت العملية بنجاح",
+    "confirm": "تأكيد",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "viewAll": "عرض الكل",
+    "noResults": "لا توجد نتائج",
+    "language": "اللغة",
+    "arabic": "العربية",
+    "english": "English"
+  },
+  "landing": {
+    "hero": {
+      "title": "حوّل قائمة مطعمك إلى تجربة رقمية",
+      "subtitle": "أنشئ قوائم طعام رقمية جذابة، واحصل على رموز QR مخصصة، وتابع تحليلات المسح - كل ذلك في منصة واحدة",
+      "cta": "ابدأ مجاناً",
+      "secondaryCta": "شاهد العرض التوضيحي"
+    },
+    "features": {
+      "title": "كل ما تحتاجه لإدارة قائمتك الرقمية",
+      "menuBuilder": {
+        "title": "منشئ القوائم",
+        "description": "أنشئ قوائم طعام احترافية بسهولة مع دعم الصور والتصنيفات المخصصة"
+      },
+      "qrCodes": {
+        "title": "رموز QR مخصصة",
+        "description": "صمم رموز QR بألوانك وشعارك، مع رموز خاصة لكل طاولة"
+      },
+      "analytics": {
+        "title": "تحليلات متقدمة",
+        "description": "تابع عدد المسح والأوقات والأجهزة لفهم عملائك بشكل أفضل"
+      },
+      "themes": {
+        "title": "قوالب جاهزة",
+        "description": "اختر من بين قوالب احترافية مع دعم الوضع الفاتح والداكن"
+      },
+      "multilingual": {
+        "title": "متعدد اللغات",
+        "description": "قوائم بعدة لغات لخدمة جميع عملائك"
+      },
+      "allergens": {
+        "title": "معلومات الحساسية",
+        "description": "أيقونات واضحة لمسببات الحساسية والمعلومات الغذائية"
+      }
+    },
+    "pricing": {
+      "title": "خطط تناسب الجميع",
+      "subtitle": "ابدأ مجاناً وقم بالترقية حسب احتياجاتك",
+      "monthly": "شهرياً",
+      "free": {
+        "name": "مجاني",
+        "price": "0",
+        "period": "ريال/شهر"
+      },
+      "basic": {
+        "name": "أساسي",
+        "price": "34",
+        "period": "ريال/شهر"
+      },
+      "pro": {
+        "name": "احترافي",
+        "price": "109",
+        "period": "ريال/شهر",
+        "badge": "الأكثر شعبية"
+      },
+      "enterprise": {
+        "name": "مؤسسي",
+        "price": "296",
+        "period": "ريال/شهر"
+      },
+      "vatNote": "جميع الأسعار شاملة ضريبة القيمة المضافة 15%",
+      "startFree": "ابدأ مجاناً",
+      "subscribe": "اشترك الآن",
+      "contactUs": "تواصل معنا"
+    },
+    "footer": {
+      "description": "منصة القوائم الرقمية الأولى في المملكة العربية السعودية",
+      "product": "المنتج",
+      "company": "الشركة",
+      "support": "الدعم",
+      "legal": "قانوني",
+      "privacy": "سياسة الخصوصية",
+      "terms": "الشروط والأحكام",
+      "contact": "اتصل بنا",
+      "about": "عن منيور",
+      "blog": "المدونة",
+      "help": "مركز المساعدة",
+      "rights": "جميع الحقوق محفوظة"
+    }
+  },
+  "auth": {
+    "loginTitle": "تسجيل الدخول",
+    "signupTitle": "إنشاء حساب جديد",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "name": "الاسم الكامل",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "hasAccount": "لديك حساب بالفعل؟",
+    "orContinueWith": "أو تابع مع",
+    "google": "Google",
+    "facebook": "Facebook",
+    "loginButton": "تسجيل الدخول",
+    "signupButton": "إنشاء حساب",
+    "errors": {
+      "invalidEmail": "البريد الإلكتروني غير صالح",
+      "passwordMin": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+      "passwordMismatch": "كلمات المرور غير متطابقة",
+      "invalidCredentials": "بيانات الدخول غير صحيحة",
+      "emailExists": "البريد الإلكتروني مسجل مسبقاً"
+    }
+  },
+  "dashboard": {
+    "welcome": "مرحباً",
+    "overview": "نظرة عامة",
+    "menus": "القوائم",
+    "qrCodes": "رموز QR",
+    "analytics": "التحليلات",
+    "notifications": "الإشعارات",
+    "settings": "الإعدادات",
+    "billing": "الفواتير",
+    "locations": "الفروع",
+    "totalScans": "إجمالي المسح",
+    "activeMenus": "القوائم النشطة",
+    "totalItems": "إجمالي العناصر",
+    "thisWeek": "هذا الأسبوع",
+    "createMenu": "إنشاء قائمة جديدة",
+    "noMenus": "لم تقم بإنشاء أي قائمة بعد"
+  },
+  "menu": {
+    "builder": {
+      "title": "منشئ القوائم",
+      "menuName": "اسم القائمة",
+      "menuDescription": "وصف القائمة",
+      "selectTheme": "اختر القالب",
+      "selectLayout": "اختر التخطيط",
+      "scrollable": "صفحة واحدة قابلة للتمرير",
+      "tabbed": "تبويبات متعددة",
+      "addCategory": "إضافة تصنيف",
+      "addItem": "إضافة عنصر",
+      "categoryName": "اسم التصنيف",
+      "itemName": "اسم العنصر",
+      "itemDescription": "وصف العنصر",
+      "itemPrice": "السعر",
+      "itemPhoto": "صورة العنصر",
+      "allergens": "مسببات الحساسية",
+      "dietaryTags": "علامات غذائية",
+      "variants": "الأحجام والإضافات",
+      "variantName": "اسم الخيار",
+      "variantPrice": "فرق السعر",
+      "addVariant": "إضافة خيار",
+      "availability": "متاح",
+      "unavailable": "غير متاح مؤقتاً",
+      "dailySpecial": "عرض اليوم",
+      "timeSlot": "وقت التقديم",
+      "all": "طوال اليوم",
+      "breakfast": "فطور",
+      "lunch": "غداء",
+      "dinner": "عشاء",
+      "saveDraft": "حفظ كمسودة",
+      "publish": "نشر",
+      "preview": "معاينة"
+    }
+  }
+}

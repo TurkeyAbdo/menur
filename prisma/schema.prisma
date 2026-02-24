@@ -1,0 +1,427 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== AUTH ====================
+
+enum Role {
+  OWNER
+  CUSTOMER
+  ADMIN
+}
+
+enum AuthProvider {
+  EMAIL
+  GOOGLE
+  FACEBOOK
+}
+
+model User {
+  id             String           @id @default(cuid())
+  email          String           @unique
+  name           String?
+  password       String? // null for social login
+  avatar         String?
+  role           Role             @default(OWNER)
+  provider       AuthProvider     @default(EMAIL)
+  emailVerified  DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  // Relations
+  restaurant     Restaurant?
+  subscription   Subscription?
+  notifications  Notification[]
+  feedback       CustomerFeedback[]
+  accounts       Account[]
+  sessions       Session[]
+
+  @@map("users")
+}
+
+// NextAuth required models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ==================== RESTAURANT ====================
+
+model Restaurant {
+  id          String   @id @default(cuid())
+  name        String
+  nameAr      String?
+  slug        String   @unique
+  logo        String?
+  description String?  @db.Text
+  descriptionAr String? @db.Text
+  phone       String?
+  email       String?
+  website     String?
+  instagram   String?
+  twitter     String?
+  tiktok      String?
+  snapchat    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  ownerId    String   @unique
+  owner      User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  locations  Location[]
+  menus      Menu[]
+
+  @@map("restaurants")
+}
+
+model Location {
+  id           String   @id @default(cuid())
+  name         String
+  nameAr       String?
+  address      String
+  addressAr    String?
+  city         String
+  region       String?
+  phone        String?
+  openingHours Json?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  menus        Menu[]
+
+  @@map("locations")
+}
+
+// ==================== MENU ====================
+
+enum MenuLayout {
+  SCROLLABLE
+  TABBED
+}
+
+enum MenuStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Menu {
+  id          String     @id @default(cuid())
+  name        String
+  nameAr      String?
+  description String?    @db.Text
+  descriptionAr String?  @db.Text
+  layout      MenuLayout @default(SCROLLABLE)
+  status      MenuStatus @default(DRAFT)
+  language    String     @default("ar")
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  locationId   String?
+  location     Location?  @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  themeId      String?
+  theme        Theme?     @relation(fields: [themeId], references: [id], onDelete: SetNull)
+  categories   Category[]
+  qrCodes      QRCode[]
+  feedback     CustomerFeedback[]
+  translations Translation[]
+
+  @@map("menus")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  nameAr      String?
+  description String?
+  descriptionAr String?
+  icon        String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  menuId String
+  menu   Menu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  items  MenuItem[]
+
+  @@map("categories")
+}
+
+enum Availability {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum TimeSlot {
+  ALL
+  BREAKFAST
+  LUNCH
+  DINNER
+}
+
+model MenuItem {
+  id          String       @id @default(cuid())
+  name        String
+  nameAr      String?
+  description String?      @db.Text
+  descriptionAr String?    @db.Text
+  price       Decimal      @db.Decimal(10, 2)
+  currency    String       @default("SAR")
+  photo       String?
+  allergens   String[]
+  dietaryTags String[]
+  availability Availability @default(AVAILABLE)
+  isSpecial   Boolean      @default(false)
+  timeSlot    TimeSlot     @default(ALL)
+  sortOrder   Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  // Relations
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  variants   ItemVariant[]
+
+  @@map("menu_items")
+}
+
+model ItemVariant {
+  id            String  @id @default(cuid())
+  name          String
+  nameAr        String?
+  priceModifier Decimal @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  @@map("item_variants")
+}
+
+// ==================== QR CODES ====================
+
+model QRCode {
+  id        String   @id @default(cuid())
+  label     String?
+  config    Json
+  menuUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  menuId String
+  menu   Menu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  scans  Scan[]
+
+  @@map("qr_codes")
+}
+
+model Scan {
+  id         String   @id @default(cuid())
+  timestamp  DateTime @default(now())
+  latitude   Float?
+  longitude  Float?
+  city       String?
+  country    String?
+  deviceType String?
+  userAgent  String?
+  referrer   String?
+
+  // Relations
+  qrCodeId String
+  qrCode   QRCode @relation(fields: [qrCodeId], references: [id], onDelete: Cascade)
+
+  @@map("scans")
+}
+
+// ==================== SUBSCRIPTIONS ====================
+
+enum SubscriptionTier {
+  FREE
+  BASIC
+  PRO
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  PAST_DUE
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  tier               SubscriptionTier   @default(FREE)
+  status             SubscriptionStatus @default(ACTIVE)
+  moyasarTokenId     String?
+  moyasarCustomerId  String?
+  priceAmount        Decimal            @db.Decimal(10, 2) @default(0)
+  vatAmount          Decimal            @db.Decimal(10, 2) @default(0)
+  currentPeriodStart DateTime           @default(now())
+  currentPeriodEnd   DateTime?
+  cancelledAt        DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  // Relations
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// ==================== THEMES ====================
+
+model Theme {
+  id           String  @id @default(cuid())
+  name         String
+  nameAr       String?
+  slug         String  @unique
+  previewImage String?
+  config       Json
+  isFree       Boolean @default(false)
+  isActive     Boolean @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  menus Menu[]
+
+  @@map("themes")
+}
+
+// ==================== NOTIFICATIONS ====================
+
+enum NotificationType {
+  WELCOME
+  SUBSCRIPTION_EXPIRING
+  SUBSCRIPTION_EXPIRED
+  WEEKLY_REPORT
+  MENU_TIP
+  SYSTEM
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  type      NotificationType
+  title     String
+  titleAr   String?
+  message   String           @db.Text
+  messageAr String?          @db.Text
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// ==================== CUSTOMER FEEDBACK ====================
+
+model CustomerFeedback {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  menuId String
+  menu   Menu   @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@map("customer_feedback")
+}
+
+// ==================== TRANSLATIONS ====================
+
+enum TranslationEntity {
+  MENU
+  CATEGORY
+  ITEM
+}
+
+model Translation {
+  id                    String            @id @default(cuid())
+  languageCode          String
+  entityType            TranslationEntity
+  entityId              String
+  translatedName        String?
+  translatedDescription String?           @db.Text
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  // Relations
+  menuId String?
+  menu   Menu?  @relation(fields: [menuId], references: [id], onDelete: Cascade)
+
+  @@unique([languageCode, entityType, entityId])
+  @@map("translations")
+}
+
+// ==================== PLATFORM SETTINGS ====================
+
+model PlatformSettings {
+  id                  String   @id @default("default")
+  maxPhotoSizeMB      Int      @default(5)
+  defaultCurrency     String   @default("SAR")
+  supportedCurrencies String[] @default(["SAR", "USD", "EUR", "GBP", "AED", "KWD", "BHD", "OMR", "QAR"])
+  vatPercentage       Decimal  @db.Decimal(5, 2) @default(15.00)
+  maintenanceMode     Boolean  @default(false)
+  updatedAt           DateTime @updatedAt
+
+  @@map("platform_settings")
+}
