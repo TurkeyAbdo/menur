@@ -5,7 +5,8 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import bcrypt from "bcryptjs";
 import { prisma } from "./db";
-import { Role } from "@prisma/client";
+import { sendWelcomeEmail } from "./email";
+import { Role, AuthProvider } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as NextAuthOptions["adapter"],
@@ -59,6 +60,64 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account }) {
+      // For OAuth sign-ins, set up first-time users with subscription + notification
+      if (
+        account?.provider === "google" ||
+        account?.provider === "facebook"
+      ) {
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            include: { subscription: true },
+          });
+
+          if (dbUser && !dbUser.subscription) {
+            const provider: AuthProvider =
+              account.provider === "google" ? "GOOGLE" : "FACEBOOK";
+
+            await prisma.$transaction([
+              prisma.user.update({
+                where: { id: user.id },
+                data: { provider },
+              }),
+              prisma.subscription.create({
+                data: {
+                  userId: user.id,
+                  tier: "FREE",
+                  status: "ACTIVE",
+                  priceAmount: 0,
+                  vatAmount: 0,
+                },
+              }),
+              prisma.notification.create({
+                data: {
+                  userId: user.id,
+                  type: "WELCOME",
+                  title: "Welcome to Menur!",
+                  titleAr: "!مرحباً بك في منيور",
+                  message:
+                    "Your account is ready. Start by creating your first menu and generating a QR code for your restaurant.",
+                  messageAr:
+                    "حسابك جاهز. ابدأ بإنشاء قائمتك الأولى وإنشاء رمز QR لمطعمك.",
+                },
+              }),
+            ]);
+
+            if (dbUser.name && dbUser.email) {
+              sendWelcomeEmail(dbUser.name, dbUser.email).catch((err) =>
+                console.error("Failed to send welcome email:", err)
+              );
+            }
+          }
+        } catch (err) {
+          console.error("OAuth user setup error:", err);
+          // Don't block sign-in if setup fails
+        }
+      }
+
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.role = (user as { role: Role }).role;
@@ -68,7 +127,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as { id: string; role: Role }).id = token.id as string;
+        (session.user as { id: string; role: Role }).id =
+          token.id as string;
         (session.user as { id: string; role: Role }).role = token.role;
       }
       return session;

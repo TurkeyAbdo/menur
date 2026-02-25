@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import { useToast } from "@/components/Toast";
+import ThemePicker, { type ThemeOption } from "@/components/ThemePicker";
 
 interface Variant {
   name: string;
@@ -78,7 +79,7 @@ export default function NewMenuPage() {
   const [menuDescriptionAr, setMenuDescriptionAr] = useState("");
   const [layout, setLayout] = useState<"SCROLLABLE" | "TABBED">("SCROLLABLE");
   const [selectedTheme, setSelectedTheme] = useState("");
-  const [themes, setThemes] = useState<{ id: string; name: string; nameAr: string | null; slug: string; isFree: boolean }[]>([]);
+  const [themes, setThemes] = useState<ThemeOption[]>([]);
   const [categories, setCategories] = useState<Category[]>([emptyCategory()]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -363,32 +364,12 @@ export default function NewMenuPage() {
         </div>
 
         {/* Theme selection */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            {t("selectTheme")}
-          </label>
-          <div className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {themes.map((theme) => (
-              <button
-                key={theme.id}
-                type="button"
-                onClick={() => setSelectedTheme(theme.id)}
-                className={`relative rounded-lg border-2 p-4 text-center text-sm font-medium transition ${
-                  selectedTheme === theme.id
-                    ? "border-indigo-600 bg-indigo-50 text-indigo-600"
-                    : "border-gray-200 text-gray-600 hover:border-gray-300"
-                }`}
-              >
-                {theme.nameAr || theme.name}
-                {!theme.isFree && (
-                  <span className="absolute -top-2 end-2 rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-700">
-                    PRO
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
+        <ThemePicker
+          themes={themes}
+          selectedTheme={selectedTheme}
+          onSelect={setSelectedTheme}
+          label={t("selectTheme")}
+        />
       </div>
 
       {/* Categories */}

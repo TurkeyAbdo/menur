@@ -60,3 +60,10 @@ body {
 [dir="rtl"] .flip-x {
   transform: scaleX(-1);
 }
+
+/* Animations */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.15); }
+  50% { box-shadow: 0 0 40px rgba(99,102,241,0.3); }
+}
+.animate-glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }

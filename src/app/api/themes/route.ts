@@ -12,6 +12,7 @@ export async function GET() {
         slug: true,
         isFree: true,
         previewImage: true,
+        config: true,
       },
       orderBy: [{ isFree: "desc" }, { name: "asc" }],
     });

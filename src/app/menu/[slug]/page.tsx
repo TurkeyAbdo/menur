@@ -90,7 +90,7 @@ export default async function PublicMenuPage({ params, searchParams }: Props) {
   const menu = restaurant.menus[0];
   const tier = await getTierForUser(restaurant.ownerId);
 
-  // Default theme colors
+  // Default theme config (free fallback)
   const themeConfig = (menu.theme?.config as Record<string, Record<string, string>>) || {
     colors: {
       background: "#ffffff",
@@ -103,6 +103,22 @@ export default async function PublicMenuPage({ params, searchParams }: Props) {
       price: "#059669",
       unavailable: "#ef4444",
       special: "#f59e0b",
+    },
+    fonts: {
+      heading: "IBM Plex Sans Arabic",
+      body: "IBM Plex Sans Arabic",
+    },
+    layout: {
+      itemStyle: "list",
+      categoryStyle: "simple",
+    },
+    decoration: {
+      type: "none",
+    },
+    features: {
+      showPhotos: "false",
+      showDecorations: "false",
+      customFont: "false",
     },
   };
 

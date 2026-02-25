@@ -37,6 +37,16 @@
     "somethingWrong": "Something went wrong",
     "failedTo": "Failed to process request"
   },
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "about": "About",
+    "contact": "Contact"
+  },
   "landing": {
     "hero": {
       "title": "Transform Your Restaurant Menu Into a Digital Experience",
@@ -46,6 +56,7 @@
     },
     "features": {
       "title": "Everything You Need to Manage Your Digital Menu",
+      "subtitle": "Menur gives you all the tools to create, manage, and grow your digital menu presence",
       "menuBuilder": {
         "title": "Menu Builder",
         "description": "Create professional menus easily with photo support and custom categories"
@@ -101,6 +112,65 @@
       "subscribe": "Subscribe Now",
       "contactUs": "Contact Us"
     },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Get your digital menu up and running in minutes",
+      "step1": {
+        "title": "Create Your Menu",
+        "description": "Add your dishes, photos, prices, and categories using our easy drag-and-drop builder"
+      },
+      "step2": {
+        "title": "Generate QR Codes",
+        "description": "Get custom QR codes for each table, takeout, or delivery — branded with your colors"
+      },
+      "step3": {
+        "title": "Track & Grow",
+        "description": "Monitor scan analytics, understand customer behavior, and optimize your menu for more sales"
+      }
+    },
+    "testimonials": {
+      "title": "Trusted by Restaurants Across Saudi Arabia",
+      "subtitle": "See what our customers have to say",
+      "t1": {
+        "name": "Ahmed Al-Rashidi",
+        "role": "Owner",
+        "restaurant": "Bayt Al-Mandi, Riyadh",
+        "quote": "Menur transformed how we serve our customers. The QR menu is fast, elegant, and our guests love it."
+      },
+      "t2": {
+        "name": "Sara Al-Otaibi",
+        "role": "Manager",
+        "restaurant": "Café Noor, Jeddah",
+        "quote": "Setting up was incredibly easy. We had our full menu live in under an hour, with both Arabic and English."
+      },
+      "t3": {
+        "name": "Khalid Al-Dosari",
+        "role": "Owner",
+        "restaurant": "Shawarma House, Dammam",
+        "quote": "The analytics feature helps us understand peak hours and popular items. It's a game changer for our business."
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about Menur",
+      "q1": "What is Menur?",
+      "a1": "Menur is a digital menu platform designed for restaurants in Saudi Arabia. It lets you create beautiful digital menus, generate custom QR codes, and track scan analytics — all from one dashboard.",
+      "q2": "Is it free to use?",
+      "a2": "Yes! Menur offers a free plan that includes 1 menu, 1 QR code, and basic features. You can upgrade anytime to unlock more menus, analytics, and customization options.",
+      "q3": "Can I customize the QR code?",
+      "a3": "Absolutely. You can customize your QR code colors, add your restaurant logo, and create unique codes for each table or location.",
+      "q4": "Does it support Arabic?",
+      "a4": "Yes, Menur is fully bilingual (Arabic and English) with complete RTL support. Your menu can be displayed in multiple languages for all your customers.",
+      "q5": "Can I have multiple menus?",
+      "a5": "Yes! Depending on your plan, you can create multiple menus — for example, a breakfast menu, lunch menu, and dinner menu, each with their own QR codes.",
+      "q6": "How do I cancel my subscription?",
+      "a6": "You can cancel your subscription anytime from your dashboard settings. Your menu will remain active until the end of your billing period, then you'll be downgraded to the free plan."
+    },
+    "cta": {
+      "title": "Ready to Go Digital?",
+      "subtitle": "Join hundreds of restaurants across Saudi Arabia already using Menur",
+      "button": "Start for Free"
+    },
     "footer": {
       "description": "The first digital menu platform in Saudi Arabia",
       "product": "Product",
@@ -111,10 +181,85 @@
       "terms": "Terms of Service",
       "contact": "Contact Us",
       "about": "About Menur",
-      "blog": "Blog",
-      "help": "Help Center",
-      "rights": "All rights reserved"
+      "rights": "All rights reserved",
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "newsletter": "Newsletter",
+      "newsletterSubtitle": "Get the latest updates and tips for your restaurant",
+      "newsletterPlaceholder": "Enter your email",
+      "newsletterButton": "Subscribe"
     }
+  },
+  "about": {
+    "title": "About Menur",
+    "heroText": "We're building the future of restaurant menus in Saudi Arabia",
+    "mission": "Our Mission",
+    "missionText": "To empower every restaurant in Saudi Arabia with beautiful, accessible digital menus that enhance the dining experience for both owners and guests.",
+    "whatWeOffer": "What We Offer",
+    "whatWeOfferText": "Menur is an all-in-one digital menu platform that helps restaurants create stunning menus, generate custom QR codes, and gain insights through scan analytics. Whether you're a small café or a multi-location chain, Menur scales with your needs.",
+    "whyMenur": "Why Menur?",
+    "whyMenurText": "Built specifically for the Saudi market, Menur supports Arabic and English with full RTL layout, includes VAT-compliant pricing, and is designed to meet the needs of restaurants across the Kingdom. Our mission is to make going digital simple, affordable, and effective.",
+    "backToHome": "Back to Home"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "Have a question or feedback? We'd love to hear from you.",
+    "nameLabel": "Your Name",
+    "namePlaceholder": "Enter your name",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "messageLabel": "Message",
+    "messagePlaceholder": "How can we help you?",
+    "sendButton": "Send Message",
+    "sent": "Message sent! We'll get back to you soon.",
+    "orEmail": "Or email us directly at",
+    "backToHome": "Back to Home"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: February 2025",
+    "intro": "At Menur, we take your privacy seriously. This policy explains how we collect, use, and protect your information.",
+    "dataCollection": "Information We Collect",
+    "dataCollectionText": "We collect information you provide when creating an account, such as your name, email address, and restaurant details. We also collect usage data including scan analytics, device information, and browsing patterns to improve our services.",
+    "cookies": "Cookies",
+    "cookiesText": "We use essential cookies to keep you logged in and remember your preferences. We do not use tracking cookies for advertising purposes.",
+    "usage": "How We Use Your Information",
+    "usageText": "Your information is used to provide and improve our services, process transactions, send important notifications, and provide customer support. We never sell your personal data to third parties.",
+    "sharing": "Data Sharing",
+    "sharingText": "We only share your data with service providers who help us operate the platform (such as hosting and email services). We require all third parties to respect the security of your data.",
+    "rights": "Your Rights",
+    "rightsText": "You have the right to access, update, or delete your personal information at any time from your dashboard settings. You can also request a copy of your data by contacting us.",
+    "security": "Security",
+    "securityText": "We implement industry-standard security measures to protect your data, including encryption in transit and at rest.",
+    "changes": "Changes to This Policy",
+    "changesText": "We may update this privacy policy from time to time. We will notify you of any significant changes via email or through our platform.",
+    "contactUs": "Questions? Contact us at",
+    "backToHome": "Back to Home"
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: February 2025",
+    "intro": "By using Menur, you agree to these terms. Please read them carefully.",
+    "acceptance": "Acceptance of Terms",
+    "acceptanceText": "By accessing or using Menur, you agree to be bound by these Terms of Service. If you do not agree, please do not use the platform.",
+    "accounts": "User Accounts",
+    "accountsText": "You are responsible for maintaining the security of your account and password. You must provide accurate information when creating an account and keep it updated. One person or entity may not maintain more than one free account.",
+    "content": "Your Content",
+    "contentText": "You retain ownership of the content you upload to Menur (menus, images, descriptions). By uploading content, you grant us a license to display it as part of our service. You are responsible for ensuring you have the right to use any content you upload.",
+    "acceptableUse": "Acceptable Use",
+    "acceptableUseText": "You agree not to misuse our services. This includes attempting to access unauthorized areas, interfering with other users, uploading harmful content, or using the platform for any illegal purpose.",
+    "payment": "Payment & Billing",
+    "paymentText": "Paid plans are billed monthly. All prices include 15% VAT. You can cancel anytime, and your subscription will remain active until the end of your current billing period.",
+    "liability": "Limitation of Liability",
+    "liabilityText": "Menur is provided 'as is' without warranties of any kind. We are not liable for any indirect, incidental, or consequential damages arising from your use of the platform.",
+    "termination": "Termination",
+    "terminationText": "We reserve the right to suspend or terminate accounts that violate these terms. You may delete your account at any time from your dashboard settings.",
+    "changes": "Changes to Terms",
+    "changesText": "We may update these terms from time to time. Continued use of Menur after changes constitutes acceptance of the new terms.",
+    "contactUs": "Questions? Contact us at",
+    "backToHome": "Back to Home"
   },
   "auth": {
     "loginTitle": "Log In",

@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   QrCode,
   BarChart3,
@@ -11,103 +12,19 @@ import {
   ShieldCheck,
   UtensilsCrossed,
   Check,
-  Menu,
-  X,
-  Globe,
   Zap,
   Star,
   Crown,
   Building2,
   Sparkles,
+  ChevronDown,
+  Quote,
 } from "lucide-react";
-
-function LanguageSwitcher() {
-  const [locale, setLocale] = useState("ar");
-
-  useEffect(() => {
-    setLocale(document.documentElement.lang || "ar");
-  }, []);
-
-  const switchLocale = (newLocale: string) => {
-    document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
-    window.location.reload();
-  };
-
-  return (
-    <button
-      onClick={() => switchLocale(locale === "ar" ? "en" : "ar")}
-      className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 transition hover:bg-gray-50"
-    >
-      <Globe className="h-4 w-4" />
-      <span>{locale === "ar" ? "EN" : "\u0639\u0631\u0628\u064A"}</span>
-    </button>
-  );
-}
-
-function Navbar() {
-  const t = useTranslations("common");
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  return (
-    <nav className="fixed top-0 right-0 left-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-8">
-        <Link href="/" className="text-2xl font-bold text-indigo-600">
-          {t("appName")}
-        </Link>
-
-        {/* Desktop */}
-        <div className="hidden items-center gap-4 md:flex">
-          <LanguageSwitcher />
-          <Link
-            href="/auth/login"
-            className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-          >
-            {t("login")}
-          </Link>
-          <Link
-            href="/auth/onboarding"
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
-          >
-            {t("signup")}
-          </Link>
-        </div>
-
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden"
-        >
-          {mobileOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div className="border-t border-gray-100 bg-white px-4 py-4 md:hidden">
-          <div className="flex flex-col gap-3">
-            <LanguageSwitcher />
-            <Link
-              href="/auth/login"
-              className="rounded-lg px-4 py-2 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-            >
-              {t("login")}
-            </Link>
-            <Link
-              href="/auth/onboarding"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white transition hover:bg-indigo-700"
-            >
-              {t("signup")}
-            </Link>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
-}
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { FadeUp, ScaleIn, staggerContainer, staggerItem } from "@/components/animations";
+import { FloatingElements } from "@/components/illustrations";
+import HeroAnimation from "@/components/HeroAnimation";
 
 function HeroSection() {
   const t = useTranslations("landing.hero");
@@ -115,23 +32,46 @@ function HeroSection() {
   return (
     <section className="relative overflow-hidden pt-36 pb-24 sm:pt-44 sm:pb-32">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-emerald-50" />
-      <div className="relative mx-auto max-w-7xl px-6 text-center lg:px-8">
-        <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-          {t("title")}
-        </h1>
-        <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-gray-600">
-          {t("subtitle")}
-        </p>
-        <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link
-            href="/auth/onboarding"
-            className="rounded-xl bg-indigo-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 hover:shadow-xl"
-          >
-            {t("cta")}
-          </Link>
-          <button className="rounded-xl border border-gray-200 px-8 py-3.5 text-base font-semibold text-gray-700 transition hover:bg-gray-50">
-            {t("secondaryCta")}
-          </button>
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.08),transparent_60%)]" />
+      <FloatingElements />
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="text-center">
+          <FadeUp>
+            <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+              {t("title")}
+            </h1>
+          </FadeUp>
+          <FadeUp delay={0.15}>
+            <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-gray-600">
+              {t("subtitle")}
+            </p>
+          </FadeUp>
+          <FadeUp delay={0.3}>
+            <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link
+                href="/auth/onboarding"
+                className="group relative rounded-xl bg-indigo-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 hover:shadow-xl"
+              >
+                <span className="absolute inset-0 rounded-xl bg-white/20 opacity-0 transition group-hover:animate-ping" />
+                {t("cta")}
+              </Link>
+              <button className="rounded-xl border border-gray-200 px-8 py-3.5 text-base font-semibold text-gray-700 transition hover:bg-gray-50">
+                {t("secondaryCta")}
+              </button>
+            </div>
+          </FadeUp>
+
+          {/* Animated demo */}
+          <FadeUp delay={0.5}>
+            <motion.div
+              className="mx-auto mt-16 max-w-4xl"
+              whileHover={{ rotateX: -2, rotateY: 2 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              style={{ perspective: 1000 }}
+            >
+              <HeroAnimation />
+            </motion.div>
+          </FadeUp>
         </div>
       </div>
     </section>
@@ -142,54 +82,110 @@ function FeaturesSection() {
   const t = useTranslations("landing.features");
 
   const features = [
-    {
-      icon: UtensilsCrossed,
-      key: "menuBuilder" as const,
-    },
-    {
-      icon: QrCode,
-      key: "qrCodes" as const,
-    },
-    {
-      icon: BarChart3,
-      key: "analytics" as const,
-    },
-    {
-      icon: Palette,
-      key: "themes" as const,
-    },
-    {
-      icon: Languages,
-      key: "multilingual" as const,
-    },
-    {
-      icon: ShieldCheck,
-      key: "allergens" as const,
-    },
+    { icon: UtensilsCrossed, key: "menuBuilder" as const },
+    { icon: QrCode, key: "qrCodes" as const },
+    { icon: BarChart3, key: "analytics" as const },
+    { icon: Palette, key: "themes" as const },
+    { icon: Languages, key: "multilingual" as const },
+    { icon: ShieldCheck, key: "allergens" as const },
   ];
 
   return (
     <section className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          {t("title")}
-        </h2>
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <FadeUp>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            {t("title")}
+          </h2>
+        </FadeUp>
+        <motion.div
+          className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {features.map((feature) => (
-            <div
+            <motion.div
               key={feature.key}
-              className="rounded-2xl border border-gray-100 p-8 transition hover:border-indigo-100 hover:shadow-lg"
+              variants={staggerItem}
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="group rounded-2xl border border-gray-100 p-8 transition hover:border-indigo-100 hover:shadow-lg"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50">
+              <motion.div
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 transition group-hover:bg-indigo-100"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              >
                 <feature.icon className="h-6 w-6 text-indigo-600" />
-              </div>
+              </motion.div>
               <h3 className="mt-4 text-xl font-semibold text-gray-900">
                 {t(`${feature.key}.title`)}
               </h3>
               <p className="mt-2 text-gray-600">
                 {t(`${feature.key}.description`)}
               </p>
-            </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function HowItWorksSection() {
+  const t = useTranslations("landing.howItWorks");
+
+  const steps = [
+    { icon: UtensilsCrossed, key: "step1", number: "1" },
+    { icon: QrCode, key: "step2", number: "2" },
+    { icon: BarChart3, key: "step3", number: "3" },
+  ];
+
+  return (
+    <section className="bg-gray-50 py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <FadeUp>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            {t("title")}
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-center text-lg text-gray-600">
+            {t("subtitle")}
+          </p>
+        </FadeUp>
+        <div className="relative mt-16 grid gap-12 sm:grid-cols-3">
+          {/* Animated connector line (desktop only) */}
+          <div className="absolute top-8 hidden items-center sm:flex ltr:left-[16.67%] ltr:right-[16.67%] rtl:left-[16.67%] rtl:right-[16.67%]">
+            <motion.div
+              className="h-0.5 w-full border-t-2 border-dashed border-indigo-200"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+              style={{ transformOrigin: "left" }}
+            />
+          </div>
+
+          {steps.map((step, i) => (
+            <FadeUp key={step.key} delay={i * 0.2}>
+              <div className="relative text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-100">
+                  <step.icon className="h-8 w-8 text-indigo-600" />
+                </div>
+                <ScaleIn delay={i * 0.2 + 0.3}>
+                  <div className="mt-4 inline-flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">
+                    {step.number}
+                  </div>
+                </ScaleIn>
+                <h3 className="mt-3 text-xl font-semibold text-gray-900">
+                  {t(`${step.key}.title`)}
+                </h3>
+                <p className="mt-2 text-gray-600">
+                  {t(`${step.key}.description`)}
+                </p>
+              </div>
+            </FadeUp>
           ))}
         </div>
       </div>
@@ -281,24 +277,35 @@ function PricingSection() {
   ];
 
   return (
-    <section className="bg-gray-50 py-24 sm:py-32">
+    <section className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          {t("title")}
-        </h2>
-        <p className="mt-6 text-center text-lg text-gray-600">{t("subtitle")}</p>
+        <FadeUp>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            {t("title")}
+          </h2>
+          <p className="mt-6 text-center text-lg text-gray-600">{t("subtitle")}</p>
+        </FadeUp>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <motion.div
+          className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
           {tiers.map((tier) => {
             const Icon = tier.icon;
 
             return (
-              <div
+              <motion.div
                 key={tier.key}
-                className={`relative rounded-2xl bg-white p-8 transition hover:shadow-lg ${
+                variants={staggerItem}
+                whileHover={{ y: -8 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className={`relative rounded-2xl bg-white p-8 transition ${
                   tier.popular
-                    ? "ring-2 ring-indigo-600 shadow-lg"
-                    : "border border-gray-200 shadow-sm"
+                    ? "ring-2 ring-indigo-600 shadow-lg animate-glow-pulse"
+                    : "border border-gray-200 shadow-sm hover:shadow-lg"
                 }`}
               >
                 {tier.popular && (
@@ -310,7 +317,6 @@ function PricingSection() {
                   </div>
                 )}
 
-                {/* Plan header */}
                 <div className="flex items-center gap-3">
                   <div
                     className={`flex h-10 w-10 items-center justify-center rounded-full ${tier.color}`}
@@ -322,7 +328,6 @@ function PricingSection() {
                   </h3>
                 </div>
 
-                {/* Price */}
                 <div className="mt-5">
                   <span className="text-4xl font-bold text-gray-900">
                     {t(`${tier.key}.price`)}
@@ -337,7 +342,6 @@ function PricingSection() {
                   )}
                 </div>
 
-                {/* Features */}
                 <ul className="mt-6 space-y-2.5 border-t border-gray-100 pt-6">
                   {tier.features.map((f) => (
                     <li
@@ -361,7 +365,6 @@ function PricingSection() {
                   ))}
                 </ul>
 
-                {/* CTA */}
                 <Link
                   href="/auth/onboarding"
                   className={`mt-6 block w-full rounded-lg py-2.5 text-center text-sm font-semibold transition ${
@@ -372,84 +375,204 @@ function PricingSection() {
                 >
                   {tier.cta}
                 </Link>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
-          {t("vatNote")}
-        </p>
+        <FadeUp delay={0.3}>
+          <p className="mt-10 text-center text-sm text-gray-500">
+            {t("vatNote")}
+          </p>
+        </FadeUp>
       </div>
     </section>
   );
 }
 
-function Footer() {
-  const t = useTranslations("landing.footer");
-  const tc = useTranslations("common");
+const avatarColors = ["bg-indigo-500", "bg-emerald-500", "bg-amber-500"];
+
+function TestimonialsSection() {
+  const t = useTranslations("landing.testimonials");
+
+  const testimonials = ["t1", "t2", "t3"] as const;
 
   return (
-    <footer className="border-t border-gray-100 bg-white py-16">
+    <section className="bg-gray-50 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <h3 className="text-xl font-bold text-indigo-600">
-              {tc("appName")}
-            </h3>
-            <p className="mt-2 text-sm text-gray-500">{t("description")}</p>
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-900">{t("product")}</h4>
-            <ul className="mt-3 space-y-2 text-sm text-gray-500">
-              <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  {t("about")}
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  {t("blog")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-900">{t("support")}</h4>
-            <ul className="mt-3 space-y-2 text-sm text-gray-500">
-              <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  {t("help")}
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  {t("contact")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-900">{t("legal")}</h4>
-            <ul className="mt-3 space-y-2 text-sm text-gray-500">
-              <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  {t("privacy")}
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="hover:text-indigo-600">
-                  {t("terms")}
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-12 border-t border-gray-100 pt-8 text-center text-sm text-gray-400">
-          &copy; {new Date().getFullYear()} {tc("appName")}. {t("rights")}.
+        <FadeUp>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            {t("title")}
+          </h2>
+          <p className="mt-4 text-center text-lg text-gray-600">
+            {t("subtitle")}
+          </p>
+        </FadeUp>
+        <motion.div
+          className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          {testimonials.map((key, index) => (
+            <motion.div
+              key={key}
+              variants={staggerItem}
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="rounded-2xl border border-gray-100 bg-white p-8"
+            >
+              <Quote className="h-8 w-8 text-indigo-200" />
+              <p className="mt-4 text-gray-600 leading-relaxed">
+                {t(`${key}.quote`)}
+              </p>
+              <div className="mt-6 flex items-center gap-1">
+                {[0, 1, 2, 3, 4].map((s) => (
+                  <ScaleIn key={s} delay={0.1 * s}>
+                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  </ScaleIn>
+                ))}
+              </div>
+              <div className="mt-4 flex items-center gap-3 border-t border-gray-100 pt-4">
+                <div
+                  className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ${avatarColors[index]}`}
+                >
+                  {t(`${key}.name`).charAt(0)}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">{t(`${key}.name`)}</p>
+                  <p className="text-sm text-gray-500">
+                    {t(`${key}.role`)} — {t(`${key}.restaurant`)}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function FAQSection() {
+  const t = useTranslations("landing.faq");
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = ["1", "2", "3", "4", "5", "6"] as const;
+
+  return (
+    <section className="py-24 sm:py-32">
+      <div className="mx-auto max-w-3xl px-6 lg:px-8">
+        <FadeUp>
+          <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            {t("title")}
+          </h2>
+          <p className="mt-4 text-center text-lg text-gray-600">
+            {t("subtitle")}
+          </p>
+        </FadeUp>
+        <div className="mt-12 divide-y divide-gray-200">
+          {faqs.map((num, index) => (
+            <div key={num}>
+              <button
+                onClick={() =>
+                  setOpenIndex(openIndex === index ? null : index)
+                }
+                className="flex w-full items-center justify-between py-5 text-start"
+              >
+                <span className="text-base font-medium text-gray-900">
+                  {t(`q${num}`)}
+                </span>
+                <motion.div
+                  animate={{ rotate: openIndex === index ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown className="h-5 w-5 shrink-0 text-gray-500" />
+                </motion.div>
+              </button>
+              <AnimatePresence initial={false}>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <p className="pb-5 text-gray-600 leading-relaxed">
+                      {t(`a${num}`)}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
         </div>
       </div>
-    </footer>
+    </section>
+  );
+}
+
+function CTASection() {
+  const t = useTranslations("landing.cta");
+
+  const particles = [
+    { top: "10%", left: "10%", size: 6, duration: 3, delay: 0 },
+    { top: "20%", right: "15%", size: 4, duration: 4, delay: 0.5 },
+    { top: "60%", left: "20%", size: 5, duration: 3.5, delay: 1 },
+    { top: "70%", right: "25%", size: 3, duration: 4.5, delay: 0.8 },
+    { top: "40%", left: "5%", size: 4, duration: 3.8, delay: 1.2 },
+    { top: "30%", right: "8%", size: 5, duration: 3.2, delay: 0.3 },
+  ];
+
+  return (
+    <section className="py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <FadeUp>
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-indigo-500 px-8 py-16 text-center shadow-xl sm:px-16 sm:py-20">
+            {/* Floating particles */}
+            {particles.map((p, i) => (
+              <motion.div
+                key={i}
+                className="absolute hidden rounded-full bg-white/20 sm:block"
+                style={{
+                  top: p.top,
+                  left: "left" in p ? p.left : undefined,
+                  right: "right" in p ? p.right : undefined,
+                  width: p.size,
+                  height: p.size,
+                }}
+                animate={{
+                  y: [0, -15, 0],
+                  opacity: [0.3, 0.7, 0.3],
+                }}
+                transition={{
+                  duration: p.duration,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: p.delay,
+                }}
+              />
+            ))}
+
+            <h2 className="relative text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              {t("title")}
+            </h2>
+            <p className="relative mx-auto mt-4 max-w-xl text-lg text-indigo-100">
+              {t("subtitle")}
+            </p>
+            <Link
+              href="/auth/onboarding"
+              className="group relative mt-8 inline-block rounded-xl bg-white px-8 py-3.5 text-base font-semibold text-indigo-600 shadow-lg transition hover:bg-indigo-50"
+            >
+              <span className="absolute inset-0 rounded-xl bg-indigo-200/30 opacity-0 transition group-hover:animate-ping" />
+              {t("button")}
+            </Link>
+          </div>
+        </FadeUp>
+      </div>
+    </section>
   );
 }
 
@@ -459,7 +582,11 @@ export default function HomePage() {
       <Navbar />
       <HeroSection />
       <FeaturesSection />
+      <HowItWorksSection />
       <PricingSection />
+      <TestimonialsSection />
+      <FAQSection />
+      <CTASection />
       <Footer />
     </main>
   );

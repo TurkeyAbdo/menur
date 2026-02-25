@@ -73,6 +73,7 @@ export default async function MenuPreviewPage({ params }: Props) {
       </div>
 
       <MenuDisplay
+        slug={restaurant.slug}
         restaurant={{
           name: restaurant.name,
           nameAr: restaurant.nameAr,
@@ -94,6 +95,7 @@ export default async function MenuPreviewPage({ params }: Props) {
           })),
         }}
         menu={{
+          id: menu.id,
           name: menu.name,
           nameAr: menu.nameAr,
           layout: menu.layout,
