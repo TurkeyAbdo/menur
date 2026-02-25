@@ -12,23 +12,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Verify menu exists
+    // Verify menu exists and get the restaurant owner
     const menu = await prisma.menu.findUnique({
       where: { id: menuId },
+      include: { restaurant: { select: { ownerId: true } } },
     });
 
     if (!menu) {
       return NextResponse.json({ error: "Menu not found" }, { status: 404 });
     }
 
-    // Create anonymous feedback using a system user approach
-    // For anonymous feedback, we'll store without requiring auth
     const feedback = await prisma.customerFeedback.create({
       data: {
         rating,
         comment: comment || null,
         menuId,
-        userId: menu.restaurantId, // Use restaurant ID as placeholder for anonymous
+        userId: menu.restaurant.ownerId,
       },
     });
 
