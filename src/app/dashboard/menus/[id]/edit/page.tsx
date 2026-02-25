@@ -262,7 +262,7 @@ export default function EditMenuPage() {
       const res = await fetch("/api/upload", { method: "POST", body: formData });
       if (!res.ok) return null;
       const data = await res.json();
-      return data.secure_url || null;
+      return data.url || null;
     } catch {
       return null;
     }
