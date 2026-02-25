@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,6 +60,11 @@ export async function POST(req: NextRequest) {
         },
       },
     });
+
+    // Send welcome email (non-blocking)
+    sendWelcomeEmail(name, email).catch((err) =>
+      console.error("Failed to send welcome email:", err)
+    );
 
     return NextResponse.json(
       { message: "Account created successfully", userId: user.id },

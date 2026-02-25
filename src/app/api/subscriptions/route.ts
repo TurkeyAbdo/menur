@@ -88,6 +88,18 @@ export async function POST(req: NextRequest) {
         },
       });
 
+      // Create upgrade notification
+      await prisma.notification.create({
+        data: {
+          userId: session.user.id,
+          type: "SYSTEM",
+          title: `Upgraded to ${pricing.label}!`,
+          titleAr: `!تم الترقية إلى ${pricing.labelAr}`,
+          message: `Your subscription has been upgraded to the ${pricing.label} plan. Enjoy your new features!`,
+          messageAr: `تم ترقية اشتراكك إلى خطة ${pricing.labelAr}. استمتع بالمميزات الجديدة!`,
+        },
+      });
+
       return NextResponse.json({
         subscription,
         mode: "test",
@@ -173,6 +185,20 @@ export async function PATCH(req: NextRequest) {
           },
         });
       }
+
+      // Create cancellation notification
+      const previousTier = subscription.tier;
+      const previousPricing = TIER_PRICING[previousTier as TierKey];
+      await prisma.notification.create({
+        data: {
+          userId: session.user.id,
+          type: "SYSTEM",
+          title: `Subscription cancelled`,
+          titleAr: `تم إلغاء الاشتراك`,
+          message: `Your ${previousPricing?.label || previousTier} plan has been cancelled. You have been downgraded to the Free plan.`,
+          messageAr: `تم إلغاء خطة ${previousPricing?.labelAr || previousTier}. تم تخفيض اشتراكك إلى الخطة المجانية.`,
+        },
+      });
 
       return NextResponse.json({ subscription, message: "Subscription cancelled" });
     }

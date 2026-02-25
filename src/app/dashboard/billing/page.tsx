@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
+import { useToast } from "@/components/Toast";
 import {
   CreditCard,
   Crown,
@@ -12,7 +13,6 @@ import {
   Star,
   Sparkles,
   AlertTriangle,
-  CheckCircle2,
 } from "lucide-react";
 
 interface Subscription {
@@ -25,89 +25,94 @@ interface Subscription {
   currentPeriodEnd: string | null;
 }
 
-const PLANS = [
-  {
-    tier: "FREE" as const,
-    icon: Zap,
-    color: "bg-gray-50",
-    iconColor: "text-gray-600",
-    borderActive: "border-gray-300",
-    price: 0,
-    features: [
-      "1 menu",
-      "30 menu items",
-      "1 QR code",
-      "1 location",
-      "Light & dark themes",
-      "1 language",
-    ],
-    limits: ["No analytics", "No item photos", "Powered by Menur badge"],
-  },
-  {
-    tier: "BASIC" as const,
-    icon: Star,
-    color: "bg-blue-50",
-    iconColor: "text-blue-600",
-    borderActive: "border-blue-400",
-    price: 34,
-    features: [
-      "3 menus",
-      "100 menu items",
-      "3 QR codes",
-      "1 location",
-      "All themes",
-      "2 languages",
-      "Basic analytics",
-      "Item photos",
-    ],
-    limits: ["No custom domain"],
-  },
-  {
-    tier: "PRO" as const,
-    icon: Crown,
-    color: "bg-indigo-50",
-    iconColor: "text-indigo-600",
-    borderActive: "border-indigo-400",
-    price: 109,
-    popular: true,
-    features: [
-      "Unlimited menus",
-      "Unlimited items",
-      "Unlimited QR codes",
-      "5 locations",
-      "All themes",
-      "Unlimited languages",
-      "Full analytics",
-      "Item photos",
-      "Custom domain",
-    ],
-    limits: [],
-  },
-  {
-    tier: "ENTERPRISE" as const,
-    icon: Building2,
-    color: "bg-purple-50",
-    iconColor: "text-purple-600",
-    borderActive: "border-purple-400",
-    price: 296,
-    features: [
-      "Everything in Pro",
-      "Unlimited locations",
-      "Custom branding",
-      "Priority support",
-      "Dedicated account manager",
-    ],
-    limits: [],
-  },
-];
-
 export default function BillingPage() {
   const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
+  const ta = useTranslations("admin");
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
   const [upgrading, setUpgrading] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+
+  const PLANS = [
+    {
+      tier: "FREE" as const,
+      icon: Zap,
+      color: "bg-gray-50",
+      iconColor: "text-gray-600",
+      borderActive: "border-gray-300",
+      price: 0,
+      features: [
+        t("planFeatures.freeMenus"),
+        t("planFeatures.freeItems"),
+        t("planFeatures.freeQR"),
+        t("planFeatures.freeLocations"),
+        t("planFeatures.freeThemes"),
+        t("planFeatures.freeLangs"),
+      ],
+      limits: [
+        t("planFeatures.noAnalytics"),
+        t("planFeatures.noPhotos"),
+        t("planFeatures.poweredBadge"),
+      ],
+    },
+    {
+      tier: "BASIC" as const,
+      icon: Star,
+      color: "bg-blue-50",
+      iconColor: "text-blue-600",
+      borderActive: "border-blue-400",
+      price: 34,
+      features: [
+        t("planFeatures.basicMenus"),
+        t("planFeatures.basicItems"),
+        t("planFeatures.basicQR"),
+        t("planFeatures.basicLocations"),
+        t("planFeatures.allThemes"),
+        t("planFeatures.basicLangs"),
+        t("planFeatures.basicAnalytics"),
+        t("planFeatures.itemPhotos"),
+      ],
+      limits: [t("planFeatures.noCustomDomain")],
+    },
+    {
+      tier: "PRO" as const,
+      icon: Crown,
+      color: "bg-indigo-50",
+      iconColor: "text-indigo-600",
+      borderActive: "border-indigo-400",
+      price: 109,
+      popular: true,
+      features: [
+        t("planFeatures.unlimitedMenus"),
+        t("planFeatures.unlimitedItems"),
+        t("planFeatures.unlimitedQR"),
+        t("planFeatures.proLocations"),
+        t("planFeatures.allThemes"),
+        t("planFeatures.unlimitedLangs"),
+        t("planFeatures.fullAnalytics"),
+        t("planFeatures.itemPhotos"),
+        t("planFeatures.customDomain"),
+      ],
+      limits: [],
+    },
+    {
+      tier: "ENTERPRISE" as const,
+      icon: Building2,
+      color: "bg-purple-50",
+      iconColor: "text-purple-600",
+      borderActive: "border-purple-400",
+      price: 296,
+      features: [
+        t("planFeatures.everythingPro"),
+        t("planFeatures.unlimitedLocations"),
+        t("planFeatures.customBranding"),
+        t("planFeatures.prioritySupport"),
+        t("planFeatures.dedicatedManager"),
+      ],
+      limits: [],
+    },
+  ];
 
   useEffect(() => {
     fetch("/api/subscriptions")
@@ -121,21 +126,20 @@ export default function BillingPage() {
     // Check URL params for payment result
     const params = new URLSearchParams(window.location.search);
     if (params.get("success") === "true") {
-      setMessage("Subscription upgraded successfully!");
+      toast("success", t("upgradeSuccess"));
       // Refresh subscription data
       fetch("/api/subscriptions")
         .then((r) => r.json())
         .then((data) => setSubscription(data.subscription));
     }
     if (params.get("error")) {
-      setError("Payment failed. Please try again.");
+      toast("error", t("paymentFailed"));
     }
   }, []);
 
   const handleUpgrade = async (tier: string) => {
     if (tier === "FREE") return;
     setUpgrading(tier);
-    setError("");
 
     try {
       const res = await fetch("/api/subscriptions", {
@@ -152,20 +156,19 @@ export default function BillingPage() {
       } else if (data.mode === "test") {
         // Test mode — instant upgrade
         setSubscription(data.subscription);
-        setMessage(`Upgraded to ${tier} (test mode)`);
-        setTimeout(() => setMessage(""), 3000);
+        toast("success", t("upgradeSuccess"));
       } else {
-        setError("Something went wrong");
+        toast("error", tc("somethingWrong"));
       }
     } catch {
-      setError("Failed to process upgrade");
+      toast("error", t("upgradeFailed"));
     } finally {
       setUpgrading(null);
     }
   };
 
   const handleCancel = async () => {
-    if (!confirm("Are you sure you want to cancel your subscription? You will be downgraded to the Free plan."))
+    if (!confirm(t("cancelConfirm")))
       return;
 
     try {
@@ -176,15 +179,14 @@ export default function BillingPage() {
       });
 
       if (res.ok) {
-        setMessage("Subscription cancelled. Downgraded to Free plan.");
+        toast("success", t("subscriptionCancelled"));
         // Refresh
         const subRes = await fetch("/api/subscriptions");
         const data = await subRes.json();
         setSubscription(data.subscription);
-        setTimeout(() => setMessage(""), 3000);
       }
     } catch {
-      setError("Failed to cancel subscription");
+      toast("error", t("cancelFailed"));
     }
   };
 
@@ -202,30 +204,16 @@ export default function BillingPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Billing</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t("billing")}</h1>
         {currentTier !== "FREE" && (
           <button
             onClick={handleCancel}
             className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
           >
-            Cancel Subscription
+            {t("cancelSubscription")}
           </button>
         )}
       </div>
-
-      {message && (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
-          <CheckCircle2 className="h-4 w-4 shrink-0" />
-          {message}
-        </div>
-      )}
-
-      {error && (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-          <AlertTriangle className="h-4 w-4 shrink-0" />
-          {error}
-        </div>
-      )}
 
       {/* Current Plan Banner */}
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
@@ -235,28 +223,24 @@ export default function BillingPage() {
               <CreditCard className="h-5 w-5 text-indigo-600" />
             </div>
             <div>
-              <h2 className="font-semibold text-gray-900">Current Plan</h2>
+              <h2 className="font-semibold text-gray-900">{t("currentPlan")}</h2>
               <p className="text-sm text-gray-500">
-                You are on the{" "}
-                <span className="font-semibold text-indigo-600">
-                  {currentTier}
-                </span>{" "}
-                plan
+                {t("youAreOnPlan", { tier: ta(`tiers.${currentTier}`) })}
               </p>
             </div>
           </div>
           <div className="text-right">
             <p className="text-2xl font-bold text-gray-900">
               {subscription?.priceAmount
-                ? `${(Number(subscription.priceAmount) + Number(subscription.vatAmount)).toFixed(0)} SAR`
-                : "0 SAR"}
+                ? `${(Number(subscription.priceAmount) + Number(subscription.vatAmount)).toFixed(0)} ${t("sar")}`
+                : `0 ${t("sar")}`}
             </p>
-            <p className="text-xs text-gray-400">per month (incl. VAT)</p>
+            <p className="text-xs text-gray-400">{t("perMonth")}</p>
           </div>
         </div>
         {subscription?.currentPeriodEnd && (
           <div className="mt-3 border-t border-gray-100 pt-3 text-xs text-gray-400">
-            Current period ends:{" "}
+            {t("periodEnds")}{" "}
             {new Date(subscription.currentPeriodEnd).toLocaleDateString()}
           </div>
         )}
@@ -283,7 +267,7 @@ export default function BillingPage() {
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <span className="flex items-center gap-1 rounded-full bg-indigo-600 px-3 py-0.5 text-[10px] font-bold text-white">
                     <Sparkles className="h-3 w-3" />
-                    POPULAR
+                    {t("popular")}
                   </span>
                 </div>
               )}
@@ -295,7 +279,9 @@ export default function BillingPage() {
                   <Icon className={`h-5 w-5 ${plan.iconColor}`} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">{plan.tier}</h3>
+                  <h3 className="font-semibold text-gray-900">
+                    {ta(`tiers.${plan.tier}`)}
+                  </h3>
                 </div>
               </div>
 
@@ -304,11 +290,11 @@ export default function BillingPage() {
                   {plan.price}
                 </span>
                 <span className="text-sm text-gray-500">
-                  {plan.price > 0 ? " SAR/mo" : " SAR"}
+                  {plan.price > 0 ? ` ${t("sarMonth")}` : ` ${t("sar")}`}
                 </span>
                 {plan.price > 0 && (
                   <p className="text-[10px] text-gray-400">
-                    incl. 15% VAT
+                    {t("inclVAT")}
                   </p>
                 )}
               </div>
@@ -342,7 +328,7 @@ export default function BillingPage() {
                 {isCurrent ? (
                   <div className="flex items-center justify-center gap-2 rounded-lg bg-gray-100 py-2.5 text-sm font-medium text-gray-500">
                     <Check className="h-4 w-4" />
-                    Current Plan
+                    {t("currentPlan")}
                   </div>
                 ) : isUpgrade ? (
                   <button
@@ -355,11 +341,11 @@ export default function BillingPage() {
                     ) : (
                       <Zap className="h-4 w-4" />
                     )}
-                    {upgrading === plan.tier ? "Processing..." : "Upgrade"}
+                    {upgrading === plan.tier ? t("processing") : t("upgradeBtn")}
                   </button>
                 ) : isDowngrade ? (
                   <div className="rounded-lg border border-gray-200 py-2.5 text-center text-sm text-gray-400">
-                    Downgrade
+                    {t("downgrade")}
                   </div>
                 ) : null}
               </div>
@@ -373,11 +359,10 @@ export default function BillingPage() {
         <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 shrink-0" />
-            <span className="font-medium">Test Mode</span>
+            <span className="font-medium">{t("testMode")}</span>
           </div>
           <p className="mt-1 text-xs text-amber-600">
-            Payments are in test mode. Upgrades will be applied instantly
-            without real payment processing.
+            {t("testModeHint")}
           </p>
         </div>
       )}

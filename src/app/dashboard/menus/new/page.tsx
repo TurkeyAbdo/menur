@@ -12,6 +12,7 @@ import {
   ImagePlus,
   X,
 } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 interface Variant {
   name: string;
@@ -69,6 +70,7 @@ export default function NewMenuPage() {
   const t = useTranslations("menu.builder");
   const tc = useTranslations("common");
   const router = useRouter();
+  const { toast } = useToast();
 
   const [menuName, setMenuName] = useState("");
   const [menuNameAr, setMenuNameAr] = useState("");
@@ -247,9 +249,14 @@ export default function NewMenuPage() {
 
       if (!res.ok) {
         const data = await res.json();
+        if (data.tierLimit) {
+          toast("error", data.error);
+          return;
+        }
         throw new Error(data.error || "Failed to save");
       }
 
+      toast("success", status === "PUBLISHED" ? "Menu published!" : "Menu saved as draft");
       router.push("/dashboard/menus");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save");

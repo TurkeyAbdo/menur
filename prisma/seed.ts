@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -133,6 +134,20 @@ async function main() {
       maxPhotoSizeMB: 5,
       defaultCurrency: "SAR",
       vatPercentage: 15.0,
+    },
+  });
+
+  // Seed admin user
+  const adminPassword = await bcrypt.hash("admin123456", 12);
+  await prisma.user.upsert({
+    where: { email: "admin@menur.app" },
+    update: { role: "ADMIN" },
+    create: {
+      email: "admin@menur.app",
+      name: "Admin",
+      password: adminPassword,
+      role: "ADMIN",
+      provider: "EMAIL",
     },
   });
 

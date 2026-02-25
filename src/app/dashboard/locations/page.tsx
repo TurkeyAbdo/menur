@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useState, useEffect } from "react";
 import {
   Plus,
@@ -13,6 +13,7 @@ import {
   Clock,
   Loader2,
 } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 interface OpeningHours {
   [day: string]: { open: string; close: string };
@@ -56,6 +57,10 @@ const emptyForm = () => ({
 
 export default function LocationsPage() {
   const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
+  const locale = useLocale();
+  const isAr = locale === "ar";
+  const { toast } = useToast();
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -107,7 +112,7 @@ export default function LocationsPage() {
   const handleSave = async () => {
     setError("");
     if (!form.name || !form.address || !form.city) {
-      setError("Name, address, and city are required");
+      setError(t("requiredFields"));
       return;
     }
 
@@ -124,23 +129,31 @@ export default function LocationsPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to save");
+        if (data.tierLimit) {
+          toast("error", data.error);
+          setShowForm(false);
+        } else {
+          throw new Error(data.error || tc("failedTo"));
+        }
+        return;
       }
 
       setShowForm(false);
       fetchLocations();
+      toast("success", editingId ? t("locationUpdated") : t("locationAdded"));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to save");
+      setError(err instanceof Error ? err.message : tc("failedTo"));
     } finally {
       setSaving(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this location?")) return;
+    if (!confirm(t("deleteLocationConfirm"))) return;
 
     await fetch(`/api/locations/${id}`, { method: "DELETE" });
     setLocations((prev) => prev.filter((l) => l.id !== id));
+    toast("success", t("locationDeleted"));
   };
 
   const updateHours = (day: string, field: "open" | "close", value: string) => {
@@ -170,7 +183,7 @@ export default function LocationsPage() {
           className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
         >
           <Plus className="h-4 w-4" />
-          Add Location
+          {t("addLocation")}
         </button>
       </div>
 
@@ -180,7 +193,7 @@ export default function LocationsPage() {
           <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-gray-900">
-                {editingId ? "Edit Location" : "Add Location"}
+                {editingId ? t("editLocation") : t("addLocation")}
               </h2>
               <button onClick={() => setShowForm(false)}>
                 <X className="h-5 w-5 text-gray-400" />
@@ -198,7 +211,7 @@ export default function LocationsPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Location Name (عربي)
+                    {t("locationNameAr")}
                   </label>
                   <input
                     type="text"
@@ -212,7 +225,7 @@ export default function LocationsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Location Name (English) *
+                    {t("locationNameEn")} *
                   </label>
                   <input
                     type="text"
@@ -229,7 +242,7 @@ export default function LocationsPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Address (عربي)
+                    {t("addressAr")}
                   </label>
                   <input
                     type="text"
@@ -243,7 +256,7 @@ export default function LocationsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Address (English) *
+                    {t("addressEn")} *
                   </label>
                   <input
                     type="text"
@@ -260,7 +273,7 @@ export default function LocationsPage() {
               <div className="grid gap-4 sm:grid-cols-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    City *
+                    {t("city")} *
                   </label>
                   <input
                     type="text"
@@ -273,7 +286,7 @@ export default function LocationsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Region
+                    {t("region")}
                   </label>
                   <input
                     type="text"
@@ -286,7 +299,7 @@ export default function LocationsPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Phone
+                    {t("phone")}
                   </label>
                   <input
                     type="tel"
@@ -303,7 +316,7 @@ export default function LocationsPage() {
               {/* Opening Hours */}
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  <Clock className="mb-0.5 inline h-4 w-4" /> Opening Hours
+                  <Clock className="mb-0.5 inline h-4 w-4" /> {t("openingHours")}
                 </label>
                 <div className="mt-2 space-y-2">
                   {DAYS.map((day) => (
@@ -312,7 +325,7 @@ export default function LocationsPage() {
                       className="flex items-center gap-3 text-sm"
                     >
                       <span className="w-24 text-gray-600">
-                        {day.labelAr}
+                        {isAr ? day.labelAr : day.label}
                       </span>
                       <input
                         type="time"
@@ -343,7 +356,7 @@ export default function LocationsPage() {
                 onClick={() => setShowForm(false)}
                 className="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
               >
-                Cancel
+                {tc("cancel")}
               </button>
               <button
                 onClick={handleSave}
@@ -355,7 +368,7 @@ export default function LocationsPage() {
                 ) : (
                   <span className="flex items-center justify-center gap-2">
                     <Check className="h-4 w-4" />
-                    {editingId ? "Update" : "Add"}
+                    {editingId ? tc("update") : tc("add")}
                   </span>
                 )}
               </button>
@@ -369,17 +382,17 @@ export default function LocationsPage() {
         <div className="mt-12 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
           <MapPin className="h-12 w-12 text-gray-300" />
           <h3 className="mt-4 text-lg font-semibold text-gray-900">
-            No locations yet
+            {t("noLocations")}
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            Add your restaurant branches and locations
+            {t("locationsHint")}
           </p>
           <button
             onClick={openAdd}
             className="mt-4 flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
           >
             <Plus className="h-4 w-4" />
-            Add Location
+            {t("addLocation")}
           </button>
         </div>
       ) : (
@@ -398,21 +411,23 @@ export default function LocationsPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">
-                      {loc.nameAr || loc.name}
+                      {isAr ? (loc.nameAr || loc.name) : loc.name}
                     </h3>
                     {loc.nameAr && loc.name && (
-                      <p className="text-xs text-gray-400">{loc.name}</p>
+                      <p className="text-xs text-gray-400">
+                        {isAr ? loc.name : loc.nameAr}
+                      </p>
                     )}
                   </div>
                 </div>
                 <div className="flex gap-1">
                   {loc.isActive ? (
                     <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
-                      Active
+                      {tc("active")}
                     </span>
                   ) : (
                     <span className="rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-700">
-                      Inactive
+                      {tc("inactive")}
                     </span>
                   )}
                 </div>
@@ -421,7 +436,7 @@ export default function LocationsPage() {
               <div className="mt-4 space-y-2 border-t border-gray-100 pt-4 text-sm text-gray-500">
                 <p className="flex items-center gap-2">
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-400" />
-                  <span>{loc.addressAr || loc.address}</span>
+                  <span>{isAr ? (loc.addressAr || loc.address) : loc.address}</span>
                 </p>
                 <p className="ps-5 text-xs text-gray-400">
                   {loc.city}{loc.region ? ` - ${loc.region}` : ""}
@@ -440,7 +455,7 @@ export default function LocationsPage() {
                   className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-200 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
                 >
                   <Edit2 className="h-3.5 w-3.5" />
-                  Edit
+                  {tc("edit")}
                 </button>
                 <button
                   onClick={() => handleDelete(loc.id)}

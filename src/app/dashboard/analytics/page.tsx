@@ -53,10 +53,10 @@ export default function AnalyticsPage() {
         <div className="mt-12 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
           <BarChart3 className="h-12 w-12 text-gray-300" />
           <h3 className="mt-4 text-lg font-semibold text-gray-900">
-            No analytics data yet
+            {t("noAnalytics")}
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            Data will appear here once your menus get scanned
+            {t("analyticsHint")}
           </p>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function AnalyticsPage() {
         <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Scans</p>
+              <p className="text-sm text-gray-500">{t("totalScans")}</p>
               <p className="mt-1 text-3xl font-bold text-gray-900">
                 {data.totalScans}
               </p>
@@ -87,7 +87,7 @@ export default function AnalyticsPage() {
         <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Today</p>
+              <p className="text-sm text-gray-500">{t("today")}</p>
               <p className="mt-1 text-3xl font-bold text-gray-900">
                 {data.todayScans}
               </p>
@@ -100,7 +100,7 @@ export default function AnalyticsPage() {
         <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">This Week</p>
+              <p className="text-sm text-gray-500">{t("thisWeek")}</p>
               <p className="mt-1 text-3xl font-bold text-gray-900">
                 {data.weekScans}
               </p>
@@ -113,7 +113,7 @@ export default function AnalyticsPage() {
         <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">This Month</p>
+              <p className="text-sm text-gray-500">{t("thisMonth")}</p>
               <p className="mt-1 text-3xl font-bold text-gray-900">
                 {data.monthScans}
               </p>
@@ -129,7 +129,7 @@ export default function AnalyticsPage() {
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
         <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
           <Activity className="h-5 w-5 text-indigo-600" />
-          Device Breakdown
+          {t("deviceBreakdown")}
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
           <div className="flex items-center gap-3 rounded-xl border border-gray-200 p-4 transition hover:shadow-md">
@@ -140,7 +140,7 @@ export default function AnalyticsPage() {
               <p className="text-2xl font-bold text-gray-900">
                 {data.deviceBreakdown.mobile}
               </p>
-              <p className="text-xs text-gray-500">Mobile</p>
+              <p className="text-xs text-gray-500">{t("mobile")}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 rounded-xl border border-gray-200 p-4 transition hover:shadow-md">
@@ -151,7 +151,7 @@ export default function AnalyticsPage() {
               <p className="text-2xl font-bold text-gray-900">
                 {data.deviceBreakdown.desktop}
               </p>
-              <p className="text-xs text-gray-500">Desktop</p>
+              <p className="text-xs text-gray-500">{t("desktop")}</p>
             </div>
           </div>
           <div className="flex items-center gap-3 rounded-xl border border-gray-200 p-4 transition hover:shadow-md">
@@ -162,7 +162,7 @@ export default function AnalyticsPage() {
               <p className="text-2xl font-bold text-gray-900">
                 {data.deviceBreakdown.tablet}
               </p>
-              <p className="text-xs text-gray-500">Tablet</p>
+              <p className="text-xs text-gray-500">{t("tablet")}</p>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@ export default function AnalyticsPage() {
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
         <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
           <TrendingUp className="h-5 w-5 text-indigo-600" />
-          Last 14 Days
+          {t("last14Days")}
         </h2>
         <div className="mt-4 flex items-end gap-1.5" style={{ height: 200 }}>
           {data.dailyScans.map((day) => (
@@ -188,7 +188,7 @@ export default function AnalyticsPage() {
                 style={{
                   height: `${Math.max((day.count / maxDaily) * 150, 4)}px`,
                 }}
-                title={`${day.date}: ${day.count} scans`}
+                title={`${day.date}: ${day.count}`}
               />
               <span className="text-[10px] text-gray-400" dir="ltr">
                 {new Date(day.date).getDate()}
@@ -197,7 +197,7 @@ export default function AnalyticsPage() {
           ))}
           {data.dailyScans.length === 0 && (
             <div className="flex flex-1 items-center justify-center text-sm text-gray-400">
-              No scan data yet
+              {t("noScanData")}
             </div>
           )}
         </div>

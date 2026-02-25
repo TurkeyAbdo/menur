@@ -13,6 +13,7 @@ import {
   X,
   Loader2,
 } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 interface Variant {
   name: string;
@@ -74,6 +75,7 @@ export default function EditMenuPage() {
   const router = useRouter();
   const params = useParams();
   const menuId = params.id as string;
+  const { toast } = useToast();
 
   const [loading, setLoading] = useState(true);
   const [menuName, setMenuName] = useState("");
@@ -335,9 +337,14 @@ export default function EditMenuPage() {
 
       if (!res.ok) {
         const data = await res.json();
+        if (data.tierLimit) {
+          toast("error", data.error);
+          return;
+        }
         throw new Error(data.error || "Failed to save");
       }
 
+      toast("success", status === "PUBLISHED" ? "Menu published!" : "Menu saved as draft");
       router.push("/dashboard/menus");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save");

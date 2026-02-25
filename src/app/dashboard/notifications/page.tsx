@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useState, useEffect } from "react";
 import {
   Bell,
@@ -44,6 +44,9 @@ const typeColors: Record<string, string> = {
 
 export default function NotificationsPage() {
   const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
+  const locale = useLocale();
+  const isAr = locale === "ar";
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -91,12 +94,12 @@ export default function NotificationsPage() {
   const timeAgo = (dateStr: string) => {
     const diff = Date.now() - new Date(dateStr).getTime();
     const mins = Math.floor(diff / 60000);
-    if (mins < 1) return "Just now";
-    if (mins < 60) return `${mins}m ago`;
+    if (mins < 1) return t("justNow");
+    if (mins < 60) return t("minutesAgo", { count: mins });
     const hours = Math.floor(mins / 60);
-    if (hours < 24) return `${hours}h ago`;
+    if (hours < 24) return t("hoursAgo", { count: hours });
     const days = Math.floor(hours / 24);
-    if (days < 7) return `${days}d ago`;
+    if (days < 7) return t("daysAgo", { count: days });
     return new Date(dateStr).toLocaleDateString();
   };
 
@@ -127,7 +130,7 @@ export default function NotificationsPage() {
             className="flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
           >
             <CheckCheck className="h-4 w-4" />
-            Mark all read
+            {t("markAllRead")}
           </button>
         )}
       </div>
@@ -136,10 +139,10 @@ export default function NotificationsPage() {
         <div className="mt-12 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
           <Bell className="h-12 w-12 text-gray-300" />
           <h3 className="mt-4 text-lg font-semibold text-gray-900">
-            No notifications yet
+            {t("noNotifications")}
           </h3>
           <p className="mt-1 text-sm text-gray-500">
-            You&apos;ll see updates about your account and menus here
+            {t("notificationsHint")}
           </p>
         </div>
       ) : (
@@ -170,7 +173,7 @@ export default function NotificationsPage() {
                         notif.isRead ? "text-gray-700" : "text-gray-900"
                       }`}
                     >
-                      {notif.titleAr || notif.title}
+                      {isAr ? (notif.titleAr || notif.title) : notif.title}
                     </h3>
                     <span className="shrink-0 text-xs text-gray-400">
                       {timeAgo(notif.createdAt)}
@@ -181,7 +184,7 @@ export default function NotificationsPage() {
                       notif.isRead ? "text-gray-400" : "text-gray-600"
                     }`}
                   >
-                    {notif.messageAr || notif.message}
+                    {isAr ? (notif.messageAr || notif.message) : notif.message}
                   </p>
                 </div>
                 {!notif.isRead && (
@@ -199,7 +202,7 @@ export default function NotificationsPage() {
                 disabled={page === 1}
                 className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50 disabled:opacity-50"
               >
-                Previous
+                {tc("previous")}
               </button>
               <span className="text-sm text-gray-500">
                 {page} / {totalPages}
@@ -209,7 +212,7 @@ export default function NotificationsPage() {
                 disabled={page === totalPages}
                 className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50 disabled:opacity-50"
               >
-                Next
+                {tc("next")}
               </button>
             </div>
           )}

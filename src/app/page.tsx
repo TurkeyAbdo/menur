@@ -14,6 +14,11 @@ import {
   Menu,
   X,
   Globe,
+  Zap,
+  Star,
+  Crown,
+  Building2,
+  Sparkles,
 } from "lucide-react";
 
 function LanguageSwitcher() {
@@ -34,7 +39,7 @@ function LanguageSwitcher() {
       className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 transition hover:bg-gray-50"
     >
       <Globe className="h-4 w-4" />
-      <span>{locale === "ar" ? "EN" : "عربي"}</span>
+      <span>{locale === "ar" ? "EN" : "\u0639\u0631\u0628\u064A"}</span>
     </button>
   );
 }
@@ -60,7 +65,7 @@ function Navbar() {
             {t("login")}
           </Link>
           <Link
-            href="/auth/signup"
+            href="/auth/onboarding"
             className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
           >
             {t("signup")}
@@ -92,7 +97,7 @@ function Navbar() {
               {t("login")}
             </Link>
             <Link
-              href="/auth/signup"
+              href="/auth/onboarding"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-center text-sm font-medium text-white transition hover:bg-indigo-700"
             >
               {t("signup")}
@@ -119,7 +124,7 @@ function HeroSection() {
         </p>
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
-            href="/auth/signup"
+            href="/auth/onboarding"
             className="rounded-xl bg-indigo-600 px-8 py-3.5 text-base font-semibold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 hover:shadow-xl"
           >
             {t("cta")}
@@ -194,58 +199,82 @@ function FeaturesSection() {
 
 function PricingSection() {
   const t = useTranslations("landing.pricing");
+  const td = useTranslations("dashboard");
 
   const tiers = [
     {
       key: "free" as const,
+      icon: Zap,
+      color: "bg-gray-50",
+      iconColor: "text-gray-600",
       features: [
-        "1 menu",
-        "1 QR code",
-        "1 location",
-        "30 items",
-        "Light & Dark themes",
+        td("planFeatures.freeMenus"),
+        td("planFeatures.freeItems"),
+        td("planFeatures.freeQR"),
+        td("planFeatures.freeLocations"),
+        td("planFeatures.freeThemes"),
+        td("planFeatures.freeLangs"),
+      ],
+      limits: [
+        td("planFeatures.noAnalytics"),
+        td("planFeatures.noPhotos"),
+        td("planFeatures.poweredBadge"),
       ],
       cta: t("startFree"),
       popular: false,
     },
     {
       key: "basic" as const,
+      icon: Star,
+      color: "bg-blue-50",
+      iconColor: "text-blue-600",
       features: [
-        "3 menus",
-        "3 QR codes",
-        "100 items",
-        "All themes",
-        "Item photos",
-        "2 languages",
-        "Basic analytics",
+        td("planFeatures.basicMenus"),
+        td("planFeatures.basicItems"),
+        td("planFeatures.basicQR"),
+        td("planFeatures.basicLocations"),
+        td("planFeatures.allThemes"),
+        td("planFeatures.basicLangs"),
+        td("planFeatures.basicAnalytics"),
+        td("planFeatures.itemPhotos"),
       ],
+      limits: [td("planFeatures.noCustomDomain")],
       cta: t("subscribe"),
       popular: false,
     },
     {
       key: "pro" as const,
+      icon: Crown,
+      color: "bg-indigo-50",
+      iconColor: "text-indigo-600",
       features: [
-        "Unlimited menus",
-        "Unlimited QR codes",
-        "5 locations",
-        "Unlimited items",
-        "All themes",
-        "Unlimited languages",
-        "Full analytics",
-        "Custom domain",
+        td("planFeatures.unlimitedMenus"),
+        td("planFeatures.unlimitedItems"),
+        td("planFeatures.unlimitedQR"),
+        td("planFeatures.proLocations"),
+        td("planFeatures.allThemes"),
+        td("planFeatures.unlimitedLangs"),
+        td("planFeatures.fullAnalytics"),
+        td("planFeatures.itemPhotos"),
+        td("planFeatures.customDomain"),
       ],
+      limits: [],
       cta: t("subscribe"),
       popular: true,
     },
     {
       key: "enterprise" as const,
+      icon: Building2,
+      color: "bg-purple-50",
+      iconColor: "text-purple-600",
       features: [
-        "Everything in Pro",
-        "Unlimited locations",
-        "Custom branding",
-        "Priority support",
-        "Dedicated manager",
+        td("planFeatures.everythingPro"),
+        td("planFeatures.unlimitedLocations"),
+        td("planFeatures.customBranding"),
+        td("planFeatures.prioritySupport"),
+        td("planFeatures.dedicatedManager"),
       ],
+      limits: [],
       cta: t("contactUs"),
       popular: false,
     },
@@ -259,55 +288,96 @@ function PricingSection() {
         </h2>
         <p className="mt-6 text-center text-lg text-gray-600">{t("subtitle")}</p>
 
-        <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {tiers.map((tier) => (
-            <div
-              key={tier.key}
-              className={`relative rounded-2xl bg-white p-8 shadow-sm ${
-                tier.popular
-                  ? "ring-2 ring-indigo-600 shadow-lg"
-                  : "border border-gray-200"
-              }`}
-            >
-              {tier.popular && (
-                <span className="absolute -top-3.5 start-1/2 -translate-x-1/2 rounded-full bg-indigo-600 px-4 py-1 text-xs font-semibold text-white">
-                  {t(`${tier.key}.badge`)}
-                </span>
-              )}
-              <h3 className="text-lg font-semibold text-gray-900">
-                {t(`${tier.key}.name`)}
-              </h3>
-              <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-bold text-gray-900">
-                  {t(`${tier.key}.price`)}
-                </span>
-                <span className="text-sm text-gray-500">
-                  {t(`${tier.key}.period`)}
-                </span>
-              </div>
-              <ul className="mt-8 space-y-3">
-                {tier.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 shrink-0 text-indigo-600" />
-                    <span className="text-sm text-gray-600">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/auth/signup"
-                className={`mt-8 block w-full rounded-lg py-2.5 text-center text-sm font-semibold transition ${
+        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {tiers.map((tier) => {
+            const Icon = tier.icon;
+
+            return (
+              <div
+                key={tier.key}
+                className={`relative rounded-2xl bg-white p-8 transition hover:shadow-lg ${
                   tier.popular
-                    ? "bg-indigo-600 text-white hover:bg-indigo-700"
-                    : "border border-gray-200 text-gray-700 hover:bg-gray-50"
+                    ? "ring-2 ring-indigo-600 shadow-lg"
+                    : "border border-gray-200 shadow-sm"
                 }`}
               >
-                {tier.cta}
-              </Link>
-            </div>
-          ))}
+                {tier.popular && (
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                    <span className="flex items-center gap-1 rounded-full bg-indigo-600 px-4 py-1 text-xs font-bold text-white">
+                      <Sparkles className="h-3 w-3" />
+                      {t(`${tier.key}.badge`)}
+                    </span>
+                  </div>
+                )}
+
+                {/* Plan header */}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`flex h-10 w-10 items-center justify-center rounded-full ${tier.color}`}
+                  >
+                    <Icon className={`h-5 w-5 ${tier.iconColor}`} />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {t(`${tier.key}.name`)}
+                  </h3>
+                </div>
+
+                {/* Price */}
+                <div className="mt-5">
+                  <span className="text-4xl font-bold text-gray-900">
+                    {t(`${tier.key}.price`)}
+                  </span>
+                  <span className="text-sm text-gray-500">
+                    {" "}{t(`${tier.key}.period`)}
+                  </span>
+                  {Number(t(`${tier.key}.price`)) > 0 && (
+                    <p className="mt-0.5 text-[11px] text-gray-400">
+                      {td("inclVAT")}
+                    </p>
+                  )}
+                </div>
+
+                {/* Features */}
+                <ul className="mt-6 space-y-2.5 border-t border-gray-100 pt-6">
+                  {tier.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-start gap-2 text-sm text-gray-600"
+                    >
+                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                      {f}
+                    </li>
+                  ))}
+                  {tier.limits.map((l) => (
+                    <li
+                      key={l}
+                      className="flex items-start gap-2 text-sm text-gray-400"
+                    >
+                      <span className="mt-0.5 h-3.5 w-3.5 shrink-0 text-center text-[10px]">
+                        &mdash;
+                      </span>
+                      {l}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <Link
+                  href="/auth/onboarding"
+                  className={`mt-6 block w-full rounded-lg py-2.5 text-center text-sm font-semibold transition ${
+                    tier.popular
+                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-200 hover:bg-indigo-700"
+                      : "border border-gray-200 text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  {tier.cta}
+                </Link>
+              </div>
+            );
+          })}
         </div>
 
-        <p className="mt-8 text-center text-sm text-gray-500">
+        <p className="mt-10 text-center text-sm text-gray-500">
           {t("vatNote")}
         </p>
       </div>

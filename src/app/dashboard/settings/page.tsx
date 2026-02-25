@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useState, useEffect, useRef } from "react";
 import {
   ImagePlus,
@@ -9,8 +9,9 @@ import {
   Building2,
   Share2,
   Save,
-  CheckCircle2,
+  Globe,
 } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 interface RestaurantData {
   id: string;
@@ -32,10 +33,11 @@ interface RestaurantData {
 export default function SettingsPage() {
   const t = useTranslations("dashboard");
   const tc = useTranslations("common");
+  const locale = useLocale();
+  const { toast } = useToast();
   const [restaurant, setRestaurant] = useState<RestaurantData | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState("");
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,7 +54,6 @@ export default function SettingsPage() {
   const handleSave = async () => {
     if (!restaurant) return;
     setSaving(true);
-    setMessage("");
 
     try {
       const res = await fetch("/api/restaurant", {
@@ -62,11 +63,10 @@ export default function SettingsPage() {
       });
 
       if (res.ok) {
-        setMessage(tc("success"));
-        setTimeout(() => setMessage(""), 3000);
+        toast("success", t("settingsSaved"));
       }
     } catch {
-      setMessage(tc("error"));
+      toast("error", t("settingsFailed"));
     } finally {
       setSaving(false);
     }
@@ -99,6 +99,11 @@ export default function SettingsPage() {
     }
   };
 
+  const switchLocale = (newLocale: string) => {
+    document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
+    window.location.reload();
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -121,29 +126,59 @@ export default function SettingsPage() {
           ) : (
             <Save className="h-4 w-4" />
           )}
-          {saving ? "Saving..." : tc("save")}
+          {saving ? t("saving") : tc("save")}
         </button>
       </div>
 
-      {message && (
-        <div className="mt-4 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
-          <CheckCircle2 className="h-4 w-4 shrink-0" />
-          {message}
-        </div>
-      )}
-
       <div className="mt-6 space-y-6">
+        {/* Language Settings */}
+        <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+            <Globe className="h-5 w-5 text-indigo-600" />
+            {t("languageSettings")}
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">{t("selectLanguage")}</p>
+          <div className="mt-4 flex gap-3">
+            <button
+              onClick={() => switchLocale("ar")}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg border-2 px-4 py-3 text-sm font-semibold transition ${
+                locale === "ar"
+                  ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                  : "border-gray-200 text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              {tc("arabic")}
+              {locale === "ar" && (
+                <span className="rounded-full bg-indigo-600 px-1.5 py-0.5 text-[10px] text-white">✓</span>
+              )}
+            </button>
+            <button
+              onClick={() => switchLocale("en")}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg border-2 px-4 py-3 text-sm font-semibold transition ${
+                locale === "en"
+                  ? "border-indigo-600 bg-indigo-50 text-indigo-700"
+                  : "border-gray-200 text-gray-600 hover:bg-gray-50"
+              }`}
+            >
+              {tc("english")}
+              {locale === "en" && (
+                <span className="rounded-full bg-indigo-600 px-1.5 py-0.5 text-[10px] text-white">✓</span>
+              )}
+            </button>
+          </div>
+        </div>
+
         {/* Restaurant Info */}
         <div className="rounded-xl border border-gray-200 bg-white p-6">
           <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
             <Building2 className="h-5 w-5 text-indigo-600" />
-            Restaurant Info
+            {t("restaurantInfo")}
           </h2>
 
           {/* Logo Upload */}
           <div className="mt-4">
             <label className="block text-sm font-medium text-gray-700">
-              Restaurant Logo
+              {t("restaurantLogo")}
             </label>
             <div className="mt-2 flex items-center gap-4">
               {restaurant?.logo ? (
@@ -180,7 +215,7 @@ export default function SettingsPage() {
               )}
               {restaurant?.logo && (
                 <label className="cursor-pointer rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50">
-                  Change
+                  {tc("change")}
                   <input
                     ref={logoInputRef}
                     type="file"
@@ -197,7 +232,7 @@ export default function SettingsPage() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Restaurant Name (Arabic)
+                {t("restaurantNameAr")}
               </label>
               <input
                 type="text"
@@ -209,7 +244,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Restaurant Name (English)
+                {t("restaurantNameEn")}
               </label>
               <input
                 type="text"
@@ -224,7 +259,7 @@ export default function SettingsPage() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Description (Arabic)
+                {t("descriptionAr")}
               </label>
               <textarea
                 value={restaurant?.descriptionAr || ""}
@@ -236,7 +271,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Description (English)
+                {t("descriptionEn")}
               </label>
               <textarea
                 value={restaurant?.description || ""}
@@ -251,7 +286,7 @@ export default function SettingsPage() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Phone
+                {t("phone")}
               </label>
               <input
                 type="tel"
@@ -263,7 +298,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Email
+                {t("email")}
               </label>
               <input
                 type="email"
@@ -280,13 +315,13 @@ export default function SettingsPage() {
         <div className="rounded-xl border border-gray-200 bg-white p-6">
           <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
             <Share2 className="h-5 w-5 text-indigo-600" />
-            Social Links
+            {t("socialLinks")}
           </h2>
 
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Instagram
+                {t("instagram")}
               </label>
               <input
                 type="text"
@@ -299,7 +334,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Twitter/X
+                {t("twitterX")}
               </label>
               <input
                 type="text"
@@ -312,7 +347,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                TikTok
+                {t("tiktok")}
               </label>
               <input
                 type="text"
@@ -325,7 +360,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Snapchat
+                {t("snapchat")}
               </label>
               <input
                 type="text"

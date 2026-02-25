@@ -27,7 +27,13 @@ export default function LoginPage() {
       setError(t("errors.invalidCredentials"));
       setLoading(false);
     } else {
-      window.location.href = "/dashboard";
+      // Check role to redirect admins to /admin
+      const session = await fetch("/api/auth/session").then((r) => r.json());
+      if (session?.user?.role === "ADMIN") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/dashboard";
+      }
     }
   };
 

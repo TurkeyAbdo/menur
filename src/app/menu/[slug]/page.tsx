@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import MenuDisplay from "./MenuDisplay";
@@ -6,6 +7,63 @@ import { getTierForUser } from "@/lib/tier-check";
 interface Props {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ menu?: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+
+  const restaurant = await prisma.restaurant.findUnique({
+    where: { slug },
+    select: {
+      name: true,
+      nameAr: true,
+      description: true,
+      logo: true,
+      menus: {
+        where: { status: "PUBLISHED", isActive: true },
+        take: 1,
+        select: { name: true, nameAr: true },
+      },
+    },
+  });
+
+  if (!restaurant) {
+    return { title: "Menu Not Found" };
+  }
+
+  const menuName = restaurant.menus[0]?.name;
+  const title = menuName
+    ? `${restaurant.name} | ${menuName}`
+    : restaurant.name;
+  const description =
+    restaurant.description ||
+    `Browse the menu for ${restaurant.name} on Menur`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title: `${title} — Menur`,
+      description,
+      type: "website",
+      ...(restaurant.logo && {
+        images: [
+          {
+            url: restaurant.logo,
+            width: 800,
+            height: 800,
+            alt: restaurant.name,
+          },
+        ],
+      }),
+    },
+    twitter: {
+      card: restaurant.logo ? "summary_large_image" : "summary",
+      title: `${title} — Menur`,
+      description,
+      ...(restaurant.logo && { images: [restaurant.logo] }),
+    },
+  };
 }
 
 export default async function PublicMenuPage({ params, searchParams }: Props) {
@@ -62,6 +120,7 @@ export default async function PublicMenuPage({ params, searchParams }: Props) {
 
   return (
     <MenuDisplay
+      slug={slug}
       restaurant={{
         name: restaurant.name,
         nameAr: restaurant.nameAr,
@@ -83,6 +142,7 @@ export default async function PublicMenuPage({ params, searchParams }: Props) {
         })),
       }}
       menu={{
+        id: menu.id,
         name: menu.name,
         nameAr: menu.nameAr,
         layout: menu.layout,

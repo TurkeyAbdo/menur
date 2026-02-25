@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
@@ -74,7 +75,10 @@ interface Analytics {
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
+  const tc = useTranslations("common");
   const tm = useTranslations("menu.builder");
+  const locale = useLocale();
+  const isAr = locale === "ar";
   const [menus, setMenus] = useState<MenuData[]>([]);
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [locationCount, setLocationCount] = useState(0);
@@ -143,7 +147,7 @@ export default function DashboardPage() {
           href="/dashboard/analytics"
         />
         <StatCard
-          title="QR Codes"
+          title={t("qrCodes")}
           value={qrCount}
           icon={QrCode}
           color="bg-amber-500"
@@ -163,18 +167,18 @@ export default function DashboardPage() {
         {/* Scan chart — takes 2 columns */}
         <div className="rounded-xl border border-gray-200 bg-white p-6 lg:col-span-2">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-gray-900">Scan Activity</h2>
+            <h2 className="font-semibold text-gray-900">{t("scanActivity")}</h2>
             <div className="flex gap-4 text-sm">
               <div>
-                <span className="text-gray-400">Today</span>{" "}
+                <span className="text-gray-400">{t("today")}</span>{" "}
                 <span className="font-bold text-gray-900">{analytics?.today || 0}</span>
               </div>
               <div>
-                <span className="text-gray-400">This week</span>{" "}
+                <span className="text-gray-400">{t("thisWeek")}</span>{" "}
                 <span className="font-bold text-gray-900">{analytics?.thisWeek || 0}</span>
               </div>
               <div>
-                <span className="text-gray-400">This month</span>{" "}
+                <span className="text-gray-400">{t("thisMonth")}</span>{" "}
                 <span className="font-bold text-gray-900">{analytics?.thisMonth || 0}</span>
               </div>
             </div>
@@ -189,16 +193,16 @@ export default function DashboardPage() {
                   style={{
                     height: `${Math.max((day.count / maxChart) * 140, 4)}px`,
                   }}
-                  title={`${day.date}: ${day.count} scans`}
+                  title={`${day.date}: ${day.count}`}
                 />
-                <span className="text-[10px] text-gray-400">
+                <span className="text-[10px] text-gray-400" dir="ltr">
                   {new Date(day.date).getDate()}
                 </span>
               </div>
             ))}
             {(!analytics?.chartData || analytics.chartData.length === 0) && (
               <div className="flex flex-1 items-center justify-center text-sm text-gray-400">
-                No scan data yet
+                {t("noScanData")}
               </div>
             )}
           </div>
@@ -218,7 +222,7 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="rounded-xl border border-gray-200 bg-white p-6">
-          <h2 className="font-semibold text-gray-900">Quick Actions</h2>
+          <h2 className="font-semibold text-gray-900">{t("quickActions")}</h2>
           <div className="mt-4 space-y-2">
             <Link
               href="/dashboard/menus/new"
@@ -227,7 +231,7 @@ export default function DashboardPage() {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-50">
                 <Plus className="h-4 w-4 text-indigo-600" />
               </div>
-              <span className="text-sm font-medium text-gray-700">Create New Menu</span>
+              <span className="text-sm font-medium text-gray-700">{t("createMenu")}</span>
             </Link>
             <Link
               href="/dashboard/qr"
@@ -236,7 +240,7 @@ export default function DashboardPage() {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50">
                 <QrCode className="h-4 w-4 text-emerald-600" />
               </div>
-              <span className="text-sm font-medium text-gray-700">Generate QR Code</span>
+              <span className="text-sm font-medium text-gray-700">{t("generateQR")}</span>
             </Link>
             <Link
               href="/dashboard/locations"
@@ -245,7 +249,7 @@ export default function DashboardPage() {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-purple-50">
                 <MapPin className="h-4 w-4 text-purple-600" />
               </div>
-              <span className="text-sm font-medium text-gray-700">Add Location</span>
+              <span className="text-sm font-medium text-gray-700">{t("addLocation")}</span>
             </Link>
             <Link
               href="/dashboard/analytics"
@@ -254,7 +258,7 @@ export default function DashboardPage() {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50">
                 <BarChart3 className="h-4 w-4 text-amber-600" />
               </div>
-              <span className="text-sm font-medium text-gray-700">View Analytics</span>
+              <span className="text-sm font-medium text-gray-700">{t("viewAnalytics")}</span>
             </Link>
             <Link
               href="/dashboard/settings"
@@ -263,7 +267,7 @@ export default function DashboardPage() {
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100">
                 <Settings className="h-4 w-4 text-gray-600" />
               </div>
-              <span className="text-sm font-medium text-gray-700">Restaurant Settings</span>
+              <span className="text-sm font-medium text-gray-700">{t("restaurantSettings")}</span>
             </Link>
           </div>
 
@@ -276,7 +280,7 @@ export default function DashboardPage() {
               <div className="flex items-center gap-2">
                 <Bell className="h-4 w-4 text-indigo-600" />
                 <span className="text-sm font-medium text-indigo-700">
-                  {notifCount} unread notification{notifCount > 1 ? "s" : ""}
+                  {t("unreadNotifications", { count: notifCount })}
                 </span>
               </div>
               <ArrowRight className="h-4 w-4 text-indigo-400" />
@@ -288,12 +292,12 @@ export default function DashboardPage() {
       {/* Recent Menus */}
       <div className="mt-8 rounded-xl border border-gray-200 bg-white p-6">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-gray-900">Recent Menus</h2>
+          <h2 className="font-semibold text-gray-900">{t("recentMenus")}</h2>
           <Link
             href="/dashboard/menus"
             className="flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700"
           >
-            View all <ArrowRight className="h-3.5 w-3.5" />
+            {tc("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
 
@@ -322,10 +326,10 @@ export default function DashboardPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      {menu.nameAr || menu.name}
+                      {isAr ? (menu.nameAr || menu.name) : menu.name}
                     </p>
                     <p className="text-xs text-gray-400">
-                      {menu._count.categories} categories &middot;{" "}
+                      {menu._count.categories} {t("categories")} &middot;{" "}
                       {menu.layout === "TABBED" ? tm("tabbed") : tm("scrollable")}
                     </p>
                   </div>
@@ -338,7 +342,7 @@ export default function DashboardPage() {
                         : "bg-amber-50 text-amber-700"
                     }`}
                   >
-                    {menu.status === "PUBLISHED" ? tm("publish") : tm("saveDraft")}
+                    {menu.status === "PUBLISHED" ? tm("published") : tm("draft")}
                   </span>
                   <Link
                     href={`/dashboard/menus/${menu.id}/preview`}
