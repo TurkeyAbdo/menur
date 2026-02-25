@@ -548,5 +548,13 @@
       "CANCELLED": "Cancelled",
       "PAST_DUE": "Past Due"
     }
+  },
+  "errors": {
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundDesc": "The page you're looking for doesn't exist or has been moved.",
+    "somethingWentWrong": "Something Went Wrong",
+    "somethingWentWrongDesc": "An unexpected error occurred. Please try again.",
+    "tryAgain": "Try Again",
+    "goHome": "Go to Homepage"
   }
 }

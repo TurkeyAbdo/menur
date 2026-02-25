@@ -18,7 +18,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       name: true,
       nameAr: true,
       description: true,
-      logo: true,
       menus: {
         where: { status: "PUBLISHED", isActive: true },
         take: 1,
@@ -46,22 +45,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${title} — Menur`,
       description,
       type: "website",
-      ...(restaurant.logo && {
-        images: [
-          {
-            url: restaurant.logo,
-            width: 800,
-            height: 800,
-            alt: restaurant.name,
-          },
-        ],
-      }),
     },
     twitter: {
-      card: restaurant.logo ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title: `${title} — Menur`,
       description,
-      ...(restaurant.logo && { images: [restaurant.logo] }),
     },
   };
 }
