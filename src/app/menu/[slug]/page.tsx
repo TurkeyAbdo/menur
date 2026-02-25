@@ -6,7 +6,7 @@ import { getTierForUser } from "@/lib/tier-check";
 
 interface Props {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ menu?: string }>;
+  searchParams: Promise<{ menu?: string; qr?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PublicMenuPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { menu: menuId } = await searchParams;
+  const { menu: menuId, qr: qrCodeId } = await searchParams;
 
   const restaurant = await prisma.restaurant.findUnique({
     where: { slug },
@@ -180,6 +180,7 @@ export default async function PublicMenuPage({ params, searchParams }: Props) {
       }}
       theme={themeConfig}
       showBadge={tier === "FREE"}
+      qrCodeId={qrCodeId}
     />
   );
 }

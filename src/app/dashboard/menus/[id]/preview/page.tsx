@@ -54,6 +54,22 @@ export default async function MenuPreviewPage({ params }: Props) {
       unavailable: "#ef4444",
       special: "#f59e0b",
     },
+    fonts: {
+      heading: "IBM Plex Sans Arabic",
+      body: "IBM Plex Sans Arabic",
+    },
+    layout: {
+      itemStyle: "list",
+      categoryStyle: "simple",
+    },
+    decoration: {
+      type: "none",
+    },
+    features: {
+      showPhotos: "false",
+      showDecorations: "false",
+      customFont: "false",
+    },
   };
 
   return (

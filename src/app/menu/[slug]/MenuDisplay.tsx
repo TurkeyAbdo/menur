@@ -85,6 +85,7 @@ interface Props {
   theme: Record<string, Record<string, string>>;
   showBadge?: boolean;
   slug: string;
+  qrCodeId?: string;
 }
 
 const ALLERGEN_EMOJIS: Record<string, string> = {
@@ -882,7 +883,7 @@ function renderItemMagazine(
 /* ──────────────────────────────────────────────────────────────
    MAIN COMPONENT
    ────────────────────────────────────────────────────────────── */
-export default function MenuDisplay({ restaurant, menu, theme, showBadge = true, slug }: Props) {
+export default function MenuDisplay({ restaurant, menu, theme, showBadge = true, slug, qrCodeId }: Props) {
   const colors = theme.colors || {};
   const fonts = theme.fonts || {};
   const layout = theme.layout || {};
@@ -893,6 +894,7 @@ export default function MenuDisplay({ restaurant, menu, theme, showBadge = true,
   const categoryStyle = layout.categoryStyle || "simple";
   const decorationType = decoration.type || "none";
   const decorationColor = decoration.color;
+
   const showPhotos = String(features.showPhotos) === "true";
   const showDecorations = String(features.showDecorations) === "true";
   const useCustomFont = String(features.customFont) === "true";
@@ -918,6 +920,21 @@ export default function MenuDisplay({ restaurant, menu, theme, showBadge = true,
   const [feedbackList, setFeedbackList] = useState<FeedbackData[]>([]);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
+
+  // Record QR scan on mount
+  useEffect(() => {
+    if (qrCodeId) {
+      const key = `menur-scan-${qrCodeId}`;
+      if (typeof window !== "undefined" && !sessionStorage.getItem(key)) {
+        sessionStorage.setItem(key, "1");
+        fetch("/api/scan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ qrCodeId }),
+        }).catch(() => {});
+      }
+    }
+  }, [qrCodeId]);
 
   // Load Google Font dynamically for PRO themes
   useEffect(() => {
@@ -1265,9 +1282,11 @@ export default function MenuDisplay({ restaurant, menu, theme, showBadge = true,
               <div className="p-4">
                 {menu.categories
                   .filter((cat) => cat.id === activeCategory)
-                  .map((cat) =>
-                    wrapItems(filterItems(cat.items).map((item, i) => renderItem(item, i)))
-                  )}
+                  .map((cat) => (
+                    <div key={cat.id}>
+                      {wrapItems(filterItems(cat.items).map((item, i) => renderItem(item, i)))}
+                    </div>
+                  ))}
               </div>
             </div>
           ) : (

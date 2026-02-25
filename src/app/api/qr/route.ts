@@ -66,22 +66,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Menu not found" }, { status: 404 });
     }
 
-    const menuUrl = `${process.env.NEXTAUTH_URL}/menu/${menu.restaurant.slug}?menu=${menu.id}`;
-
+    // Create QR code first to get its ID for the URL
     const qrCode = await prisma.qRCode.create({
       data: {
         label,
         config: config || {},
-        menuUrl,
+        menuUrl: "", // placeholder, updated below
         menuId,
       },
+    });
+
+    // Update with the full URL including qr param for scan tracking
+    const menuUrl = `${process.env.NEXTAUTH_URL}/menu/${menu.restaurant.slug}?menu=${menu.id}&qr=${qrCode.id}`;
+    const updated = await prisma.qRCode.update({
+      where: { id: qrCode.id },
+      data: { menuUrl },
       include: {
         menu: { select: { name: true, nameAr: true } },
         _count: { select: { scans: true } },
       },
     });
 
-    return NextResponse.json({ qrCode }, { status: 201 });
+    return NextResponse.json({ qrCode: updated }, { status: 201 });
   } catch (error) {
     console.error("POST /api/qr error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
