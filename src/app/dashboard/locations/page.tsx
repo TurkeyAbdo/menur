@@ -383,60 +383,72 @@ export default function LocationsPage() {
           </button>
         </div>
       ) : (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {locations.map((loc) => (
             <div
               key={loc.id}
-              className={`rounded-xl border bg-white p-5 ${
+              className={`rounded-xl border bg-white p-6 transition hover:shadow-md ${
                 loc.isActive ? "border-gray-200" : "border-red-200 opacity-60"
               }`}
             >
               <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-semibold text-gray-900">
-                    {loc.nameAr || loc.name}
-                  </h3>
-                  {loc.nameAr && loc.name && (
-                    <p className="text-sm text-gray-400">{loc.name}</p>
-                  )}
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-50">
+                    <MapPin className="h-5 w-5 text-indigo-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">
+                      {loc.nameAr || loc.name}
+                    </h3>
+                    {loc.nameAr && loc.name && (
+                      <p className="text-xs text-gray-400">{loc.name}</p>
+                    )}
+                  </div>
                 </div>
                 <div className="flex gap-1">
-                  <button
-                    onClick={() => openEdit(loc)}
-                    className="rounded-lg p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-600"
-                  >
-                    <Edit2 className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(loc.id)}
-                    className="rounded-lg p-2 text-gray-400 hover:bg-red-50 hover:text-red-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                  {loc.isActive ? (
+                    <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
+                      Active
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-700">
+                      Inactive
+                    </span>
+                  )}
                 </div>
               </div>
 
-              <div className="mt-3 space-y-1.5 text-sm text-gray-500">
+              <div className="mt-4 space-y-2 border-t border-gray-100 pt-4 text-sm text-gray-500">
                 <p className="flex items-center gap-2">
-                  <MapPin className="h-3.5 w-3.5" />
-                  {loc.addressAr || loc.address}
+                  <MapPin className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+                  <span>{loc.addressAr || loc.address}</span>
                 </p>
-                <p className="text-xs text-gray-400">
-                  {loc.city}{loc.region ? `, ${loc.region}` : ""}
+                <p className="ps-5 text-xs text-gray-400">
+                  {loc.city}{loc.region ? ` - ${loc.region}` : ""}
                 </p>
                 {loc.phone && (
                   <p className="flex items-center gap-2">
-                    <Phone className="h-3.5 w-3.5" />
-                    {loc.phone}
+                    <Phone className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+                    <span dir="ltr">{loc.phone}</span>
                   </p>
                 )}
               </div>
 
-              {!loc.isActive && (
-                <span className="mt-3 inline-block rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-700">
-                  Inactive
-                </span>
-              )}
+              <div className="mt-4 flex gap-2 border-t border-gray-100 pt-4">
+                <button
+                  onClick={() => openEdit(loc)}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-200 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
+                >
+                  <Edit2 className="h-3.5 w-3.5" />
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(loc.id)}
+                  className="flex items-center justify-center rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-400 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
           ))}
         </div>

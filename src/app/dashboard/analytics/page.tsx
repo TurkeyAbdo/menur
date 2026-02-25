@@ -2,7 +2,17 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { BarChart3, Smartphone, Monitor, Tablet } from "lucide-react";
+import {
+  BarChart3,
+  Smartphone,
+  Monitor,
+  Tablet,
+  TrendingUp,
+  Eye,
+  Calendar,
+  Activity,
+  Loader2,
+} from "lucide-react";
 
 interface AnalyticsData {
   totalScans: number;
@@ -28,8 +38,30 @@ export default function AnalyticsPage() {
       .catch(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="text-center text-gray-500">...</div>;
-  if (!data) return <div className="text-center text-gray-500">لا توجد بيانات</div>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">{t("analytics")}</h1>
+        <div className="mt-12 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
+          <BarChart3 className="h-12 w-12 text-gray-300" />
+          <h3 className="mt-4 text-lg font-semibold text-gray-900">
+            No analytics data yet
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            Data will appear here once your menus get scanned
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const maxDaily = Math.max(...data.dailyScans.map((d) => d.count), 1);
 
@@ -39,71 +71,135 @@ export default function AnalyticsPage() {
 
       {/* Stats grid */}
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
-          <p className="text-sm text-gray-500">إجمالي المسح</p>
-          <p className="mt-1 text-3xl font-bold text-gray-900">{data.totalScans}</p>
+        <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">Total Scans</p>
+              <p className="mt-1 text-3xl font-bold text-gray-900">
+                {data.totalScans}
+              </p>
+            </div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50">
+              <BarChart3 className="h-5 w-5 text-indigo-600" />
+            </div>
+          </div>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
-          <p className="text-sm text-gray-500">اليوم</p>
-          <p className="mt-1 text-3xl font-bold text-indigo-600">{data.todayScans}</p>
+        <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">Today</p>
+              <p className="mt-1 text-3xl font-bold text-gray-900">
+                {data.todayScans}
+              </p>
+            </div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50">
+              <Eye className="h-5 w-5 text-emerald-600" />
+            </div>
+          </div>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
-          <p className="text-sm text-gray-500">هذا الأسبوع</p>
-          <p className="mt-1 text-3xl font-bold text-emerald-600">{data.weekScans}</p>
+        <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">This Week</p>
+              <p className="mt-1 text-3xl font-bold text-gray-900">
+                {data.weekScans}
+              </p>
+            </div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-50">
+              <TrendingUp className="h-5 w-5 text-amber-600" />
+            </div>
+          </div>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white p-6">
-          <p className="text-sm text-gray-500">هذا الشهر</p>
-          <p className="mt-1 text-3xl font-bold text-amber-600">{data.monthScans}</p>
+        <div className="rounded-xl border border-gray-200 bg-white p-6 transition hover:shadow-md">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">This Month</p>
+              <p className="mt-1 text-3xl font-bold text-gray-900">
+                {data.monthScans}
+              </p>
+            </div>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-50">
+              <Calendar className="h-5 w-5 text-purple-600" />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Device breakdown */}
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
-        <h2 className="text-lg font-semibold text-gray-900">الأجهزة</h2>
-        <div className="mt-4 grid grid-cols-3 gap-4">
-          <div className="flex items-center gap-3 rounded-lg bg-blue-50 p-4">
-            <Smartphone className="h-8 w-8 text-blue-600" />
+        <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+          <Activity className="h-5 w-5 text-indigo-600" />
+          Device Breakdown
+        </h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="flex items-center gap-3 rounded-xl border border-gray-200 p-4 transition hover:shadow-md">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50">
+              <Smartphone className="h-5 w-5 text-blue-600" />
+            </div>
             <div>
-              <p className="text-2xl font-bold text-blue-600">{data.deviceBreakdown.mobile}</p>
-              <p className="text-xs text-blue-500">موبايل</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {data.deviceBreakdown.mobile}
+              </p>
+              <p className="text-xs text-gray-500">Mobile</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 rounded-lg bg-purple-50 p-4">
-            <Monitor className="h-8 w-8 text-purple-600" />
+          <div className="flex items-center gap-3 rounded-xl border border-gray-200 p-4 transition hover:shadow-md">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-50">
+              <Monitor className="h-5 w-5 text-purple-600" />
+            </div>
             <div>
-              <p className="text-2xl font-bold text-purple-600">{data.deviceBreakdown.desktop}</p>
-              <p className="text-xs text-purple-500">كمبيوتر</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {data.deviceBreakdown.desktop}
+              </p>
+              <p className="text-xs text-gray-500">Desktop</p>
             </div>
           </div>
-          <div className="flex items-center gap-3 rounded-lg bg-teal-50 p-4">
-            <Tablet className="h-8 w-8 text-teal-600" />
+          <div className="flex items-center gap-3 rounded-xl border border-gray-200 p-4 transition hover:shadow-md">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50">
+              <Tablet className="h-5 w-5 text-teal-600" />
+            </div>
             <div>
-              <p className="text-2xl font-bold text-teal-600">{data.deviceBreakdown.tablet}</p>
-              <p className="text-xs text-teal-500">تابلت</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {data.deviceBreakdown.tablet}
+              </p>
+              <p className="text-xs text-gray-500">Tablet</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Daily chart (simple bar chart) */}
+      {/* Daily chart */}
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
-        <h2 className="text-lg font-semibold text-gray-900">آخر 14 يوم</h2>
-        <div className="mt-4 flex items-end gap-1" style={{ height: 200 }}>
+        <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+          <TrendingUp className="h-5 w-5 text-indigo-600" />
+          Last 14 Days
+        </h2>
+        <div className="mt-4 flex items-end gap-1.5" style={{ height: 200 }}>
           {data.dailyScans.map((day) => (
-            <div key={day.date} className="flex flex-1 flex-col items-center gap-1">
-              <span className="text-xs text-gray-400">{day.count}</span>
+            <div
+              key={day.date}
+              className="flex flex-1 flex-col items-center gap-1"
+            >
+              <span className="text-[10px] font-medium text-gray-500">
+                {day.count > 0 ? day.count : ""}
+              </span>
               <div
-                className="w-full rounded-t bg-indigo-500 transition-all"
+                className="w-full rounded-t bg-indigo-500 transition-all hover:bg-indigo-600"
                 style={{
-                  height: `${(day.count / maxDaily) * 160}px`,
-                  minHeight: day.count > 0 ? 4 : 0,
+                  height: `${Math.max((day.count / maxDaily) * 150, 4)}px`,
                 }}
+                title={`${day.date}: ${day.count} scans`}
               />
-              <span className="text-xs text-gray-400" dir="ltr">
+              <span className="text-[10px] text-gray-400" dir="ltr">
                 {new Date(day.date).getDate()}
               </span>
             </div>
           ))}
+          {data.dailyScans.length === 0 && (
+            <div className="flex flex-1 items-center justify-center text-sm text-gray-400">
+              No scan data yet
+            </div>
+          )}
         </div>
       </div>
     </div>

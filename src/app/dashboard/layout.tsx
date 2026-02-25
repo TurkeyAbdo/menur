@@ -11,6 +11,7 @@ import {
   Bell,
   Settings,
   MapPin,
+  CreditCard,
   LogOut,
   Menu,
   X,
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/dashboard/analytics", icon: BarChart3, key: "analytics" },
   { href: "/dashboard/notifications", icon: Bell, key: "notifications" },
   { href: "/dashboard/locations", icon: MapPin, key: "locations" },
+  { href: "/dashboard/billing", icon: CreditCard, key: "billing" },
   { href: "/dashboard/settings", icon: Settings, key: "settings" },
 ];
 

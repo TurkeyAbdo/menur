@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { checkTierLimit } from "@/lib/tier-check";
 
 export async function GET() {
   try {
@@ -20,7 +21,10 @@ export async function GET() {
 
     const qrCodes = await prisma.qRCode.findMany({
       where: { menu: { restaurantId: restaurant.id } },
-      include: { _count: { select: { scans: true } } },
+      include: {
+        menu: { select: { name: true, nameAr: true } },
+        _count: { select: { scans: true } },
+      },
       orderBy: { createdAt: "desc" },
     });
 
@@ -36,6 +40,15 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check tier limits
+    const tierCheck = await checkTierLimit(session.user.id, "qrCodes");
+    if (!tierCheck.allowed) {
+      return NextResponse.json(
+        { error: tierCheck.message, tierLimit: true },
+        { status: 403 }
+      );
     }
 
     const { menuId, label, config } = await req.json();
@@ -62,7 +75,10 @@ export async function POST(req: NextRequest) {
         menuUrl,
         menuId,
       },
-      include: { _count: { select: { scans: true } } },
+      include: {
+        menu: { select: { name: true, nameAr: true } },
+        _count: { select: { scans: true } },
+      },
     });
 
     return NextResponse.json({ qrCode }, { status: 201 });

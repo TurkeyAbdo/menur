@@ -74,6 +74,7 @@ interface Props {
     categories: Category[];
   };
   theme: Record<string, Record<string, string>>;
+  showBadge?: boolean;
 }
 
 const ALLERGEN_EMOJIS: Record<string, string> = {
@@ -96,7 +97,7 @@ const DIETARY_LABELS: Record<string, string> = {
   spicy: "🌶️ حار",
 };
 
-export default function MenuDisplay({ restaurant, menu, theme }: Props) {
+export default function MenuDisplay({ restaurant, menu, theme, showBadge = true }: Props) {
   const colors = theme.colors || {};
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState(
@@ -496,16 +497,18 @@ export default function MenuDisplay({ restaurant, menu, theme }: Props) {
         </div>
       )}
 
-      {/* Powered by Menur */}
-      <footer className="py-6 text-center">
-        <a
-          href="/"
-          className="text-xs"
-          style={{ color: colors.textSecondary }}
-        >
-          Powered by <span style={{ color: colors.primary }}>Menur</span>
-        </a>
-      </footer>
+      {/* Powered by Menur — only on free tier */}
+      {showBadge && (
+        <footer className="py-6 text-center">
+          <a
+            href="/"
+            className="text-xs"
+            style={{ color: colors.textSecondary }}
+          >
+            Powered by <span style={{ color: colors.primary }}>Menur</span>
+          </a>
+        </footer>
+      )}
     </div>
   );
 }

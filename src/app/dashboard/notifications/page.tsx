@@ -143,7 +143,7 @@ export default function NotificationsPage() {
           </p>
         </div>
       ) : (
-        <div className="mt-6 space-y-2">
+        <div className="mt-6 space-y-3">
           {notifications.map((notif) => {
             const Icon = typeIcons[notif.type] || Bell;
             const colors = typeColors[notif.type] || "text-gray-500 bg-gray-50";
@@ -152,10 +152,10 @@ export default function NotificationsPage() {
               <div
                 key={notif.id}
                 onClick={() => !notif.isRead && markAsRead([notif.id])}
-                className={`flex cursor-pointer items-start gap-4 rounded-xl border p-4 transition hover:bg-gray-50 ${
+                className={`flex cursor-pointer items-start gap-4 rounded-xl border p-4 transition hover:shadow-md ${
                   notif.isRead
-                    ? "border-gray-100 bg-white"
-                    : "border-indigo-100 bg-indigo-50/30"
+                    ? "border-gray-200 bg-white"
+                    : "border-indigo-200 bg-indigo-50/30"
                 }`}
               >
                 <div
@@ -193,11 +193,11 @@ export default function NotificationsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-2 pt-4">
+            <div className="flex items-center justify-center gap-3 pt-4">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50"
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50 disabled:opacity-50"
               >
                 Previous
               </button>
@@ -207,7 +207,7 @@ export default function NotificationsPage() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50"
+                className="rounded-lg border border-gray-200 px-4 py-2 text-sm font-medium text-gray-600 transition hover:bg-gray-50 disabled:opacity-50"
               >
                 Next
               </button>

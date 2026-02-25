@@ -39,6 +39,7 @@ export async function PUT(req: NextRequest) {
       update: {
         name: body.name,
         nameAr: body.nameAr,
+        logo: body.logo || null,
         description: body.description,
         descriptionAr: body.descriptionAr,
         phone: body.phone,
@@ -52,6 +53,7 @@ export async function PUT(req: NextRequest) {
       create: {
         name: body.name || "My Restaurant",
         nameAr: body.nameAr,
+        logo: body.logo || null,
         slug: `restaurant-${session.user.id.slice(0, 8)}`,
         description: body.description,
         descriptionAr: body.descriptionAr,

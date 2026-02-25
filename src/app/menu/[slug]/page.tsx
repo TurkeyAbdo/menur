@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import MenuDisplay from "./MenuDisplay";
+import { getTierForUser } from "@/lib/tier-check";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,6 +42,7 @@ export default async function PublicMenuPage({ params, searchParams }: Props) {
   }
 
   const menu = restaurant.menus[0];
+  const tier = await getTierForUser(restaurant.ownerId);
 
   // Default theme colors
   const themeConfig = (menu.theme?.config as Record<string, Record<string, string>>) || {
@@ -113,6 +115,7 @@ export default async function PublicMenuPage({ params, searchParams }: Props) {
         })),
       }}
       theme={themeConfig}
+      showBadge={tier === "FREE"}
     />
   );
 }

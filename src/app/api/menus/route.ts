@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { checkTierLimit } from "@/lib/tier-check";
 
 export async function GET() {
   try {
@@ -60,6 +61,15 @@ export async function POST(req: NextRequest) {
           ownerId: session.user.id,
         },
       });
+    }
+
+    // Check tier limits
+    const tierCheck = await checkTierLimit(session.user.id, "menus");
+    if (!tierCheck.allowed) {
+      return NextResponse.json(
+        { error: tierCheck.message, tierLimit: true },
+        { status: 403 }
+      );
     }
 
     const body = await req.json();
