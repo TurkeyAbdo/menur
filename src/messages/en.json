@@ -549,7 +549,37 @@
     "saving": "Saving...",
     "languageSettings": "Language",
     "selectLanguage": "Select your preferred language",
-    "languageChanged": "Language changed"
+    "languageChanged": "Language changed",
+    "themes": "Themes",
+    "createTheme": "Create New Theme",
+    "editTheme": "Edit Theme",
+    "themeBuilder": "Theme Builder",
+    "themeBuilderDesc": "Create and manage custom themes for your menus",
+    "enterpriseOnly": "This feature is available for Enterprise plan only",
+    "noThemes": "No custom themes yet",
+    "noThemesHint": "Create a custom theme to make your menus stand out",
+    "themeCreated": "Theme created successfully",
+    "themeUpdated": "Theme updated successfully",
+    "themeDeleted": "Theme deleted",
+    "deleteThemeConfirm": "Are you sure you want to delete this theme?",
+    "reports": "Reports",
+    "reportsDescription": "Download reports for your restaurant",
+    "scanReport": "Scan Report",
+    "scanReportDesc": "QR code scan data including device, location, and timestamps",
+    "feedbackReport": "Feedback Report",
+    "feedbackReportDesc": "Customer ratings and comments",
+    "menuItemsReport": "Menu Items Report",
+    "menuItemsReportDesc": "Full catalog of your menu items",
+    "downloadCsv": "Download CSV",
+    "downloadPdf": "PDF",
+    "downloadImage": "Image",
+    "downloading": "Downloading...",
+    "dateRange": "Date Range",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "last90Days": "Last 90 Days",
+    "allTime": "All Time",
+    "noData": "No data available for this date range"
   },
   "menu": {
     "builder": {
@@ -597,6 +627,7 @@
       "users": "Users",
       "subscriptions": "Subscriptions",
       "analytics": "Analytics",
+      "reports": "Reports",
       "settings": "Settings"
     },
     "stats": {
@@ -692,6 +723,22 @@
       "EXPIRED": "Expired",
       "CANCELLED": "Cancelled",
       "PAST_DUE": "Past Due"
+    },
+    "reports": {
+      "title": "Reports",
+      "description": "Download platform-wide reports",
+      "scansReport": "Scans Report",
+      "scansReportDesc": "All QR code scans across the platform",
+      "restaurantsReport": "Restaurants Report",
+      "restaurantsReportDesc": "All registered restaurants and their details",
+      "subscriptionsReport": "Subscriptions Report",
+      "subscriptionsReportDesc": "All subscription data including revenue",
+      "feedbackReport": "Feedback Report",
+      "feedbackReportDesc": "All customer feedback across the platform",
+      "downloadCsv": "Download CSV",
+      "downloadPdf": "PDF",
+      "downloadImage": "Image",
+      "downloading": "Downloading..."
     }
   },
   "errors": {

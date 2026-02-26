@@ -480,7 +480,37 @@
     "saving": "جاري الحفظ...",
     "languageSettings": "اللغة",
     "selectLanguage": "اختر لغتك المفضلة",
-    "languageChanged": "تم تغيير اللغة"
+    "languageChanged": "تم تغيير اللغة",
+    "themes": "الثيمات",
+    "createTheme": "إنشاء ثيم جديد",
+    "editTheme": "تعديل الثيم",
+    "themeBuilder": "منشئ الثيمات",
+    "themeBuilderDesc": "أنشئ وأدر ثيمات مخصصة لقوائمك",
+    "enterpriseOnly": "هذه الميزة متاحة لباقة المؤسسات فقط",
+    "noThemes": "لا توجد ثيمات مخصصة بعد",
+    "noThemesHint": "أنشئ ثيم مخصص لتمييز قوائمك",
+    "themeCreated": "تم إنشاء الثيم بنجاح",
+    "themeUpdated": "تم تحديث الثيم بنجاح",
+    "themeDeleted": "تم حذف الثيم",
+    "deleteThemeConfirm": "هل أنت متأكد من حذف هذا الثيم؟",
+    "reports": "التقارير",
+    "reportsDescription": "تحميل تقارير مطعمك",
+    "scanReport": "تقرير المسح",
+    "scanReportDesc": "بيانات مسح رموز QR بما في ذلك الجهاز والموقع والتوقيت",
+    "feedbackReport": "تقرير التقييمات",
+    "feedbackReportDesc": "تقييمات وتعليقات العملاء",
+    "menuItemsReport": "تقرير عناصر القائمة",
+    "menuItemsReportDesc": "الكتالوج الكامل لعناصر قائمتك",
+    "downloadCsv": "تحميل CSV",
+    "downloadPdf": "PDF",
+    "downloadImage": "صورة",
+    "downloading": "جاري التحميل...",
+    "dateRange": "النطاق الزمني",
+    "last7Days": "آخر 7 أيام",
+    "last30Days": "آخر 30 يوم",
+    "last90Days": "آخر 90 يوم",
+    "allTime": "كل الوقت",
+    "noData": "لا توجد بيانات لهذا النطاق الزمني"
   },
   "menu": {
     "builder": {
@@ -528,6 +558,7 @@
       "users": "المستخدمون",
       "subscriptions": "الاشتراكات",
       "analytics": "التحليلات",
+      "reports": "التقارير",
       "settings": "الإعدادات"
     },
     "stats": {
@@ -623,6 +654,22 @@
       "EXPIRED": "منتهي",
       "CANCELLED": "ملغي",
       "PAST_DUE": "متأخر"
+    },
+    "reports": {
+      "title": "التقارير",
+      "description": "تحميل تقارير المنصة الشاملة",
+      "scansReport": "تقرير المسح",
+      "scansReportDesc": "جميع عمليات مسح رموز QR عبر المنصة",
+      "restaurantsReport": "تقرير المطاعم",
+      "restaurantsReportDesc": "جميع المطاعم المسجلة وتفاصيلها",
+      "subscriptionsReport": "تقرير الاشتراكات",
+      "subscriptionsReportDesc": "جميع بيانات الاشتراكات بما في ذلك الإيرادات",
+      "feedbackReport": "تقرير التقييمات",
+      "feedbackReportDesc": "جميع تقييمات العملاء عبر المنصة",
+      "downloadCsv": "تحميل CSV",
+      "downloadPdf": "PDF",
+      "downloadImage": "صورة",
+      "downloading": "جاري التحميل..."
     }
   },
   "errors": {

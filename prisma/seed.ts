@@ -4,9 +4,12 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Seed themes (8 total: 3 free + 5 pro)
+  // Seed themes (11 total: 3 free + 8 pro)
   const themes = [
     // ── FREE THEMES ──────────────────────────────────────────
+    // Each free theme has a UNIQUE layout + vibrant palette
+
+    // Light — Clean contemporary café, violet primary on warm white
     {
       slug: "light",
       name: "Light",
@@ -14,35 +17,37 @@ async function main() {
       isFree: true,
       config: {
         colors: {
-          background: "#ffffff",
-          surface: "#f8fafc",
-          text: "#111827",
-          textSecondary: "#6b7280",
-          primary: "#6366f1",
-          accent: "#10b981",
-          border: "#e5e7eb",
+          background: "#faf9f7",
+          surface: "#ffffff",
+          text: "#1c1917",
+          textSecondary: "#78716c",
+          primary: "#7c3aed",
+          accent: "#06b6d4",
+          border: "#e7e5e4",
           price: "#059669",
-          unavailable: "#ef4444",
-          special: "#f59e0b",
+          unavailable: "#dc2626",
+          special: "#ea580c",
         },
         fonts: {
           heading: "IBM Plex Sans Arabic",
           body: "IBM Plex Sans Arabic",
         },
         layout: {
-          itemStyle: "list",
-          categoryStyle: "simple",
+          itemStyle: "cards",
+          categoryStyle: "modern",
         },
         decoration: {
           type: "none",
         },
         features: {
-          showPhotos: false,
+          showPhotos: true,
           showDecorations: false,
           customFont: false,
         },
       },
     },
+
+    // Dark — Sleek lounge, purple + teal neon on true black
     {
       slug: "dark",
       name: "Dark",
@@ -50,35 +55,37 @@ async function main() {
       isFree: true,
       config: {
         colors: {
-          background: "#0f172a",
-          surface: "#1e293b",
-          text: "#f9fafb",
-          textSecondary: "#9ca3af",
-          primary: "#818cf8",
-          accent: "#34d399",
-          border: "#374151",
-          price: "#34d399",
+          background: "#0a0a0a",
+          surface: "#171717",
+          text: "#fafafa",
+          textSecondary: "#a3a3a3",
+          primary: "#a78bfa",
+          accent: "#2dd4bf",
+          border: "#262626",
+          price: "#4ade80",
           unavailable: "#f87171",
-          special: "#fbbf24",
+          special: "#facc15",
         },
         fonts: {
           heading: "IBM Plex Sans Arabic",
           body: "IBM Plex Sans Arabic",
         },
         layout: {
-          itemStyle: "list",
-          categoryStyle: "simple",
+          itemStyle: "compact",
+          categoryStyle: "glow",
         },
         decoration: {
           type: "none",
         },
         features: {
-          showPhotos: false,
+          showPhotos: true,
           showDecorations: false,
           customFont: false,
         },
       },
     },
+
+    // Nature — Warm earthy artisan, amber + forest green on cream
     {
       slug: "nature",
       name: "Nature",
@@ -86,30 +93,30 @@ async function main() {
       isFree: true,
       config: {
         colors: {
-          background: "#fefdf8",
-          surface: "#f5f0e8",
-          text: "#1a1a1a",
-          textSecondary: "#6b6b5e",
-          primary: "#5a7a5c",
-          accent: "#a3825a",
-          border: "#e0d9cc",
-          price: "#5a7a5c",
-          unavailable: "#c0392b",
-          special: "#d4a843",
+          background: "#fef7ed",
+          surface: "#fff7ed",
+          text: "#292524",
+          textSecondary: "#78716c",
+          primary: "#b45309",
+          accent: "#15803d",
+          border: "#e7d5c0",
+          price: "#15803d",
+          unavailable: "#b91c1c",
+          special: "#c2410c",
         },
         fonts: {
           heading: "IBM Plex Sans Arabic",
           body: "IBM Plex Sans Arabic",
         },
         layout: {
-          itemStyle: "list",
-          categoryStyle: "simple",
+          itemStyle: "grid",
+          categoryStyle: "elegant",
         },
         decoration: {
           type: "none",
         },
         features: {
-          showPhotos: false,
+          showPhotos: true,
           showDecorations: false,
           customFont: false,
         },
@@ -117,6 +124,9 @@ async function main() {
     },
 
     // ── PRO THEMES ──────────────────────────────────────────
+    // Each pro theme: unique layout, decoration, font, personality
+
+    // Elegant — Fine-dining luxury, antique gold on ivory
     {
       slug: "elegant",
       name: "Elegant",
@@ -124,16 +134,16 @@ async function main() {
       isFree: false,
       config: {
         colors: {
-          background: "#faf7f2",
-          surface: "#ffffff",
-          text: "#1a1a1a",
-          textSecondary: "#7a7a7a",
-          primary: "#8b6f47",
-          accent: "#c5a572",
-          border: "#e8e0d4",
-          price: "#8b6f47",
-          unavailable: "#c0392b",
-          special: "#d4a843",
+          background: "#faf6f1",
+          surface: "#fffcf7",
+          text: "#1a1615",
+          textSecondary: "#8c7e73",
+          primary: "#92702a",
+          accent: "#b8860b",
+          border: "#e6ddd3",
+          price: "#92702a",
+          unavailable: "#a0522d",
+          special: "#d4a03c",
         },
         fonts: {
           heading: "Amiri",
@@ -145,7 +155,7 @@ async function main() {
         },
         decoration: {
           type: "gold-dividers",
-          color: "#c5a572",
+          color: "#b8960b",
         },
         features: {
           showPhotos: true,
@@ -154,6 +164,8 @@ async function main() {
         },
       },
     },
+
+    // Modern — Tech-forward, electric cyan on deep navy
     {
       slug: "modern",
       name: "Modern",
@@ -161,16 +173,16 @@ async function main() {
       isFree: false,
       config: {
         colors: {
-          background: "#0c1222",
-          surface: "#162032",
-          text: "#e2e8f0",
-          textSecondary: "#94a3b8",
+          background: "#030712",
+          surface: "#111827",
+          text: "#f9fafb",
+          textSecondary: "#9ca3af",
           primary: "#3b82f6",
-          accent: "#22d3ee",
-          border: "#334155",
+          accent: "#06b6d4",
+          border: "#1f2937",
           price: "#22d3ee",
           unavailable: "#ef4444",
-          special: "#eab308",
+          special: "#f59e0b",
         },
         fonts: {
           heading: "Cairo",
@@ -191,6 +203,8 @@ async function main() {
         },
       },
     },
+
+    // Rose — Chic café, vivid pink + fuchsia on blush
     {
       slug: "rose",
       name: "Rose",
@@ -198,16 +212,16 @@ async function main() {
       isFree: false,
       config: {
         colors: {
-          background: "#fdf2f4",
-          surface: "#ffffff",
-          text: "#1a1a1a",
-          textSecondary: "#78716c",
-          primary: "#be185d",
-          accent: "#ec4899",
-          border: "#f5d0d8",
+          background: "#fdf2f8",
+          surface: "#fce7f3",
+          text: "#1c1917",
+          textSecondary: "#9d7585",
+          primary: "#db2777",
+          accent: "#c026d3",
+          border: "#f9a8d4",
           price: "#be185d",
           unavailable: "#dc2626",
-          special: "#f59e0b",
+          special: "#ea580c",
         },
         fonts: {
           heading: "Tajawal",
@@ -219,7 +233,7 @@ async function main() {
         },
         decoration: {
           type: "floral",
-          color: "#ec4899",
+          color: "#f472b6",
         },
         features: {
           showPhotos: true,
@@ -228,6 +242,8 @@ async function main() {
         },
       },
     },
+
+    // Midnight — Dramatic noir, gold on pure black
     {
       slug: "midnight",
       name: "Midnight",
@@ -239,12 +255,12 @@ async function main() {
           surface: "#18181b",
           text: "#fafafa",
           textSecondary: "#a1a1aa",
-          primary: "#f59e0b",
-          accent: "#fbbf24",
+          primary: "#eab308",
+          accent: "#facc15",
           border: "#27272a",
-          price: "#f59e0b",
+          price: "#eab308",
           unavailable: "#ef4444",
-          special: "#fbbf24",
+          special: "#f97316",
         },
         fonts: {
           heading: "Noto Kufi Arabic",
@@ -256,7 +272,7 @@ async function main() {
         },
         decoration: {
           type: "stars",
-          color: "#fbbf24",
+          color: "#eab308",
         },
         features: {
           showPhotos: true,
@@ -265,6 +281,8 @@ async function main() {
         },
       },
     },
+
+    // Ocean — Coastal dining, teal + coral on deep sea
     {
       slug: "ocean",
       name: "Ocean",
@@ -273,13 +291,13 @@ async function main() {
       config: {
         colors: {
           background: "#042f2e",
-          surface: "#0d3d3b",
+          surface: "#0d4f4d",
           text: "#f0fdfa",
-          textSecondary: "#99c7c1",
+          textSecondary: "#86cec5",
           primary: "#14b8a6",
           accent: "#fb923c",
-          border: "#1a4d4a",
-          price: "#14b8a6",
+          border: "#115e59",
+          price: "#2dd4bf",
           unavailable: "#f87171",
           special: "#fb923c",
         },
@@ -294,6 +312,123 @@ async function main() {
         decoration: {
           type: "waves",
           color: "#14b8a6",
+        },
+        features: {
+          showPhotos: true,
+          showDecorations: true,
+          customFont: true,
+        },
+      },
+    },
+
+    // Sahara — Traditional Arabic, amber + turquoise on dark coffee
+    {
+      slug: "sahara",
+      name: "Sahara",
+      nameAr: "صحراء",
+      isFree: false,
+      config: {
+        colors: {
+          background: "#1c1412",
+          surface: "#2c2118",
+          text: "#fde8cd",
+          textSecondary: "#c9a87c",
+          primary: "#d97706",
+          accent: "#0d9488",
+          border: "#3d2e22",
+          price: "#fbbf24",
+          unavailable: "#dc2626",
+          special: "#0d9488",
+        },
+        fonts: {
+          heading: "Amiri",
+          body: "Cairo",
+        },
+        layout: {
+          itemStyle: "cards",
+          categoryStyle: "wave",
+        },
+        decoration: {
+          type: "geometric",
+          color: "#d97706",
+        },
+        features: {
+          showPhotos: true,
+          showDecorations: true,
+          customFont: true,
+        },
+      },
+    },
+
+    // Verdant — Botanical garden, deep green + lavender
+    {
+      slug: "verdant",
+      name: "Verdant",
+      nameAr: "أخضر",
+      isFree: false,
+      config: {
+        colors: {
+          background: "#052e16",
+          surface: "#14532d",
+          text: "#f0fdf4",
+          textSecondary: "#86efac",
+          primary: "#22c55e",
+          accent: "#a78bfa",
+          border: "#166534",
+          price: "#4ade80",
+          unavailable: "#fb7185",
+          special: "#a78bfa",
+        },
+        fonts: {
+          heading: "Tajawal",
+          body: "Tajawal",
+        },
+        layout: {
+          itemStyle: "magazine",
+          categoryStyle: "elegant",
+        },
+        decoration: {
+          type: "floral",
+          color: "#22c55e",
+        },
+        features: {
+          showPhotos: true,
+          showDecorations: true,
+          customFont: true,
+        },
+      },
+    },
+
+    // Ember — Grill/BBQ house, red + orange on charcoal
+    {
+      slug: "ember",
+      name: "Ember",
+      nameAr: "جمر",
+      isFree: false,
+      config: {
+        colors: {
+          background: "#1c1210",
+          surface: "#291a16",
+          text: "#fef2f2",
+          textSecondary: "#d1a599",
+          primary: "#dc2626",
+          accent: "#f97316",
+          border: "#3b1f18",
+          price: "#fb923c",
+          unavailable: "#737373",
+          special: "#fbbf24",
+        },
+        fonts: {
+          heading: "Noto Kufi Arabic",
+          body: "Changa",
+        },
+        layout: {
+          itemStyle: "list",
+          categoryStyle: "accent",
+        },
+        decoration: {
+          type: "gold-dividers",
+          color: "#f97316",
         },
         features: {
           showPhotos: true,

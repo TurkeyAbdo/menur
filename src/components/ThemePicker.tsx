@@ -30,6 +30,7 @@ export interface ThemeOption {
   slug: string;
   isFree: boolean;
   config: ThemeConfig | null;
+  restaurantId?: string | null;
 }
 
 interface ThemePickerProps {
@@ -493,12 +494,16 @@ export default function ThemePicker({
                   </div>
                 )}
 
-                {/* PRO badge */}
-                {!theme.isFree && (
+                {/* CUSTOM / PRO badge */}
+                {theme.restaurantId ? (
+                  <span className="absolute top-1.5 start-1.5 rounded-full bg-indigo-100 px-1.5 py-0.5 text-[9px] font-bold text-indigo-700">
+                    CUSTOM
+                  </span>
+                ) : !theme.isFree ? (
                   <span className="absolute top-1.5 start-1.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[9px] font-bold text-amber-700">
                     PRO
                   </span>
-                )}
+                ) : null}
 
                 {/* Layout mini mockup */}
                 <div className="mt-3">

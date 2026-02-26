@@ -10,6 +10,7 @@ import {
   CreditCard,
   BarChart3,
   Settings,
+  FileDown,
   LogOut,
   Menu,
   X,
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/admin/users", icon: Users, key: "users" },
   { href: "/admin/subscriptions", icon: CreditCard, key: "subscriptions" },
   { href: "/admin/analytics", icon: BarChart3, key: "analytics" },
+  { href: "/admin/reports", icon: FileDown, key: "reports" },
   { href: "/admin/settings", icon: Settings, key: "settings" },
 ];
 

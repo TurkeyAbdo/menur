@@ -110,6 +110,7 @@ model Restaurant {
   owner      User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   locations  Location[]
   menus      Menu[]
+  themes     Theme[]
 
   @@map("restaurants")
 }
@@ -336,7 +337,9 @@ model Theme {
   updatedAt    DateTime @updatedAt
 
   // Relations
-  menus Menu[]
+  restaurantId String?
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  menus        Menu[]
 
   @@map("themes")
 }
