@@ -8,7 +8,7 @@ async function searchMealDB(query: string): Promise<string[]> {
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`
     );
     const data = await res.json();
-    return (data.meals || []).map((m: any) => m.strMealThumb as string);
+    return (data.meals || []).map((m: { strMealThumb: string }) => m.strMealThumb);
   } catch {
     return [];
   }
@@ -20,7 +20,7 @@ async function filterByArea(area: string): Promise<string[]> {
       `https://www.themealdb.com/api/json/v1/1/filter.php?a=${encodeURIComponent(area)}`
     );
     const data = await res.json();
-    return (data.meals || []).map((m: any) => m.strMealThumb as string);
+    return (data.meals || []).map((m: { strMealThumb: string }) => m.strMealThumb);
   } catch {
     return [];
   }
@@ -32,7 +32,7 @@ async function filterByCategory(cat: string): Promise<string[]> {
       `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(cat)}`
     );
     const data = await res.json();
-    return (data.meals || []).map((m: any) => m.strMealThumb as string);
+    return (data.meals || []).map((m: { strMealThumb: string }) => m.strMealThumb);
   } catch {
     return [];
   }

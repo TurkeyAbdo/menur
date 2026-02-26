@@ -6,7 +6,8 @@ import { prisma } from "@/lib/db";
 import { POST, GET } from "../route";
 import { createRequest, parseResponse } from "@/__tests__/helpers";
 
-const db = prisma as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as unknown as Record<string, Record<string, any>>;
 
 describe("POST /api/feedback", () => {
   beforeEach(() => {

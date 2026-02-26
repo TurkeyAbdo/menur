@@ -40,7 +40,7 @@ export default function AdminSubscriptionsPage() {
   const [tierFilter, setTierFilter] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [total, setTotal] = useState(0);
+  const [, setTotal] = useState(0);
   const [tierCounts, setTierCounts] = useState({
     FREE: 0,
     BASIC: 0,

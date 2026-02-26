@@ -812,7 +812,7 @@ async function main() {
   });
 
   // ── MENU 5: Draft Ramadan Menu (Rose theme, Scrollable, Draft) ──
-  const menu5 = await prisma.menu.create({
+  await prisma.menu.create({
     data: {
       name: "Ramadan Iftar Menu",
       nameAr: "قائمة إفطار رمضان",

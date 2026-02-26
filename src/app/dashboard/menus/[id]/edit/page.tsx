@@ -72,7 +72,6 @@ const emptyCategory = (): Category => ({
 
 export default function EditMenuPage() {
   const t = useTranslations("menu.builder");
-  const tc = useTranslations("common");
   const router = useRouter();
   const params = useParams();
   const menuId = params.id as string;

@@ -15,7 +15,8 @@ import { checkTierLimit } from "@/lib/tier-check";
 import { GET, POST } from "../route";
 import { createRequest, parseResponse, sessions } from "@/__tests__/helpers";
 
-const db = prisma as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as unknown as Record<string, Record<string, any>>;
 const mockGetSession = getServerSession as ReturnType<typeof vi.fn>;
 const mockTierCheck = checkTierLimit as ReturnType<typeof vi.fn>;
 

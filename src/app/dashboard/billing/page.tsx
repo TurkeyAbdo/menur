@@ -135,6 +135,7 @@ export default function BillingPage() {
     if (params.get("error")) {
       toast("error", t("paymentFailed"));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleUpgrade = async (tier: string) => {

@@ -7,8 +7,6 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const paymentId = searchParams.get("id");
-    const status = searchParams.get("status");
-
     if (!paymentId) {
       return NextResponse.redirect(
         new URL("/dashboard/billing?error=missing_payment", req.url)

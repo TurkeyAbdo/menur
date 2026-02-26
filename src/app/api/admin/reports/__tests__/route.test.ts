@@ -14,7 +14,8 @@ import { requireAdmin } from "@/lib/admin-auth";
 import { GET } from "../route";
 import { createRequest, parseResponse, sessions } from "@/__tests__/helpers";
 
-const db = prisma as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as unknown as Record<string, Record<string, any>>;
 const mockRequireAdmin = requireAdmin as ReturnType<typeof vi.fn>;
 
 describe("GET /api/admin/reports", () => {

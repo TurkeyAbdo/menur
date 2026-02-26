@@ -10,9 +10,6 @@ export async function POST(req: NextRequest) {
     }
 
     const userAgent = req.headers.get("user-agent") || "";
-    const forwarded = req.headers.get("x-forwarded-for");
-    const ip = forwarded?.split(",")[0] || "unknown";
-
     // Detect device type
     let deviceType = "desktop";
     if (/mobile/i.test(userAgent)) deviceType = "mobile";

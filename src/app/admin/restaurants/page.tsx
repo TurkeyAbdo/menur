@@ -52,7 +52,7 @@ export default function AdminRestaurantsPage() {
 
   useEffect(() => {
     fetchData(search, page);
-  }, [page, fetchData]);
+  }, [page, search, fetchData]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

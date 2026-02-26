@@ -51,7 +51,7 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     fetchData(search, page);
-  }, [page, fetchData]);
+  }, [page, search, fetchData]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

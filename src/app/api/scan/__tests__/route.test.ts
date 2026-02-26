@@ -6,7 +6,8 @@ import { prisma } from "@/lib/db";
 import { POST } from "../route";
 import { createRequest, parseResponse } from "@/__tests__/helpers";
 
-const db = prisma as any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const db = prisma as unknown as Record<string, Record<string, any>>;
 
 describe("POST /api/scan", () => {
   beforeEach(() => {
@@ -37,7 +38,7 @@ describe("POST /api/scan", () => {
   });
 
   it("detects mobile user-agent", async () => {
-    db.scan.create.mockImplementation(({ data }: any) =>
+    db.scan.create.mockImplementation(({ data }: { data: Record<string, unknown> }) =>
       Promise.resolve({ id: "s1", ...data })
     );
 
@@ -55,7 +56,7 @@ describe("POST /api/scan", () => {
   });
 
   it("detects desktop user-agent", async () => {
-    db.scan.create.mockImplementation(({ data }: any) =>
+    db.scan.create.mockImplementation(({ data }: { data: Record<string, unknown> }) =>
       Promise.resolve({ id: "s2", ...data })
     );
 
