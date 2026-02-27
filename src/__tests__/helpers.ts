@@ -13,13 +13,11 @@ export function createRequest(
   url: string,
   { method = "GET", body, headers = {} }: RequestOptions = {}
 ): NextRequest {
-  const init: RequestInit & { headers: Record<string, string> } = {
+  const init = {
     method,
     headers: { "content-type": "application/json", ...headers },
+    body: body ? JSON.stringify(body) : undefined,
   };
-  if (body) {
-    init.body = JSON.stringify(body);
-  }
   return new NextRequest(new URL(url, "http://localhost:3000"), init);
 }
 

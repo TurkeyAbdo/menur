@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Plus,
   Trash2,
@@ -69,7 +70,6 @@ const emptyCategory = (): Category => ({
 
 export default function NewMenuPage() {
   const t = useTranslations("menu.builder");
-  const tc = useTranslations("common");
   const router = useRouter();
   const { toast } = useToast();
 
@@ -571,10 +571,13 @@ export default function NewMenuPage() {
                             {item.photoPreview ? (
                               <div className="relative">
                                 <label className="cursor-pointer">
-                                  <img
+                                  <Image
                                     src={item.photoPreview}
                                     alt=""
+                                    width={64}
+                                    height={64}
                                     className="h-16 w-16 rounded-lg object-cover hover:opacity-75 transition"
+                                    unoptimized
                                   />
                                   <input
                                     type="file"

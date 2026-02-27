@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Plus,
   Trash2,
@@ -677,10 +678,13 @@ export default function EditMenuPage() {
                             {item.photoPreview ? (
                               <div className="relative">
                                 <label className="cursor-pointer">
-                                  <img
+                                  <Image
                                     src={item.photoPreview}
                                     alt=""
+                                    width={64}
+                                    height={64}
                                     className="h-16 w-16 rounded-lg object-cover hover:opacity-75 transition"
+                                    unoptimized
                                   />
                                   <input
                                     type="file"

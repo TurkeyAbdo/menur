@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   Search,
   Phone,
@@ -619,11 +621,14 @@ function renderItemCards(
       onClick={() => ctx.onItemClick(item)}
     >
       {showPhotos && item.photo && (
-        <img
+        <Image
           src={item.photo}
           alt={ctx.dn(item.nameAr, item.name)}
+          width={112}
+          height={112}
           className="h-28 w-28 shrink-0 rounded-xl object-cover"
           loading="lazy"
+          unoptimized
         />
       )}
       <div className="flex-1">
@@ -684,11 +689,14 @@ function renderItemGrid(
       onClick={() => ctx.onItemClick(item)}
     >
       {showPhotos && item.photo && (
-        <img
+        <Image
           src={item.photo}
           alt={ctx.dn(item.nameAr, item.name)}
+          width={400}
+          height={144}
           className="h-36 w-full object-cover"
           loading="lazy"
+          unoptimized
         />
       )}
       <div className="p-3">
@@ -751,11 +759,14 @@ function renderItemCompact(
       onClick={() => ctx.onItemClick(item)}
     >
       {showPhotos && item.photo && (
-        <img
+        <Image
           src={item.photo}
           alt={ctx.dn(item.nameAr, item.name)}
+          width={48}
+          height={48}
           className="h-12 w-12 shrink-0 rounded-full object-cover"
           loading="lazy"
+          unoptimized
         />
       )}
       <div className="min-w-0 flex-1">
@@ -813,11 +824,13 @@ function renderItemOverlay(
     >
       {showPhotos && item.photo ? (
         <>
-          <img
+          <Image
             src={item.photo}
             alt={ctx.dn(item.nameAr, item.name)}
+            fill
             className="absolute inset-0 h-full w-full object-cover"
             loading="lazy"
+            unoptimized
           />
           <div
             className="absolute inset-0"
@@ -913,11 +926,14 @@ function renderItemMagazine(
         onClick={() => ctx.onItemClick(item)}
       >
         {showPhotos && item.photo && (
-          <img
+          <Image
             src={item.photo}
             alt={ctx.dn(item.nameAr, item.name)}
+            width={400}
+            height={192}
             className="h-48 w-full object-cover"
             loading="lazy"
+            unoptimized
           />
         )}
         <div className="p-4">
@@ -969,11 +985,14 @@ function renderItemMagazine(
       onClick={() => ctx.onItemClick(item)}
     >
       {showPhotos && item.photo && (
-        <img
+        <Image
           src={item.photo}
           alt={ctx.dn(item.nameAr, item.name)}
+          width={64}
+          height={64}
           className="h-16 w-16 shrink-0 rounded-lg object-cover"
           loading="lazy"
+          unoptimized
         />
       )}
       <div className="min-w-0 flex-1">
@@ -1079,11 +1098,14 @@ function ItemDetailModal({
 
         {/* Photo */}
         {showPhotos && item.photo && (
-          <img
+          <Image
             src={item.photo}
             alt={dn(item.nameAr, item.name)}
+            width={400}
+            height={256}
             className="max-h-64 w-full object-cover"
             loading="lazy"
+            unoptimized
           />
         )}
 
@@ -1499,10 +1521,13 @@ export default function MenuDisplay({ restaurant, menu, theme, showBadge = true,
         </button>
 
         {restaurant.logo && (
-          <img
+          <Image
             src={restaurant.logo}
             alt=""
+            width={80}
+            height={80}
             className="mx-auto h-20 w-20 rounded-full object-cover"
+            unoptimized
           />
         )}
         <h1 className="mt-3 text-2xl font-bold">
@@ -1858,9 +1883,9 @@ export default function MenuDisplay({ restaurant, menu, theme, showBadge = true,
       {/* Powered by Menur */}
       {showBadge && (
         <footer className="py-6 text-center">
-          <a href="/" className="text-xs" style={{ color: colors.textSecondary }}>
+          <Link href="/" className="text-xs" style={{ color: colors.textSecondary }}>
             Powered by <span style={{ color: colors.primary }}>Menur</span>
-          </a>
+          </Link>
         </footer>
       )}
 

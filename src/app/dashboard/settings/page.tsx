@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import {
   ImagePlus,
@@ -183,10 +184,13 @@ export default function SettingsPage() {
             <div className="mt-2 flex items-center gap-4">
               {restaurant?.logo ? (
                 <div className="relative">
-                  <img
+                  <Image
                     src={restaurant.logo}
                     alt="Logo"
+                    width={80}
+                    height={80}
                     className="h-20 w-20 rounded-xl border border-gray-200 bg-white object-contain p-1"
+                    unoptimized
                   />
                   <button
                     type="button"
