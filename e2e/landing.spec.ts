@@ -11,8 +11,8 @@ test.describe("Landing Page", () => {
 
   test("pricing page shows tier cards", async ({ page }) => {
     await page.goto("/pricing");
-    // Should show plan names
-    await expect(page.getByText(/free/i).first()).toBeVisible();
-    await expect(page.getByText(/pro/i).first()).toBeVisible();
+    // Should show plan prices (language-agnostic)
+    await expect(page.getByText("0").first()).toBeVisible();
+    await expect(page.getByText("109").first()).toBeVisible();
   });
 });
