@@ -1,8 +1,13 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const FROM_EMAIL = "Menur <onboarding@resend.dev>";
+
+function getResendClient() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is not set");
+  }
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 interface EmailOptions {
   to: string;
@@ -12,7 +17,7 @@ interface EmailOptions {
 
 export async function sendEmail({ to, subject, html }: EmailOptions): Promise<boolean> {
   try {
-    const { error } = await resend.emails.send({
+    const { error } = await getResendClient().emails.send({
       from: FROM_EMAIL,
       to,
       subject,

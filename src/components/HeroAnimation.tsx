@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { QrCode, Wifi, Star, Image, Heart, X } from "lucide-react";
+import { QrCode, Wifi, Star, Image as ImageIcon, Heart, X } from "lucide-react";
 
 const SCENE_DURATION = 3500;
 const TOTAL_SCENES = 5;
@@ -194,7 +194,7 @@ function CardsItem({ item, t }: { item: { name: string; desc: string; price: str
         animate={{ backgroundColor: t.primary + "18" }}
         transition={{ duration: 0.5 }}
       >
-        <Image className="h-4 w-4" style={{ color: t.primary + "50" }} />
+        <ImageIcon className="h-4 w-4" style={{ color: t.primary + "50" }} />
       </motion.div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
@@ -234,7 +234,7 @@ function GridItem({ item, t }: { item: { name: string; desc: string; price: stri
       viewport={{ once: true }}
     >
       <motion.div className="h-16 flex items-center justify-center" animate={{ backgroundColor: t.primary + "12" }} transition={{ duration: 0.5 }}>
-        <Image className="h-4 w-4" style={{ color: t.primary + "30" }} />
+        <ImageIcon className="h-4 w-4" style={{ color: t.primary + "30" }} />
       </motion.div>
       <motion.div className="p-2" animate={{ backgroundColor: t.surface }} transition={{ duration: 0.5 }}>
         <motion.span className="text-[9px] font-semibold" animate={{ color: t.text }} transition={{ duration: 0.5 }}>
@@ -303,7 +303,7 @@ function MagazineItems({ items, t }: { items: { name: string; desc: string; pric
         viewport={{ once: true }}
       >
         <motion.div className="h-16 flex items-center justify-center" animate={{ backgroundColor: t.primary + "12" }} transition={{ duration: 0.5 }}>
-          <Image className="h-5 w-5" style={{ color: t.primary + "30" }} />
+          <ImageIcon className="h-5 w-5" style={{ color: t.primary + "30" }} />
         </motion.div>
         <div className="p-2">
           <div className="flex items-center gap-1">
@@ -327,7 +327,7 @@ function MagazineItems({ items, t }: { items: { name: string; desc: string; pric
           viewport={{ once: true }}
         >
           <motion.div className="h-8 w-8 shrink-0 rounded flex items-center justify-center" animate={{ backgroundColor: t.primary + "15" }} transition={{ duration: 0.5 }}>
-            <Image className="h-3 w-3" style={{ color: t.primary + "30" }} />
+            <ImageIcon className="h-3 w-3" style={{ color: t.primary + "30" }} />
           </motion.div>
           <div className="min-w-0 flex-1">
             <motion.span className="text-[9px] font-semibold" animate={{ color: t.text }} transition={{ duration: 0.5 }}>{item.name}</motion.span>
@@ -355,7 +355,7 @@ function CompactItem({ item, t }: { item: { name: string; desc: string; price: s
           animate={{ backgroundColor: t.primary + "15" }}
           transition={{ duration: 0.5 }}
         >
-          <Image className="h-2.5 w-2.5" style={{ color: t.primary + "40" }} />
+          <ImageIcon className="h-2.5 w-2.5" style={{ color: t.primary + "40" }} />
         </motion.div>
       )}
       <div className="min-w-0 flex-1">
@@ -603,7 +603,7 @@ function ModalScene() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <Image className="h-8 w-8" style={{ color: t.primary + "25" }} />
+          <ImageIcon className="h-8 w-8" style={{ color: t.primary + "25" }} />
         </motion.div>
 
         {/* Close button */}

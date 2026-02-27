@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Star, Image, Palette, Type } from "lucide-react";
+import { Check, Image as ImageIcon, Palette, Type } from "lucide-react";
 
 interface ThemeColors {
   background: string;
@@ -175,7 +175,7 @@ function FeatureBadges({ config }: { config: ThemeConfig }) {
     <div className="flex gap-1">
       {features.showPhotos && (
         <span className="flex items-center gap-0.5 rounded bg-emerald-50 px-1 py-0.5 text-[8px] text-emerald-600">
-          <Image className="h-2 w-2" /> صور
+          <ImageIcon className="h-2 w-2" /> صور
         </span>
       )}
       {features.showDecorations && (
