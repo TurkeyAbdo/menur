@@ -291,7 +291,7 @@ export default function EditMenuPage() {
   const handleSave = async (status: "DRAFT" | "PUBLISHED") => {
     setError("");
     if (!menuNameAr && !menuName) {
-      setError("Menu name is required");
+      setError(locale === "ar" ? "اسم القائمة مطلوب" : "Menu name is required");
       return;
     }
 

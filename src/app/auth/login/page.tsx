@@ -14,7 +14,11 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(
-    urlError === "OAuthAccountNotLinked" ? t("errors.oauthAccountNotLinked") : ""
+    urlError === "OAuthAccountNotLinked"
+      ? t("errors.oauthAccountNotLinked")
+      : urlError === "OAuthSignin"
+        ? t("errors.oauthSigninError")
+        : ""
   );
   const [loading, setLoading] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<string | null>(null);
@@ -105,7 +109,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-50"
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : t("loginButton")}
+            {loading ? <Loader2 className="mx-auto h-4 w-4 animate-spin" /> : t("loginButton")}
           </button>
         </form>
 

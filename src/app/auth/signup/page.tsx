@@ -142,7 +142,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-50"
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : t("signupButton")}
+            {loading ? <Loader2 className="mx-auto h-4 w-4 animate-spin" /> : t("signupButton")}
           </button>
         </form>
 

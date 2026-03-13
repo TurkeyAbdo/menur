@@ -303,7 +303,8 @@
       "emailExists": "Email already registered",
       "tooManyRequests": "Too many requests. Please try again later.",
       "somethingWrong": "Something went wrong. Please try again.",
-      "oauthAccountNotLinked": "This email is already registered. Please sign in with your original method."
+      "oauthAccountNotLinked": "This email is already registered. Please sign in with your original method.",
+      "oauthSigninError": "Could not sign in with this provider. Please check that it is configured correctly or try another method."
     }
   },
   "onboarding": {
