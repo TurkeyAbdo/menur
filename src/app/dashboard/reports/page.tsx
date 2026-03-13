@@ -329,7 +329,7 @@ export default function DashboardReportsPage() {
             key={report.type}
             className="rounded-xl border border-gray-200 bg-white p-6"
           >
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="flex items-start gap-4">
                 <div className="rounded-lg bg-indigo-50 p-2.5">
                   <report.icon className="h-5 w-5 text-indigo-600" />
@@ -343,12 +343,12 @@ export default function DashboardReportsPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {/* CSV */}
                 <button
                   onClick={() => downloadCsv(report.type)}
                   disabled={downloading !== null}
-                  className="flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 py-2 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 py-2 text-xs sm:text-sm font-medium text-indigo-600 transition hover:bg-indigo-50 disabled:opacity-50"
                 >
                   {downloading === `${report.type}-csv` ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -361,7 +361,7 @@ export default function DashboardReportsPage() {
                 <button
                   onClick={() => downloadReport(report.type, "pdf")}
                   disabled={downloading !== null}
-                  className="flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 py-2 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 py-2 text-xs sm:text-sm font-medium text-indigo-600 transition hover:bg-indigo-50 disabled:opacity-50"
                 >
                   {downloading === `${report.type}-pdf` ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -374,7 +374,7 @@ export default function DashboardReportsPage() {
                 <button
                   onClick={() => downloadReport(report.type, "image")}
                   disabled={downloading !== null}
-                  className="flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 py-2 text-sm font-medium text-indigo-600 transition hover:bg-indigo-50 disabled:opacity-50"
+                  className="flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-white px-3 py-2 text-xs sm:text-sm font-medium text-indigo-600 transition hover:bg-indigo-50 disabled:opacity-50"
                 >
                   {downloading === `${report.type}-image` ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

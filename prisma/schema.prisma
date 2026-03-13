@@ -114,6 +114,7 @@ model Restaurant {
   twitter     String?
   tiktok      String?
   snapchat    String?
+  customDomain String?   // custom domain for pro/enterprise plans
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

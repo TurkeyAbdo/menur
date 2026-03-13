@@ -13,6 +13,7 @@ import {
   Clock,
   Loader2,
 } from "lucide-react";
+import { apiMsg } from "@/lib/api-error-msg";
 import { useToast } from "@/components/Toast";
 
 interface OpeningHours {
@@ -130,10 +131,10 @@ export default function LocationsPage() {
       if (!res.ok) {
         const data = await res.json();
         if (data.tierLimit) {
-          toast("error", data.error);
+          toast("error", apiMsg(data, locale));
           setShowForm(false);
         } else {
-          throw new Error(data.error || tc("failedTo"));
+          throw new Error(apiMsg(data, locale, tc("failedTo")));
         }
         return;
       }

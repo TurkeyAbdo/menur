@@ -11,7 +11,7 @@ export async function PUT(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -22,7 +22,7 @@ export async function PUT(
     });
 
     if (!restaurant) {
-      return NextResponse.json({ error: "Restaurant not found" }, { status: 404 });
+      return NextResponse.json({ error: "Restaurant not found", errorAr: "المطعم غير موجود" }, { status: 404 });
     }
 
     // Verify ownership
@@ -31,7 +31,7 @@ export async function PUT(
     });
 
     if (!theme || theme.restaurantId !== restaurant.id) {
-      return NextResponse.json({ error: "Theme not found" }, { status: 404 });
+      return NextResponse.json({ error: "Theme not found", errorAr: "القالب غير موجود" }, { status: 404 });
     }
 
     const body = await req.json();
@@ -39,7 +39,7 @@ export async function PUT(
 
     if (!name || !config?.colors) {
       return NextResponse.json(
-        { error: "Name and colors are required" },
+        { error: "Name and colors are required", errorAr: "الاسم والألوان مطلوبة" },
         { status: 400 }
       );
     }
@@ -64,7 +64,7 @@ export async function PUT(
     return NextResponse.json({ theme: updated });
   } catch (error) {
     logger.error("PUT /api/themes/[id] error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }
 
@@ -75,7 +75,7 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -86,7 +86,7 @@ export async function DELETE(
     });
 
     if (!restaurant) {
-      return NextResponse.json({ error: "Restaurant not found" }, { status: 404 });
+      return NextResponse.json({ error: "Restaurant not found", errorAr: "المطعم غير موجود" }, { status: 404 });
     }
 
     const theme = await prisma.theme.findUnique({
@@ -95,12 +95,12 @@ export async function DELETE(
     });
 
     if (!theme || theme.restaurantId !== restaurant.id) {
-      return NextResponse.json({ error: "Theme not found" }, { status: 404 });
+      return NextResponse.json({ error: "Theme not found", errorAr: "القالب غير موجود" }, { status: 404 });
     }
 
     if (theme._count.menus > 0) {
       return NextResponse.json(
-        { error: "Cannot delete a theme that is used by menus. Remove it from menus first." },
+        { error: "Cannot delete a theme that is used by menus. Remove it from menus first.", errorAr: "لا يمكن حذف قالب مستخدم في القوائم. أزله من القوائم أولاً." },
         { status: 400 }
       );
     }
@@ -110,6 +110,6 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (error) {
     logger.error("DELETE /api/themes/[id] error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }

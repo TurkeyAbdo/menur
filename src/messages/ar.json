@@ -35,7 +35,8 @@
     "change": "تغيير",
     "preview": "معاينة",
     "somethingWrong": "حدث خطأ ما",
-    "failedTo": "فشل في معالجة الطلب"
+    "failedTo": "فشل في معالجة الطلب",
+    "installApp": "تثبيت التطبيق"
   },
   "nav": {
     "features": "المميزات",
@@ -535,7 +536,12 @@
     "to": "إلى",
     "noData": "لا توجد بيانات لهذا النطاق الزمني",
     "previewMode": "وضع المعاينة — هكذا تظهر قائمتك للعملاء",
-    "openPublicLink": "فتح الرابط العام"
+    "openPublicLink": "فتح الرابط العام",
+    "customDomainTitle": "نطاق مخصص",
+    "customDomainDesc": "استخدم نطاقك الخاص لصفحة القائمة",
+    "customDomainLabel": "اسم النطاق",
+    "customDomainHint": "قم بتوجيه سجل CNAME إلى menur-wheat.vercel.app للتفعيل",
+    "customDomainUpgrade": "النطاق المخصص متاح في باقة الاحترافي والمؤسسي"
   },
   "menu": {
     "builder": {

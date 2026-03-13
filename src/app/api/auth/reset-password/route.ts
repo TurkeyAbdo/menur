@@ -13,14 +13,14 @@ export async function POST(req: NextRequest) {
 
     if (!token || !password) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing required fields", errorAr: "حقول مطلوبة مفقودة" },
         { status: 400 }
       );
     }
 
     if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
+        { error: "Password must be at least 8 characters", errorAr: "كلمة المرور يجب أن تكون 8 أحرف على الأقل" },
         { status: 400 }
       );
     }
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     if (!resetToken) {
       return NextResponse.json(
-        { error: "Invalid or expired token" },
+        { error: "Invalid or expired token", errorAr: "رمز غير صالح أو منتهي الصلاحية" },
         { status: 400 }
       );
     }
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         where: { token },
       });
       return NextResponse.json(
-        { error: "Token has expired" },
+        { error: "Token has expired", errorAr: "الرمز منتهي الصلاحية" },
         { status: 400 }
       );
     }
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("Reset password error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

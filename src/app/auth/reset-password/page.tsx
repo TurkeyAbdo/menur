@@ -1,12 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function ResetPasswordPage() {
   const t = useTranslations("auth");
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [password, setPassword] = useState("");
@@ -47,7 +48,7 @@ export default function ResetPasswordPage() {
         if (data.error?.includes("expired") || data.error?.includes("Invalid")) {
           setStatus("error");
         } else {
-          setError(data.error || t("errors.somethingWrong"));
+          setError((locale === "ar" ? data.errorAr || data.error : data.error) || t("errors.somethingWrong"));
         }
       }
     } catch {

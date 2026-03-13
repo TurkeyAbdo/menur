@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     if (!token) {
       return NextResponse.json(
-        { error: "Missing token" },
+        { error: "Missing token", errorAr: "الرمز مفقود" },
         { status: 400 }
       );
     }
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     if (!verificationToken) {
       return NextResponse.json(
-        { error: "Invalid or expired token" },
+        { error: "Invalid or expired token", errorAr: "رمز غير صالح أو منتهي الصلاحية" },
         { status: 400 }
       );
     }
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         where: { token },
       });
       return NextResponse.json(
-        { error: "Token has expired" },
+        { error: "Token has expired", errorAr: "الرمز منتهي الصلاحية" },
         { status: 400 }
       );
     }
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("Verify email error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

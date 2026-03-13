@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const restaurant = await prisma.restaurant.findUnique({
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!restaurant) {
-      return NextResponse.json({ error: "No restaurant found" }, { status: 404 });
+      return NextResponse.json({ error: "No restaurant found", errorAr: "لم يتم العثور على مطعم" }, { status: 404 });
     }
 
     const { searchParams } = new URL(request.url);
@@ -200,7 +200,7 @@ export async function GET(request: NextRequest) {
       filename = `menu-items-${new Date().toISOString().slice(0, 10)}.csv`;
     } else {
       return NextResponse.json(
-        { error: "Invalid report type" },
+        { error: "Invalid report type", errorAr: "نوع التقرير غير صالح" },
         { status: 400 }
       );
     }
@@ -218,7 +218,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     logger.error("GET /api/reports error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

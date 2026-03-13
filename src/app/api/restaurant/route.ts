@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const restaurant = await prisma.restaurant.findUnique({
@@ -20,7 +20,7 @@ export async function GET() {
   } catch (error) {
     logger.error("GET /api/restaurant error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const body = await req.json();
@@ -93,7 +93,7 @@ export async function PUT(req: NextRequest) {
   } catch (error) {
     logger.error("PUT /api/restaurant error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

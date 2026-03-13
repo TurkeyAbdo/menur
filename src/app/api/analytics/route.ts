@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const restaurant = await prisma.restaurant.findUnique({
@@ -91,6 +91,6 @@ export async function GET() {
     });
   } catch (error) {
     logger.error("GET /api/analytics error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }

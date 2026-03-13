@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Plus, Edit2, Trash2, Palette, Loader2, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/Toast";
+import { apiMsg } from "@/lib/api-error-msg";
 
 interface ThemeData {
   id: string;
@@ -56,7 +57,7 @@ export default function ThemesPage() {
         setThemes((prev) => prev.filter((th) => th.id !== id));
         toast("success", t("themeDeleted"));
       } else {
-        toast("error", data.error || tc("somethingWrong"));
+        toast("error", apiMsg(data, locale, tc("somethingWrong")));
       }
     } catch {
       toast("error", tc("somethingWrong"));

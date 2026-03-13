@@ -12,6 +12,7 @@ import {
   Palette,
   Printer,
 } from "lucide-react";
+import { apiMsg } from "@/lib/api-error-msg";
 import QRCodeLib from "qrcode";
 import { useToast } from "@/components/Toast";
 
@@ -82,7 +83,7 @@ export default function QRPage() {
       setSelectedMenu("");
       toast("success", t("qrCreated"));
     } else {
-      toast("error", data.error || t("qrCreateFailed"));
+      toast("error", apiMsg(data, locale, t("qrCreateFailed")));
     }
     setSaving(false);
   };

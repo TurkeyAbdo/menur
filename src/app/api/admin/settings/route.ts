@@ -5,8 +5,8 @@ import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
-    const { error, status } = await requireAdmin();
-    if (error) return NextResponse.json({ error }, { status: status! });
+    const { error, errorAr, status } = await requireAdmin();
+    if (error) return NextResponse.json({ error, errorAr }, { status: status! });
 
     let settings = await prisma.platformSettings.findUnique({
       where: { id: "default" },
@@ -33,7 +33,7 @@ export async function GET() {
   } catch (error) {
     logger.error("GET /api/admin/settings error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -41,8 +41,8 @@ export async function GET() {
 
 export async function PUT(request: NextRequest) {
   try {
-    const { error, status } = await requireAdmin();
-    if (error) return NextResponse.json({ error }, { status: status! });
+    const { error, errorAr, status } = await requireAdmin();
+    if (error) return NextResponse.json({ error, errorAr }, { status: status! });
 
     const body = await request.json();
     const { maxPhotoSizeMB, defaultCurrency, vatPercentage, maintenanceMode } =
@@ -72,7 +72,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     logger.error("PUT /api/admin/settings error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

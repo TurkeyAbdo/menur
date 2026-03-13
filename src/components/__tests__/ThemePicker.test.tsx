@@ -84,6 +84,7 @@ describe("ThemePicker", () => {
         selectedTheme="t1"
         onSelect={onSelect}
         label="Choose theme"
+        userTier="PRO"
       />
     );
     fireEvent.click(screen.getByText("أناقة داكنة"));

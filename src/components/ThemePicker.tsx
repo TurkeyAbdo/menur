@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Image as ImageIcon, Palette, Type } from "lucide-react";
+import { Check, Image as ImageIcon, Lock, Palette, Type } from "lucide-react";
 
 interface ThemeColors {
   background: string;
@@ -38,6 +38,7 @@ interface ThemePickerProps {
   selectedTheme: string;
   onSelect: (id: string) => void;
   label: string;
+  userTier?: string;
 }
 
 const LAYOUT_LABELS: Record<string, string> = {
@@ -456,6 +457,7 @@ export default function ThemePicker({
   selectedTheme,
   onSelect,
   label,
+  userTier,
 }: ThemePickerProps) {
   const selected = themes.find((t) => t.id === selectedTheme);
   const selectedConfig = selected?.config;
@@ -470,17 +472,21 @@ export default function ThemePicker({
           const config = theme.config;
           const c = config?.colors;
           const isSelected = selectedTheme === theme.id;
+          const isLocked = !theme.isFree && !theme.restaurantId && (userTier === "FREE" || !userTier);
 
           return (
             <button
               key={theme.id}
               type="button"
-              onClick={() => onSelect(theme.id)}
+              onClick={() => {
+                if (isLocked) return;
+                onSelect(theme.id);
+              }}
               className={`relative overflow-hidden rounded-xl border-2 p-0 text-start transition ${
                 isSelected
                   ? "border-indigo-600 ring-2 ring-indigo-600/30"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+              } ${isLocked ? "opacity-60 cursor-not-allowed" : ""}`}
             >
               {/* Mini mockup */}
               <div
@@ -504,6 +510,14 @@ export default function ThemePicker({
                     PRO
                   </span>
                 ) : null}
+
+                {isLocked && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-black/10">
+                    <div className="rounded-full bg-white/90 p-1.5 shadow">
+                      <Lock className="h-4 w-4 text-gray-500" />
+                    </div>
+                  </div>
+                )}
 
                 {/* Layout mini mockup */}
                 <div className="mt-3">

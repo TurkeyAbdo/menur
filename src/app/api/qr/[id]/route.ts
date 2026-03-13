@@ -11,7 +11,7 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -25,7 +25,7 @@ export async function DELETE(
     });
 
     if (!qrCode) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Not found", errorAr: "غير موجود" }, { status: 404 });
     }
 
     await prisma.qRCode.delete({ where: { id } });
@@ -33,6 +33,6 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (error) {
     logger.error("DELETE /api/qr error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }

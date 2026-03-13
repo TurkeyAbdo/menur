@@ -11,6 +11,7 @@ import {
   Share2,
   Save,
   Globe,
+  Lock,
 } from "lucide-react";
 import { useToast } from "@/components/Toast";
 
@@ -29,6 +30,7 @@ interface RestaurantData {
   twitter: string;
   tiktok: string;
   snapchat: string;
+  customDomain: string;
 }
 
 export default function SettingsPage() {
@@ -38,6 +40,7 @@ export default function SettingsPage() {
   const { toast } = useToast();
   const [restaurant, setRestaurant] = useState<RestaurantData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [tier, setTier] = useState<string>("FREE");
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
@@ -57,6 +60,7 @@ export default function SettingsPage() {
     twitter: "",
     tiktok: "",
     snapchat: "",
+    customDomain: "",
   };
 
   useEffect(() => {
@@ -70,6 +74,10 @@ export default function SettingsPage() {
         setRestaurant(emptyRestaurant);
         setLoading(false);
       });
+    fetch("/api/subscriptions")
+      .then((r) => r.json())
+      .then((d) => { if (d.subscription?.tier) setTier(d.subscription.tier); })
+      .catch(() => {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -397,6 +405,36 @@ export default function SettingsPage() {
               />
             </div>
           </div>
+        </div>
+
+        {/* Custom Domain */}
+        <div className="rounded-xl border border-gray-200 bg-white p-6">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+            <Globe className="h-5 w-5 text-indigo-600" />
+            {t("customDomainTitle")}
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">{t("customDomainDesc")}</p>
+          {tier === "PRO" || tier === "ENTERPRISE" ? (
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">
+                {t("customDomainLabel")}
+              </label>
+              <input
+                type="text"
+                value={restaurant?.customDomain || ""}
+                onChange={(e) => update("customDomain", e.target.value)}
+                placeholder="menu.myrestaurant.com"
+                className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+                dir="ltr"
+              />
+              <p className="mt-2 text-xs text-gray-400">{t("customDomainHint")}</p>
+            </div>
+          ) : (
+            <div className="mt-4 rounded-lg bg-gray-50 p-4 text-center">
+              <Lock className="mx-auto h-8 w-8 text-gray-300" />
+              <p className="mt-2 text-sm text-gray-500">{t("customDomainUpgrade")}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

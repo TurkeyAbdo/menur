@@ -42,7 +42,7 @@ export async function GET() {
     return NextResponse.json({ themes });
   } catch (error) {
     logger.error("GET /api/themes error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }
 
@@ -50,13 +50,13 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const tier = await getTierForUser(session.user.id);
     if (tier !== "ENTERPRISE") {
       return NextResponse.json(
-        { error: "Custom themes are available for Enterprise plan only", tierLimit: true },
+        { error: "Custom themes are available for Enterprise plan only", errorAr: "الثيمات المخصصة متاحة لباقة المؤسسات فقط", tierLimit: true },
         { status: 403 }
       );
     }
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!restaurant) {
-      return NextResponse.json({ error: "Restaurant not found" }, { status: 404 });
+      return NextResponse.json({ error: "Restaurant not found", errorAr: "المطعم غير موجود" }, { status: 404 });
     }
 
     const body = await req.json();
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
     if (!name || !config?.colors) {
       return NextResponse.json(
-        { error: "Name and colors are required" },
+        { error: "Name and colors are required", errorAr: "الاسم والألوان مطلوبة" },
         { status: 400 }
       );
     }
@@ -111,6 +111,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ theme }, { status: 201 });
   } catch (error) {
     logger.error("POST /api/themes error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }

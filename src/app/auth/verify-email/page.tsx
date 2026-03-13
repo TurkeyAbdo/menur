@@ -1,12 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function VerifyEmailPage() {
   const t = useTranslations("auth");
+  const locale = useLocale();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -30,7 +31,7 @@ export default function VerifyEmailPage() {
         } else {
           const data = await res.json();
           setStatus("error");
-          setErrorMessage(data.error || t("verifyEmailExpired"));
+          setErrorMessage((locale === "ar" ? data.errorAr || data.error : data.error) || t("verifyEmailExpired"));
         }
       })
       .catch(() => {

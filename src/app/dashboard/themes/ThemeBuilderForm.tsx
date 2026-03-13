@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/Toast";
+import { apiMsg } from "@/lib/api-error-msg";
 
 interface ThemeConfig {
   colors: Record<string, string>;
@@ -142,7 +143,7 @@ export default function ThemeBuilderForm({ initialData }: ThemeBuilderFormProps)
         toast("success", isEdit ? t("themeUpdated") : t("themeCreated"));
         router.push("/dashboard/themes");
       } else {
-        toast("error", data.error || tc("somethingWrong"));
+        toast("error", apiMsg(data, locale, tc("somethingWrong")));
       }
     } catch {
       toast("error", tc("somethingWrong"));

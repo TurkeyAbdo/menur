@@ -25,6 +25,7 @@ import Footer from "@/components/Footer";
 import { FadeUp, ScaleIn, staggerContainer, staggerItem } from "@/components/animations";
 import { FloatingElements } from "@/components/illustrations";
 import HeroAnimation from "@/components/HeroAnimation";
+import PWAInstallButton from "@/components/PWAInstallButton";
 
 function HeroSection() {
   const t = useTranslations("landing.hero");
@@ -58,6 +59,9 @@ function HeroSection() {
               <button className="rounded-xl border border-gray-200 px-8 py-3.5 text-base font-semibold text-gray-700 transition hover:bg-gray-50">
                 {t("secondaryCta")}
               </button>
+            </div>
+            <div className="mt-4 flex justify-center">
+              <PWAInstallButton />
             </div>
           </FadeUp>
 

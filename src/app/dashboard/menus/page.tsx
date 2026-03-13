@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Plus, Eye, Edit2, Trash2, UtensilsCrossed, Copy, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/Toast";
+import { apiMsg } from "@/lib/api-error-msg";
 
 interface MenuData {
   id: string;
@@ -48,7 +49,7 @@ export default function MenusPage() {
         setMenus((prev) => [data.menu, ...prev]);
         toast("success", t("menuDuplicated"));
       } else {
-        toast("error", data.error || t("menuDuplicateFailed"));
+        toast("error", apiMsg(data, locale, t("menuDuplicateFailed")));
       }
     } catch {
       toast("error", t("menuDuplicateFailed"));

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
       return NextResponse.json(
-        { error: "Not authenticated" },
+        { error: "Not authenticated", errorAr: "غير مسجل الدخول" },
         { status: 401 }
       );
     }
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     if (!user) {
       return NextResponse.json(
-        { error: "User not found" },
+        { error: "User not found", errorAr: "المستخدم غير موجود" },
         { status: 404 }
       );
     }
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("Resend verification error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

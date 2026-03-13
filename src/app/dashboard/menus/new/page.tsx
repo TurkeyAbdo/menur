@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useToast } from "@/components/Toast";
 import ThemePicker, { type ThemeOption } from "@/components/ThemePicker";
+import { apiMsg } from "@/lib/api-error-msg";
 
 interface LocationOption {
   id: string;
@@ -77,6 +78,7 @@ const emptyCategory = (): Category => ({
 export default function NewMenuPage() {
   const t = useTranslations("menu.builder");
   const tc = useTranslations("common");
+  const locale = useLocale();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -92,6 +94,7 @@ export default function NewMenuPage() {
   const [categories, setCategories] = useState<Category[]>([emptyCategory()]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [userTier, setUserTier] = useState<string>("FREE");
 
   useEffect(() => {
     fetch("/api/themes")
@@ -101,6 +104,10 @@ export default function NewMenuPage() {
     fetch("/api/locations")
       .then((r) => r.json())
       .then((data) => setLocations(data.locations || []))
+      .catch(() => {});
+    fetch("/api/subscriptions")
+      .then((r) => r.json())
+      .then((d) => { if (d.subscription?.tier) setUserTier(d.subscription.tier); })
       .catch(() => {});
   }, []);
 
@@ -265,10 +272,10 @@ export default function NewMenuPage() {
       if (!res.ok) {
         const data = await res.json();
         if (data.tierLimit) {
-          toast("error", data.error);
+          toast("error", apiMsg(data, locale));
           return;
         }
-        throw new Error(data.error || "Failed to save");
+        throw new Error(apiMsg(data, locale, "Failed to save"));
       }
 
       toast("success", status === "PUBLISHED" ? "Menu published!" : "Menu saved as draft");
@@ -383,6 +390,7 @@ export default function NewMenuPage() {
           selectedTheme={selectedTheme}
           onSelect={setSelectedTheme}
           label={t("selectTheme")}
+          userTier={userTier}
         />
 
         {/* Location assignment */}

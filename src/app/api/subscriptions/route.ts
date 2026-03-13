@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const subscription = await prisma.subscription.findUnique({
@@ -35,7 +35,7 @@ export async function GET() {
   } catch (error) {
     logger.error("GET /api/subscriptions error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -46,14 +46,14 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { tier } = await req.json();
 
     if (!["BASIC", "PRO", "ENTERPRISE"].includes(tier)) {
       return NextResponse.json(
-        { error: "Invalid tier" },
+        { error: "Invalid tier", errorAr: "خطة غير صالحة" },
         { status: 400 }
       );
     }
@@ -133,7 +133,7 @@ export async function POST(req: NextRequest) {
       const err = await moyasarRes.json();
       logger.error("Moyasar error", { error: String(err) });
       return NextResponse.json(
-        { error: "Payment initiation failed" },
+        { error: "Payment initiation failed", errorAr: "فشل بدء الدفع" },
         { status: 500 }
       );
     }
@@ -147,7 +147,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("POST /api/subscriptions error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -158,7 +158,7 @@ export async function PATCH(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { action } = await req.json();
@@ -204,11 +204,11 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ subscription, message: "Subscription cancelled" });
     }
 
-    return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid action", errorAr: "إجراء غير صالح" }, { status: 400 });
   } catch (error) {
     logger.error("PATCH /api/subscriptions error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

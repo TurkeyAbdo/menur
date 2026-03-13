@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const restaurant = await prisma.restaurant.findUnique({
@@ -34,7 +34,7 @@ export async function GET() {
   } catch (error) {
     logger.error("GET /api/menus error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     // Find or create restaurant
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
     const tierCheck = await checkTierLimit(session.user.id, "menus");
     if (!tierCheck.allowed) {
       return NextResponse.json(
-        { error: tierCheck.message, tierLimit: true },
+        { error: tierCheck.message, errorAr: tierCheck.messageAr, tierLimit: true },
         { status: 403 }
       );
     }
@@ -165,7 +165,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("POST /api/menus error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

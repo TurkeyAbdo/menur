@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const { qrCodeId } = await req.json();
 
     if (!qrCodeId) {
-      return NextResponse.json({ error: "Missing qrCodeId" }, { status: 400 });
+      return NextResponse.json({ error: "Missing qrCodeId", errorAr: "معرف رمز QR مفقود" }, { status: 400 });
     }
 
     const userAgent = req.headers.get("user-agent") || "";
@@ -27,6 +27,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ scan }, { status: 201 });
   } catch (error) {
     logger.error("POST /api/scan error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }

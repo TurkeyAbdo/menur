@@ -5,8 +5,8 @@ import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
-    const { error, status } = await requireAdmin();
-    if (error) return NextResponse.json({ error }, { status: status! });
+    const { error, errorAr, status } = await requireAdmin();
+    if (error) return NextResponse.json({ error, errorAr }, { status: status! });
 
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -75,7 +75,7 @@ export async function GET() {
   } catch (error) {
     logger.error("GET /api/admin/stats error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

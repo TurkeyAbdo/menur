@@ -11,7 +11,7 @@ export async function GET(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -34,14 +34,14 @@ export async function GET(
     });
 
     if (!menu || menu.restaurant.ownerId !== session.user.id) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Not found", errorAr: "غير موجود" }, { status: 404 });
     }
 
     return NextResponse.json({ menu });
   } catch (error) {
     logger.error("GET /api/menus/[id] error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -54,7 +54,7 @@ export async function PUT(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -66,7 +66,7 @@ export async function PUT(
     });
 
     if (!existing || existing.restaurant.ownerId !== session.user.id) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Not found", errorAr: "غير موجود" }, { status: 404 });
     }
 
     const body = await req.json();
@@ -160,7 +160,7 @@ export async function PUT(
   } catch (error) {
     logger.error("PUT /api/menus/[id] error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -173,7 +173,7 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -184,7 +184,7 @@ export async function DELETE(
     });
 
     if (!existing || existing.restaurant.ownerId !== session.user.id) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Not found", errorAr: "غير موجود" }, { status: 404 });
     }
 
     await prisma.menu.delete({ where: { id } });
@@ -193,7 +193,7 @@ export async function DELETE(
   } catch (error) {
     logger.error("DELETE /api/menus/[id] error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

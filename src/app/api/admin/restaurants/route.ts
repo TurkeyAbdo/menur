@@ -5,8 +5,8 @@ import { logger } from "@/lib/logger";
 
 export async function GET(request: NextRequest) {
   try {
-    const { error, status } = await requireAdmin();
-    if (error) return NextResponse.json({ error }, { status: status! });
+    const { error, errorAr, status } = await requireAdmin();
+    if (error) return NextResponse.json({ error, errorAr }, { status: status! });
 
     const { searchParams } = new URL(request.url);
     const search = searchParams.get("search") || "";
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     logger.error("GET /api/admin/restaurants error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

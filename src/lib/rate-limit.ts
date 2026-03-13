@@ -59,7 +59,7 @@ export function rateLimitByIp(
 
 export function rateLimitResponse() {
   return NextResponse.json(
-    { error: "Too many requests. Please try again later." },
+    { error: "Too many requests. Please try again later.", errorAr: "طلبات كثيرة جداً. يرجى المحاولة لاحقاً." },
     { status: 429, headers: { "Retry-After": "900" } }
   );
 }

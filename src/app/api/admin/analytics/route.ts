@@ -5,8 +5,8 @@ import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
-    const { error, status } = await requireAdmin();
-    if (error) return NextResponse.json({ error }, { status: status! });
+    const { error, errorAr, status } = await requireAdmin();
+    if (error) return NextResponse.json({ error, errorAr }, { status: status! });
 
     const now = new Date();
     const todayStart = new Date(
@@ -104,7 +104,7 @@ export async function GET() {
   } catch (error) {
     logger.error("GET /api/admin/analytics error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const restaurant = await prisma.restaurant.findUnique({
@@ -32,7 +32,7 @@ export async function GET() {
     return NextResponse.json({ qrCodes });
   } catch (error) {
     logger.error("GET /api/qr error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }
 
@@ -40,14 +40,14 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     // Check tier limits
     const tierCheck = await checkTierLimit(session.user.id, "qrCodes");
     if (!tierCheck.allowed) {
       return NextResponse.json(
-        { error: tierCheck.message, tierLimit: true },
+        { error: tierCheck.message, errorAr: tierCheck.messageAr, tierLimit: true },
         { status: 403 }
       );
     }
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!menu) {
-      return NextResponse.json({ error: "Menu not found" }, { status: 404 });
+      return NextResponse.json({ error: "Menu not found", errorAr: "القائمة غير موجودة" }, { status: 404 });
     }
 
     // Create QR code first to get its ID for the URL
@@ -91,6 +91,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ qrCode: updated }, { status: 201 });
   } catch (error) {
     logger.error("POST /api/qr error", { error: String(error) });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error", errorAr: "خطأ في الخادم" }, { status: 500 });
   }
 }

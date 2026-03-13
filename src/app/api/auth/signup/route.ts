@@ -15,14 +15,14 @@ export async function POST(req: NextRequest) {
 
     if (!email || !password || !name) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing required fields", errorAr: "حقول مطلوبة مفقودة" },
         { status: 400 }
       );
     }
 
     if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
+        { error: "Password must be at least 8 characters", errorAr: "كلمة المرور يجب أن تكون 8 أحرف على الأقل" },
         { status: 400 }
       );
     }
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "Email already registered" },
+        { error: "Email already registered", errorAr: "البريد الإلكتروني مسجل مسبقاً" },
         { status: 409 }
       );
     }
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("Signup error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

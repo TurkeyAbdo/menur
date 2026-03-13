@@ -6,8 +6,8 @@ import { logger } from "@/lib/logger";
 
 export async function GET(request: NextRequest) {
   try {
-    const { error, status } = await requireAdmin();
-    if (error) return NextResponse.json({ error }, { status: status! });
+    const { error, errorAr, status } = await requireAdmin();
+    if (error) return NextResponse.json({ error, errorAr }, { status: status! });
 
     const { searchParams } = new URL(request.url);
     const type = searchParams.get("type");
@@ -233,7 +233,7 @@ export async function GET(request: NextRequest) {
       filename = `platform-feedback-${new Date().toISOString().slice(0, 10)}.csv`;
     } else {
       return NextResponse.json(
-        { error: "Invalid report type" },
+        { error: "Invalid report type", errorAr: "نوع التقرير غير صالح" },
         { status: 400 }
       );
     }
@@ -251,7 +251,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     logger.error("GET /api/admin/reports error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

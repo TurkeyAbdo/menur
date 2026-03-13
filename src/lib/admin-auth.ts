@@ -6,12 +6,12 @@ export async function requireAdmin() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    return { error: "Unauthorized", status: 401, session: null };
+    return { error: "Unauthorized", errorAr: "غير مصرح", status: 401, session: null };
   }
 
   if (session.user.role !== Role.ADMIN) {
-    return { error: "Forbidden", status: 403, session: null };
+    return { error: "Forbidden", errorAr: "غير مسموح", status: 403, session: null };
   }
 
-  return { error: null, status: null, session };
+  return { error: null, errorAr: null, status: null, session };
 }

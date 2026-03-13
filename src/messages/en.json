@@ -35,7 +35,8 @@
     "change": "Change",
     "preview": "Preview",
     "somethingWrong": "Something went wrong",
-    "failedTo": "Failed to process request"
+    "failedTo": "Failed to process request",
+    "installApp": "Install App"
   },
   "nav": {
     "features": "Features",
@@ -604,7 +605,12 @@
     "to": "To",
     "noData": "No data available for this date range",
     "previewMode": "Preview Mode — This is how your menu looks to customers",
-    "openPublicLink": "Open Public Link"
+    "openPublicLink": "Open Public Link",
+    "customDomainTitle": "Custom Domain",
+    "customDomainDesc": "Use your own domain for your menu page",
+    "customDomainLabel": "Domain Name",
+    "customDomainHint": "Point a CNAME record to menur-wheat.vercel.app to activate",
+    "customDomainUpgrade": "Custom domain is available on Pro and Enterprise plans"
   },
   "menu": {
     "builder": {

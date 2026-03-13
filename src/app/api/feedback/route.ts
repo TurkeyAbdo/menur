@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
 
     if (!menuId || !rating || rating < 1 || rating > 5) {
       return NextResponse.json(
-        { error: "Menu ID and rating (1-5) are required" },
+        { error: "Menu ID and rating (1-5) are required", errorAr: "معرف القائمة والتقييم (1-5) مطلوب" },
         { status: 400 }
       );
     }
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (!menu) {
-      return NextResponse.json({ error: "Menu not found" }, { status: 404 });
+      return NextResponse.json({ error: "Menu not found", errorAr: "القائمة غير موجودة" }, { status: 404 });
     }
 
     const feedback = await prisma.customerFeedback.create({
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("POST /api/feedback error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
 
     if (!menuId) {
       return NextResponse.json(
-        { error: "menuId is required" },
+        { error: "menuId is required", errorAr: "معرف القائمة مطلوب" },
         { status: 400 }
       );
     }
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     logger.error("GET /api/feedback error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

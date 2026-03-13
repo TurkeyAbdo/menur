@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     if (!email) {
       return NextResponse.json(
-        { error: "Email is required" },
+        { error: "Email is required", errorAr: "البريد الإلكتروني مطلوب" },
         { status: 400 }
       );
     }
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("Forgot password error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

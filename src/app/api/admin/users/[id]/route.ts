@@ -9,8 +9,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { error, status, session } = await requireAdmin();
-    if (error) return NextResponse.json({ error }, { status: status! });
+    const { error, errorAr, status, session } = await requireAdmin();
+    if (error) return NextResponse.json({ error, errorAr }, { status: status! });
 
     const { id } = await params;
     const body = await request.json();
@@ -18,7 +18,7 @@ export async function PATCH(
 
     if (!role || !Object.values(Role).includes(role)) {
       return NextResponse.json(
-        { error: "Invalid role" },
+        { error: "Invalid role", errorAr: "دور غير صالح" },
         { status: 400 }
       );
     }
@@ -26,7 +26,7 @@ export async function PATCH(
     // Prevent admin from changing their own role
     if (id === session!.user.id) {
       return NextResponse.json(
-        { error: "Cannot change your own role" },
+        { error: "Cannot change your own role", errorAr: "لا يمكنك تغيير دورك الخاص" },
         { status: 400 }
       );
     }
@@ -46,7 +46,7 @@ export async function PATCH(
   } catch (error) {
     logger.error("PATCH /api/admin/users/[id] error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

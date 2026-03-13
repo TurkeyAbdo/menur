@@ -14,14 +14,14 @@ export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const formData = await req.formData();
     const file = formData.get("file") as File;
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return NextResponse.json({ error: "No file provided", errorAr: "لم يتم تحديد ملف" }, { status: 400 });
     }
 
     // Convert to buffer
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     logger.error("Upload error", { error: String(error) });
     return NextResponse.json(
-      { error: "Upload failed" },
+      { error: "Upload failed", errorAr: "فشل الرفع" },
       { status: 500 }
     );
   }

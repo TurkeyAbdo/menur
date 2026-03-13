@@ -12,7 +12,7 @@ export async function POST(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized", errorAr: "غير مصرح" }, { status: 401 });
     }
 
     const { id } = await params;
@@ -35,14 +35,14 @@ export async function POST(
     });
 
     if (!original || original.restaurant.ownerId !== session.user.id) {
-      return NextResponse.json({ error: "Not found" }, { status: 404 });
+      return NextResponse.json({ error: "Not found", errorAr: "غير موجود" }, { status: 404 });
     }
 
     // Check tier limits
     const tierCheck = await checkTierLimit(session.user.id, "menus");
     if (!tierCheck.allowed) {
       return NextResponse.json(
-        { error: tierCheck.message, tierLimit: true },
+        { error: tierCheck.message, errorAr: tierCheck.messageAr, tierLimit: true },
         { status: 403 }
       );
     }
@@ -102,7 +102,7 @@ export async function POST(
   } catch (error) {
     logger.error("POST /api/menus/[id]/duplicate error", { error: String(error) });
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: "Internal server error", errorAr: "خطأ في الخادم" },
       { status: 500 }
     );
   }

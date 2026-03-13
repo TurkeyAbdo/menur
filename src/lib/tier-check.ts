@@ -7,6 +7,7 @@ interface TierCheckResult {
   limit: number | typeof Infinity;
   current: number;
   message?: string;
+  messageAr?: string;
 }
 
 export async function checkTierLimit(
@@ -71,6 +72,9 @@ export async function checkTierLimit(
     message: allowed
       ? undefined
       : `You've reached the ${resource} limit for the ${tier} plan (${limit}). Upgrade to add more.`,
+    messageAr: allowed
+      ? undefined
+      : `لقد وصلت إلى الحد الأقصى لـ ${resource} في خطة ${tier} (${limit}). قم بالترقية لإضافة المزيد.`,
   };
 }
 
