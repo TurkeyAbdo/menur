@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export async function GET(
   req: NextRequest,
@@ -19,6 +20,7 @@ export async function GET(
       where: { id },
       include: {
         restaurant: { select: { ownerId: true } },
+        location: { select: { id: true, name: true, nameAr: true } },
         categories: {
           orderBy: { sortOrder: "asc" },
           include: {
@@ -37,7 +39,7 @@ export async function GET(
 
     return NextResponse.json({ menu });
   } catch (error) {
-    console.error("GET /api/menus/[id] error:", error);
+    logger.error("GET /api/menus/[id] error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -68,7 +70,7 @@ export async function PUT(
     }
 
     const body = await req.json();
-    const { name, nameAr, description, descriptionAr, layout, status, themeId, categories } = body;
+    const { name, nameAr, description, descriptionAr, layout, status, themeId, locationId, categories } = body;
 
     // Delete old categories (cascade deletes items and variants)
     await prisma.category.deleteMany({ where: { menuId: id } });
@@ -84,6 +86,7 @@ export async function PUT(
         layout: layout || "SCROLLABLE",
         status: status || "DRAFT",
         themeId: themeId || null,
+        locationId: locationId || null,
         categories: {
           create: (categories || []).map(
             (cat: {
@@ -155,7 +158,7 @@ export async function PUT(
 
     return NextResponse.json({ menu });
   } catch (error) {
-    console.error("PUT /api/menus/[id] error:", error);
+    logger.error("PUT /api/menus/[id] error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -188,7 +191,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("DELETE /api/menus/[id] error:", error);
+    logger.error("DELETE /api/menus/[id] error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

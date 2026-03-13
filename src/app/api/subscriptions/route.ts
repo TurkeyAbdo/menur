@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { TIER_PRICING, TierKey } from "@/lib/tiers";
+import { logger } from "@/lib/logger";
 
 // GET current subscription
 export async function GET() {
@@ -32,7 +33,7 @@ export async function GET() {
 
     return NextResponse.json({ subscription });
   } catch (error) {
-    console.error("GET /api/subscriptions error:", error);
+    logger.error("GET /api/subscriptions error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -130,7 +131,7 @@ export async function POST(req: NextRequest) {
 
     if (!moyasarRes.ok) {
       const err = await moyasarRes.json();
-      console.error("Moyasar error:", err);
+      logger.error("Moyasar error", { error: String(err) });
       return NextResponse.json(
         { error: "Payment initiation failed" },
         { status: 500 }
@@ -144,7 +145,7 @@ export async function POST(req: NextRequest) {
       invoiceId: invoice.id,
     });
   } catch (error) {
-    console.error("POST /api/subscriptions error:", error);
+    logger.error("POST /api/subscriptions error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -205,7 +206,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
   } catch (error) {
-    console.error("PATCH /api/subscriptions error:", error);
+    logger.error("PATCH /api/subscriptions error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

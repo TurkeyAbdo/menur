@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
 import { toCsv } from "@/lib/csv";
+import { logger } from "@/lib/logger";
 
 export async function GET(request: NextRequest) {
   try {
@@ -248,7 +249,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("GET /api/admin/reports error:", error);
+    logger.error("GET /api/admin/reports error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

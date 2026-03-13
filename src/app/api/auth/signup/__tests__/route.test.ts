@@ -4,6 +4,14 @@ import bcrypt from "bcryptjs";
 vi.mock("@/lib/db");
 vi.mock("@/lib/email", () => ({
   sendWelcomeEmail: vi.fn().mockResolvedValue(undefined),
+  sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock("@/lib/tokens", () => ({
+  generateVerificationToken: vi.fn().mockResolvedValue({ token: "ver-tok" }),
+}));
+vi.mock("@/lib/rate-limit", () => ({
+  rateLimitByIp: vi.fn().mockReturnValue({ success: true, remaining: 4 }),
+  rateLimitResponse: vi.fn(),
 }));
 
 import { prisma } from "@/lib/db";

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
 import { Role } from "@prisma/client";
+import { logger } from "@/lib/logger";
 
 export async function PATCH(
   request: NextRequest,
@@ -43,7 +44,7 @@ export async function PATCH(
 
     return NextResponse.json(user);
   } catch (error) {
-    console.error("PATCH /api/admin/users/[id] error:", error);
+    logger.error("PATCH /api/admin/users/[id] error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { logger } from "@/lib/logger";
 
 const FROM_EMAIL = "Menur <onboarding@resend.dev>";
 
@@ -25,14 +26,14 @@ export async function sendEmail({ to, subject, html }: EmailOptions): Promise<bo
     });
 
     if (error) {
-      console.error("[EMAIL] Failed to send:", error);
+      logger.error("[EMAIL] Failed to send", { error: String(error) });
       return false;
     }
 
     console.log(`[EMAIL] Sent to ${to}: ${subject}`);
     return true;
   } catch (err) {
-    console.error("[EMAIL] Error:", err);
+    logger.error("[EMAIL] Error", { error: String(err) });
     return false;
   }
 }
@@ -138,6 +139,72 @@ export async function sendSubscriptionExpiredEmail(
               Resubscribe Now
             </a>
           </div>
+        </div>
+        <div style="padding: 16px 24px; background: #f9fafb; text-align: center; color: #9ca3af; font-size: 12px; border-radius: 0 0 12px 12px;">
+          Menur - Digital Menu Platform
+        </div>
+      </div>
+    `,
+  });
+}
+
+export async function sendVerificationEmail(email: string, token: string): Promise<boolean> {
+  const url = `${process.env.NEXTAUTH_URL || ""}/auth/verify-email?token=${token}`;
+  return sendEmail({
+    to: email,
+    subject: "Verify your email - Menur | تأكيد بريدك الإلكتروني",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background: #4f46e5; padding: 24px; text-align: center; border-radius: 12px 12px 0 0;">
+          <h1 style="color: white; margin: 0;">Menur</h1>
+        </div>
+        <div style="padding: 32px 24px; background: #ffffff;">
+          <h2 style="color: #111827; margin: 0 0 8px;">Verify your email address</h2>
+          <p style="color: #6b7280; line-height: 1.6;">
+            Click the button below to verify your email. This link expires in 24 hours.
+          </p>
+          <div style="text-align: center; margin-top: 24px;">
+            <a href="${url}"
+               style="display: inline-block; background: #4f46e5; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Verify Email
+            </a>
+          </div>
+          <p style="color: #9ca3af; font-size: 12px; margin-top: 24px;">
+            If you didn't create an account, you can safely ignore this email.
+          </p>
+        </div>
+        <div style="padding: 16px 24px; background: #f9fafb; text-align: center; color: #9ca3af; font-size: 12px; border-radius: 0 0 12px 12px;">
+          Menur - Digital Menu Platform
+        </div>
+      </div>
+    `,
+  });
+}
+
+export async function sendPasswordResetEmail(email: string, token: string): Promise<boolean> {
+  const url = `${process.env.NEXTAUTH_URL || ""}/auth/reset-password?token=${token}`;
+  return sendEmail({
+    to: email,
+    subject: "Reset your password - Menur | إعادة تعيين كلمة المرور",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background: #4f46e5; padding: 24px; text-align: center; border-radius: 12px 12px 0 0;">
+          <h1 style="color: white; margin: 0;">Menur</h1>
+        </div>
+        <div style="padding: 32px 24px; background: #ffffff;">
+          <h2 style="color: #111827; margin: 0 0 8px;">Reset your password</h2>
+          <p style="color: #6b7280; line-height: 1.6;">
+            Click the button below to reset your password. This link expires in 1 hour.
+          </p>
+          <div style="text-align: center; margin-top: 24px;">
+            <a href="${url}"
+               style="display: inline-block; background: #4f46e5; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+              Reset Password
+            </a>
+          </div>
+          <p style="color: #9ca3af; font-size: 12px; margin-top: 24px;">
+            If you didn't request a password reset, you can safely ignore this email.
+          </p>
         </div>
         <div style="padding: 16px 24px; background: #f9fafb; text-align: center; color: #9ca3af; font-size: 12px; border-radius: 0 0 12px 12px;">
           Menur - Digital Menu Platform

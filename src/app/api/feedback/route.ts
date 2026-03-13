@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export async function POST(req: NextRequest) {
   try {
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ feedback }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/feedback error:", error);
+    logger.error("POST /api/feedback error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -71,7 +72,7 @@ export async function GET(req: NextRequest) {
       total,
     });
   } catch (error) {
-    console.error("GET /api/feedback error:", error);
+    logger.error("GET /api/feedback error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

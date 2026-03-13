@@ -21,7 +21,7 @@ function LanguageSwitcher() {
   return (
     <button
       onClick={() => switchLocale(locale === "ar" ? "en" : "ar")}
-      className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 transition hover:bg-gray-50"
+      className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 transition hover:bg-gray-50"
     >
       <Globe className="h-4 w-4" />
       <span>{locale === "ar" ? "EN" : "\u0639\u0631\u0628\u064A"}</span>

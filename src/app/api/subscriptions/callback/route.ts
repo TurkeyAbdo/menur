@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { TIER_PRICING, TierKey } from "@/lib/tiers";
+import { logger } from "@/lib/logger";
 
 // Moyasar payment callback (webhook)
 export async function GET(req: NextRequest) {
@@ -97,7 +98,7 @@ export async function GET(req: NextRequest) {
       new URL("/dashboard/billing?success=true", req.url)
     );
   } catch (error) {
-    console.error("Subscription callback error:", error);
+    logger.error("Subscription callback error", { error: String(error) });
     return NextResponse.redirect(
       new URL("/dashboard/billing?error=server_error", req.url)
     );

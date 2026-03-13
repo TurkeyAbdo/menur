@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { v2 as cloudinary } from "cloudinary";
+import { logger } from "@/lib/logger";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -55,7 +56,7 @@ export async function POST(req: NextRequest) {
       publicId: result.public_id,
     });
   } catch (error) {
-    console.error("Upload error:", error);
+    logger.error("Upload error", { error: String(error) });
     return NextResponse.json(
       { error: "Upload failed" },
       { status: 500 }

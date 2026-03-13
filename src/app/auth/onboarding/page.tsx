@@ -223,6 +223,8 @@ export default function OnboardingPage() {
           body: JSON.stringify({
             name: data.restaurantName,
             nameAr: data.language === "ar" ? data.restaurantName : null,
+            cuisine: data.cuisine,
+            city: data.city,
           }),
         });
       } catch {
@@ -603,7 +605,7 @@ export default function OnboardingPage() {
                   onClick={goBack}
                   className="flex items-center gap-1 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
                   {t("back")}
                 </button>
               )}
@@ -623,7 +625,7 @@ export default function OnboardingPage() {
                   className="flex items-center gap-1 rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-indigo-700"
                 >
                   {t("next")}
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4 rtl:rotate-180" />
                 </button>
               ) : (
                 <button

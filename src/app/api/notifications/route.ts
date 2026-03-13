@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export async function GET(req: NextRequest) {
   try {
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
       totalPages: Math.ceil(total / limit),
     });
   } catch (error) {
-    console.error("GET /api/notifications error:", error);
+    logger.error("GET /api/notifications error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -73,7 +74,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("PATCH /api/notifications error:", error);
+    logger.error("PATCH /api/notifications error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

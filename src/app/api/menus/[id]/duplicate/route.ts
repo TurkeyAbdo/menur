@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { checkTierLimit } from "@/lib/tier-check";
+import { logger } from "@/lib/logger";
 
 export async function POST(
   req: NextRequest,
@@ -99,7 +100,7 @@ export async function POST(
 
     return NextResponse.json({ menu: duplicate }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/menus/[id]/duplicate error:", error);
+    logger.error("POST /api/menus/[id]/duplicate error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

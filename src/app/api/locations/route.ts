@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { checkTierLimit } from "@/lib/tier-check";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -26,7 +27,7 @@ export async function GET() {
 
     return NextResponse.json({ locations });
   } catch (error) {
-    console.error("GET /api/locations error:", error);
+    logger.error("GET /api/locations error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -93,7 +94,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ location }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/locations error:", error);
+    logger.error("POST /api/locations error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

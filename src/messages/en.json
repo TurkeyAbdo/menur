@@ -277,12 +277,32 @@
     "facebook": "Facebook",
     "loginButton": "Log In",
     "signupButton": "Sign Up",
+    "verifyEmail": "Verifying your email",
+    "verifyEmailSent": "We've sent a verification link to your email",
+    "verifyEmailSuccess": "Email verified successfully!",
+    "verifyEmailExpired": "Verification link has expired or is invalid",
+    "resendVerification": "Resend verification email",
+    "verificationResent": "Verification email resent",
+    "forgotPasswordTitle": "Forgot Password",
+    "forgotPasswordDescription": "Enter your email and we'll send you a reset link",
+    "sendResetLink": "Send Reset Link",
+    "resetLinkSent": "If an account exists with that email, we've sent a reset link",
+    "resetPasswordTitle": "Reset Password",
+    "resetPasswordButton": "Reset Password",
+    "newPassword": "New Password",
+    "resetPasswordSuccess": "Password reset successfully. You can now log in.",
+    "resetPasswordExpired": "Reset link has expired or is invalid. Please request a new one.",
+    "backToLogin": "Back to Login",
+    "goToDashboard": "Go to Dashboard",
     "errors": {
       "invalidEmail": "Invalid email address",
       "passwordMin": "Password must be at least 8 characters",
       "passwordMismatch": "Passwords do not match",
       "invalidCredentials": "Invalid credentials",
-      "emailExists": "Email already registered"
+      "emailExists": "Email already registered",
+      "tooManyRequests": "Too many requests. Please try again later.",
+      "somethingWrong": "Something went wrong. Please try again.",
+      "oauthAccountNotLinked": "This email is already registered. Please sign in with your original method."
     }
   },
   "onboarding": {
@@ -579,7 +599,12 @@
     "last30Days": "Last 30 Days",
     "last90Days": "Last 90 Days",
     "allTime": "All Time",
-    "noData": "No data available for this date range"
+    "customRange": "Custom Range",
+    "from": "From",
+    "to": "To",
+    "noData": "No data available for this date range",
+    "previewMode": "Preview Mode — This is how your menu looks to customers",
+    "openPublicLink": "Open Public Link"
   },
   "menu": {
     "builder": {
@@ -588,6 +613,9 @@
       "menuDescription": "Menu Description",
       "selectTheme": "Select Theme",
       "selectLayout": "Select Layout",
+      "assignLocation": "Assign to Location",
+      "allLocations": "All Locations (no specific branch)",
+      "locationHint": "Optionally assign this menu to a specific branch",
       "scrollable": "Single Scrollable Page",
       "tabbed": "Multi-Tab Layout",
       "addCategory": "Add Category",

@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db";
-import { sendWelcomeEmail } from "@/lib/email";
+import { sendWelcomeEmail, sendVerificationEmail } from "@/lib/email";
+import { generateVerificationToken } from "@/lib/tokens";
+import { rateLimitByIp, rateLimitResponse } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
 
 export async function POST(req: NextRequest) {
+  const { success } = rateLimitByIp(req, 5, 15 * 60 * 1000, "signup");
+  if (!success) return rateLimitResponse();
+
   try {
     const { email, password, name } = await req.json();
 
@@ -63,15 +69,20 @@ export async function POST(req: NextRequest) {
 
     // Send welcome email (non-blocking)
     sendWelcomeEmail(name, email).catch((err) =>
-      console.error("Failed to send welcome email:", err)
+      logger.error("Failed to send welcome email", { error: String(err) })
     );
+
+    // Send verification email (non-blocking)
+    generateVerificationToken(email)
+      .then(({ token }) => sendVerificationEmail(email, token))
+      .catch((err) => logger.error("Failed to send verification email", { error: String(err) }));
 
     return NextResponse.json(
       { message: "Account created successfully", userId: user.id },
       { status: 201 }
     );
   } catch (error) {
-    console.error("Signup error:", error);
+    logger.error("Signup error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import {
   LayoutDashboard,
   Store,
@@ -15,6 +15,7 @@ import {
   Menu,
   X,
   ShieldCheck,
+  Globe,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
@@ -110,6 +111,29 @@ function Sidebar({
   );
 }
 
+function LanguageSwitcher() {
+  const locale = useLocale();
+  const tc = useTranslations("common");
+
+  const switchLocale = (newLocale: string) => {
+    document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
+    window.location.reload();
+  };
+
+  const targetLocale = locale === "ar" ? "en" : "ar";
+  const label = locale === "ar" ? tc("english") : tc("arabic");
+
+  return (
+    <button
+      onClick={() => switchLocale(targetLocale)}
+      className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-50"
+    >
+      <Globe className="h-4 w-4" />
+      {label}
+    </button>
+  );
+}
+
 export default function AdminShell({
   children,
 }: {
@@ -151,13 +175,16 @@ export default function AdminShell({
         <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         <div className="lg:ps-64">
-          <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-gray-200 bg-white px-4 lg:px-8">
+          <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 lg:px-8">
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden"
             >
               <Menu className="h-6 w-6 text-gray-600" />
             </button>
+            <div className="ms-auto">
+              <LanguageSwitcher />
+            </div>
           </header>
 
           <main className="p-4 lg:p-8">{children}</main>

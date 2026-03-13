@@ -628,7 +628,7 @@ function renderItemCards(
           height={112}
           className="h-28 w-28 shrink-0 rounded-xl object-cover"
           loading="lazy"
-          unoptimized
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       )}
       <div className="flex-1">
@@ -696,7 +696,7 @@ function renderItemGrid(
           height={144}
           className="h-36 w-full object-cover"
           loading="lazy"
-          unoptimized
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       )}
       <div className="p-3">
@@ -766,7 +766,7 @@ function renderItemCompact(
           height={48}
           className="h-12 w-12 shrink-0 rounded-full object-cover"
           loading="lazy"
-          unoptimized
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       )}
       <div className="min-w-0 flex-1">
@@ -830,7 +830,7 @@ function renderItemOverlay(
             fill
             className="absolute inset-0 h-full w-full object-cover"
             loading="lazy"
-            unoptimized
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
           <div
             className="absolute inset-0"
@@ -933,7 +933,7 @@ function renderItemMagazine(
             height={192}
             className="h-48 w-full object-cover"
             loading="lazy"
-            unoptimized
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         )}
         <div className="p-4">
@@ -992,7 +992,7 @@ function renderItemMagazine(
           height={64}
           className="h-16 w-16 shrink-0 rounded-lg object-cover"
           loading="lazy"
-          unoptimized
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       )}
       <div className="min-w-0 flex-1">
@@ -1105,7 +1105,7 @@ function ItemDetailModal({
             height={256}
             className="max-h-64 w-full object-cover"
             loading="lazy"
-            unoptimized
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         )}
 
@@ -1527,7 +1527,7 @@ export default function MenuDisplay({ restaurant, menu, theme, showBadge = true,
             width={80}
             height={80}
             className="mx-auto h-20 w-20 rounded-full object-cover"
-            unoptimized
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         )}
         <h1 className="mt-3 text-2xl font-bold">

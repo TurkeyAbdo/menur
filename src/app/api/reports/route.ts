@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { toCsv } from "@/lib/csv";
+import { logger } from "@/lib/logger";
 
 export async function GET(request: NextRequest) {
   try {
@@ -215,7 +216,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("GET /api/reports error:", error);
+    logger.error("GET /api/reports error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

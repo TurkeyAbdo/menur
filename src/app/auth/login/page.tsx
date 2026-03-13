@@ -4,12 +4,17 @@ import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
+  const searchParams = useSearchParams();
+  const urlError = searchParams.get("error");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    urlError === "OAuthAccountNotLinked" ? t("errors.oauthAccountNotLinked") : ""
+  );
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,6 +87,15 @@ export default function LoginPage() {
               className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
               dir="ltr"
             />
+          </div>
+
+          <div className="flex justify-end">
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              {t("forgotPassword")}
+            </Link>
           </div>
 
           <button

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -17,7 +18,7 @@ export async function GET() {
 
     return NextResponse.json({ restaurant });
   } catch (error) {
-    console.error("GET /api/restaurant error:", error);
+    logger.error("GET /api/restaurant error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -40,6 +41,7 @@ export async function PUT(req: NextRequest) {
         name: body.name,
         nameAr: body.nameAr,
         logo: body.logo || null,
+        cuisine: body.cuisine,
         description: body.description,
         descriptionAr: body.descriptionAr,
         phone: body.phone,
@@ -54,6 +56,7 @@ export async function PUT(req: NextRequest) {
         name: body.name || "My Restaurant",
         nameAr: body.nameAr,
         logo: body.logo || null,
+        cuisine: body.cuisine,
         slug: `restaurant-${session.user.id.slice(0, 8)}`,
         description: body.description,
         descriptionAr: body.descriptionAr,
@@ -68,9 +71,27 @@ export async function PUT(req: NextRequest) {
       },
     });
 
+    // Create default location from onboarding city if provided and no locations exist
+    if (body.city && restaurant) {
+      const locationCount = await prisma.location.count({
+        where: { restaurantId: restaurant.id },
+      });
+      if (locationCount === 0) {
+        await prisma.location.create({
+          data: {
+            name: body.name || "Main Branch",
+            nameAr: body.nameAr || "الفرع الرئيسي",
+            address: body.city,
+            city: body.city,
+            restaurantId: restaurant.id,
+          },
+        });
+      }
+    }
+
     return NextResponse.json({ restaurant });
   } catch (error) {
-    console.error("PUT /api/restaurant error:", error);
+    logger.error("PUT /api/restaurant error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

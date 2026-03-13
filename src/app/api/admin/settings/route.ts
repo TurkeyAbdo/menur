@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin-auth";
 import { prisma } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -30,7 +31,7 @@ export async function GET() {
       maintenanceMode: settings.maintenanceMode,
     });
   } catch (error) {
-    console.error("GET /api/admin/settings error:", error);
+    logger.error("GET /api/admin/settings error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -69,7 +70,7 @@ export async function PUT(request: NextRequest) {
       maintenanceMode: settings.maintenanceMode,
     });
   } catch (error) {
-    console.error("PUT /api/admin/settings error:", error);
+    logger.error("PUT /api/admin/settings error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

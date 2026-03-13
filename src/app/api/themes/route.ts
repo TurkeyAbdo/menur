@@ -3,8 +3,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getTierForUser } from "@/lib/tier-check";
+import { logger } from "@/lib/logger";
 
-export async function GET(_req: NextRequest) {
+export async function GET() {
   try {
     const session = await getServerSession(authOptions);
     let restaurantId: string | null = null;
@@ -40,7 +41,7 @@ export async function GET(_req: NextRequest) {
 
     return NextResponse.json({ themes });
   } catch (error) {
-    console.error("GET /api/themes error:", error);
+    logger.error("GET /api/themes error", { error: String(error) });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
@@ -109,7 +110,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ theme }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/themes error:", error);
+    logger.error("POST /api/themes error", { error: String(error) });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

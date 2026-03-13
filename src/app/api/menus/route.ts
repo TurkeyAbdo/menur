@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { checkTierLimit } from "@/lib/tier-check";
+import { logger } from "@/lib/logger";
 
 export async function GET() {
   try {
@@ -24,13 +25,14 @@ export async function GET() {
       include: {
         _count: { select: { categories: true } },
         theme: { select: { name: true, nameAr: true } },
+        location: { select: { id: true, name: true, nameAr: true } },
       },
       orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json({ menus });
   } catch (error) {
-    console.error("GET /api/menus error:", error);
+    logger.error("GET /api/menus error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -73,7 +75,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { name, nameAr, description, descriptionAr, layout, status, themeId, categories } = body;
+    const { name, nameAr, description, descriptionAr, layout, status, themeId, locationId, categories } = body;
 
     const menu = await prisma.menu.create({
       data: {
@@ -84,6 +86,7 @@ export async function POST(req: NextRequest) {
         layout: layout || "SCROLLABLE",
         status: status || "DRAFT",
         themeId: themeId || null,
+        locationId: locationId || null,
         restaurantId: restaurant.id,
         categories: {
           create: (categories || []).map(
@@ -160,7 +163,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ menu }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/menus error:", error);
+    logger.error("POST /api/menus error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

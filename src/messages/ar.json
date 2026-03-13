@@ -208,12 +208,32 @@
     "facebook": "Facebook",
     "loginButton": "تسجيل الدخول",
     "signupButton": "إنشاء حساب",
+    "verifyEmail": "جاري التحقق من بريدك الإلكتروني",
+    "verifyEmailSent": "تم إرسال رابط التحقق إلى بريدك الإلكتروني",
+    "verifyEmailSuccess": "تم التحقق من البريد الإلكتروني بنجاح!",
+    "verifyEmailExpired": "رابط التحقق منتهي الصلاحية أو غير صالح",
+    "resendVerification": "إعادة إرسال بريد التحقق",
+    "verificationResent": "تم إعادة إرسال بريد التحقق",
+    "forgotPasswordTitle": "نسيت كلمة المرور",
+    "forgotPasswordDescription": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين",
+    "sendResetLink": "إرسال رابط إعادة التعيين",
+    "resetLinkSent": "إذا كان هناك حساب بهذا البريد الإلكتروني، فقد تم إرسال رابط إعادة التعيين",
+    "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+    "resetPasswordButton": "إعادة تعيين كلمة المرور",
+    "newPassword": "كلمة المرور الجديدة",
+    "resetPasswordSuccess": "تم إعادة تعيين كلمة المرور بنجاح. يمكنك الآن تسجيل الدخول.",
+    "resetPasswordExpired": "رابط إعادة التعيين منتهي الصلاحية أو غير صالح. يرجى طلب رابط جديد.",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "goToDashboard": "الذهاب للوحة التحكم",
     "errors": {
       "invalidEmail": "البريد الإلكتروني غير صالح",
       "passwordMin": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
       "passwordMismatch": "كلمات المرور غير متطابقة",
       "invalidCredentials": "بيانات الدخول غير صحيحة",
-      "emailExists": "البريد الإلكتروني مسجل مسبقاً"
+      "emailExists": "البريد الإلكتروني مسجل مسبقاً",
+      "tooManyRequests": "طلبات كثيرة جداً. يرجى المحاولة لاحقاً.",
+      "somethingWrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "oauthAccountNotLinked": "هذا البريد الإلكتروني مسجل مسبقاً. يرجى تسجيل الدخول بالطريقة الأصلية."
     }
   },
   "onboarding": {
@@ -510,7 +530,12 @@
     "last30Days": "آخر 30 يوم",
     "last90Days": "آخر 90 يوم",
     "allTime": "كل الوقت",
-    "noData": "لا توجد بيانات لهذا النطاق الزمني"
+    "customRange": "نطاق مخصص",
+    "from": "من",
+    "to": "إلى",
+    "noData": "لا توجد بيانات لهذا النطاق الزمني",
+    "previewMode": "وضع المعاينة — هكذا تظهر قائمتك للعملاء",
+    "openPublicLink": "فتح الرابط العام"
   },
   "menu": {
     "builder": {
@@ -519,6 +544,9 @@
       "menuDescription": "وصف القائمة",
       "selectTheme": "اختر القالب",
       "selectLayout": "اختر التخطيط",
+      "assignLocation": "تعيين للفرع",
+      "allLocations": "جميع الفروع (بدون فرع محدد)",
+      "locationHint": "اختياري: تعيين هذه القائمة لفرع محدد",
       "scrollable": "صفحة واحدة قابلة للتمرير",
       "tabbed": "تبويبات متعددة",
       "addCategory": "إضافة تصنيف",

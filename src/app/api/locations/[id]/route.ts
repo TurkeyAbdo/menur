@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { logger } from "@/lib/logger";
 
 export async function PUT(
   req: NextRequest,
@@ -45,7 +46,7 @@ export async function PUT(
 
     return NextResponse.json({ location: updated });
   } catch (error) {
-    console.error("PUT /api/locations/[id] error:", error);
+    logger.error("PUT /api/locations/[id] error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -78,7 +79,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("DELETE /api/locations/[id] error:", error);
+    logger.error("DELETE /api/locations/[id] error", { error: String(error) });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

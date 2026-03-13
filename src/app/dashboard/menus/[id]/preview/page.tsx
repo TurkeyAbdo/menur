@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import MenuDisplay from "@/app/menu/[slug]/MenuDisplay";
+import { getTranslations } from "next-intl/server";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -12,6 +13,7 @@ export default async function MenuPreviewPage({ params }: Props) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) redirect("/login");
 
+  const t = await getTranslations("dashboard");
   const { id } = await params;
 
   const menu = await prisma.menu.findUnique({
@@ -77,14 +79,14 @@ export default async function MenuPreviewPage({ params }: Props) {
       {/* Preview banner */}
       <div className="sticky top-16 z-20 flex items-center justify-between bg-amber-50 border-b border-amber-200 px-4 py-2">
         <span className="text-sm font-medium text-amber-800">
-          Preview Mode — This is how your menu looks to customers
+          {t("previewMode")}
         </span>
         <a
           href={`/menu/${restaurant.slug}?menu=${menu.id}`}
           target="_blank"
           className="rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-700"
         >
-          Open Public Link
+          {t("openPublicLink")}
         </a>
       </div>
 

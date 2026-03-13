@@ -42,14 +42,35 @@ export default function SettingsPage() {
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
 
+  const emptyRestaurant: RestaurantData = {
+    id: "",
+    name: "",
+    nameAr: "",
+    slug: "",
+    logo: "",
+    description: "",
+    descriptionAr: "",
+    phone: "",
+    email: "",
+    website: "",
+    instagram: "",
+    twitter: "",
+    tiktok: "",
+    snapchat: "",
+  };
+
   useEffect(() => {
     fetch("/api/restaurant")
       .then((res) => res.json())
       .then((data) => {
-        setRestaurant(data.restaurant || null);
+        setRestaurant(data.restaurant || emptyRestaurant);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setRestaurant(emptyRestaurant);
+        setLoading(false);
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSave = async () => {

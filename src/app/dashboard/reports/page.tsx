@@ -11,6 +11,7 @@ import {
   MessageSquare,
   UtensilsCrossed,
   Loader2,
+  CalendarDays,
 } from "lucide-react";
 import ReportRenderer, {
   type ReportStat,
@@ -18,13 +19,13 @@ import ReportRenderer, {
 } from "@/components/ReportRenderer";
 import { exportAsPdf, exportAsImage } from "@/lib/export-report";
 
-type DatePreset = "today" | "7d" | "30d" | "90d" | "all";
+type DatePreset = "today" | "7d" | "30d" | "90d" | "all" | "custom";
 
-function getDateRange(preset: DatePreset): { from: string; to: string } {
+function getPresetDateRange(preset: DatePreset): { from: string; to: string } {
   const now = new Date();
   const to = now.toISOString().split("T")[0];
 
-  if (preset === "all") return { from: "", to: "" };
+  if (preset === "all" || preset === "custom") return { from: "", to: "" };
 
   const fromDate = new Date(now);
   if (preset === "today") {
@@ -62,7 +63,18 @@ function waitForPaint(): Promise<void> {
 export default function DashboardReportsPage() {
   const t = useTranslations("dashboard");
   const [activePreset, setActivePreset] = useState<DatePreset>("30d");
+  const [customFrom, setCustomFrom] = useState("");
+  const [customTo, setCustomTo] = useState("");
   const [downloading, setDownloading] = useState<string | null>(null);
+
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  const getDateRange = (): { from: string; to: string } => {
+    if (activePreset === "custom") {
+      return { from: customFrom, to: customTo };
+    }
+    return getPresetDateRange(activePreset);
+  };
 
   const presets: { key: DatePreset; label: string }[] = [
     { key: "today", label: t("today") },
@@ -70,6 +82,7 @@ export default function DashboardReportsPage() {
     { key: "30d", label: t("last30Days") },
     { key: "90d", label: t("last90Days") },
     { key: "all", label: t("allTime") },
+    { key: "custom", label: t("customRange") },
   ];
 
   const reports = [
@@ -96,7 +109,7 @@ export default function DashboardReportsPage() {
   const downloadCsv = async (type: string) => {
     setDownloading(`${type}-csv`);
     try {
-      const { from, to } = getDateRange(activePreset);
+      const { from, to } = getDateRange();
       const params = new URLSearchParams({ type });
       if (from) params.set("from", from);
       if (to) params.set("to", to);
@@ -130,7 +143,7 @@ export default function DashboardReportsPage() {
     let root: ReturnType<typeof createRoot> | null = null;
 
     try {
-      const { from, to } = getDateRange(activePreset);
+      const { from, to } = getDateRange();
       const params = new URLSearchParams({ type, format: "json" });
       if (from) params.set("from", from);
       if (to) params.set("to", to);
@@ -262,7 +275,7 @@ export default function DashboardReportsPage() {
         <p className="mb-2 text-sm font-medium text-gray-700">
           {t("dateRange")}
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {presets.map((preset) => (
             <button
               key={preset.key}
@@ -273,10 +286,40 @@ export default function DashboardReportsPage() {
                   : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
               }`}
             >
+              {preset.key === "custom" && (
+                <CalendarDays className="mr-1.5 rtl:mr-0 rtl:ml-1.5 -mt-0.5 inline h-3.5 w-3.5" />
+              )}
               {preset.label}
             </button>
           ))}
         </div>
+
+        {/* Custom Date Range Picker */}
+        {activePreset === "custom" && (
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-gray-600">{t("from")}</label>
+              <input
+                type="date"
+                value={customFrom}
+                max={customTo || todayStr}
+                onChange={(e) => setCustomFrom(e.target.value)}
+                className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-gray-600">{t("to")}</label>
+              <input
+                type="date"
+                value={customTo}
+                min={customFrom}
+                max={todayStr}
+                onChange={(e) => setCustomTo(e.target.value)}
+                className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Report Cards */}

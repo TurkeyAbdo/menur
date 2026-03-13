@@ -30,9 +30,20 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     fetch("/api/analytics")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed");
+        return r.json();
+      })
       .then((d) => {
-        setData(d);
+        // Ensure all required fields exist with defaults
+        setData({
+          totalScans: d.totalScans ?? 0,
+          todayScans: d.todayScans ?? 0,
+          weekScans: d.weekScans ?? 0,
+          monthScans: d.monthScans ?? 0,
+          deviceBreakdown: d.deviceBreakdown ?? { mobile: 0, desktop: 0, tablet: 0 },
+          dailyScans: d.dailyScans ?? [],
+        });
         setLoading(false);
       })
       .catch(() => setLoading(false));

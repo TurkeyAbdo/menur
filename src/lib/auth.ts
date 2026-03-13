@@ -6,6 +6,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 import bcrypt from "bcryptjs";
 import { prisma } from "./db";
 import { sendWelcomeEmail } from "./email";
+import { logger } from "@/lib/logger";
 import { Role, AuthProvider } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {
@@ -61,6 +62,43 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user, account }) {
+      // Allow OAuth account linking for existing email users
+      if (
+        account?.provider === "google" ||
+        account?.provider === "facebook"
+      ) {
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email! },
+          include: { accounts: true },
+        });
+
+        if (existingUser) {
+          // Link OAuth account if not already linked
+          const alreadyLinked = existingUser.accounts.some(
+            (a) => a.provider === account.provider
+          );
+          if (!alreadyLinked) {
+            await prisma.account.create({
+              data: {
+                userId: existingUser.id,
+                type: account.type,
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+                access_token: account.access_token,
+                refresh_token: account.refresh_token,
+                expires_at: account.expires_at,
+                token_type: account.token_type,
+                scope: account.scope,
+                id_token: account.id_token,
+                session_state: account.session_state as string | undefined,
+              },
+            });
+          }
+          // Use existing user's ID for the rest of the callback
+          user.id = existingUser.id;
+        }
+      }
+
       // For OAuth sign-ins, set up first-time users with subscription + notification
       if (
         account?.provider === "google" ||
@@ -106,12 +144,12 @@ export const authOptions: NextAuthOptions = {
 
             if (dbUser.name && dbUser.email) {
               sendWelcomeEmail(dbUser.name, dbUser.email).catch((err) =>
-                console.error("Failed to send welcome email:", err)
+                logger.error("Failed to send welcome email", { error: String(err) })
               );
             }
           }
         } catch (err) {
-          console.error("OAuth user setup error:", err);
+          logger.error("OAuth user setup error", { error: String(err) });
           // Don't block sign-in if setup fails
         }
       }

@@ -16,6 +16,12 @@ import {
 import { useToast } from "@/components/Toast";
 import ThemePicker, { type ThemeOption } from "@/components/ThemePicker";
 
+interface LocationOption {
+  id: string;
+  name: string;
+  nameAr: string | null;
+}
+
 interface Variant {
   name: string;
   nameAr: string;
@@ -70,6 +76,7 @@ const emptyCategory = (): Category => ({
 
 export default function NewMenuPage() {
   const t = useTranslations("menu.builder");
+  const tc = useTranslations("common");
   const router = useRouter();
   const { toast } = useToast();
 
@@ -79,7 +86,9 @@ export default function NewMenuPage() {
   const [menuDescriptionAr, setMenuDescriptionAr] = useState("");
   const [layout, setLayout] = useState<"SCROLLABLE" | "TABBED">("SCROLLABLE");
   const [selectedTheme, setSelectedTheme] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
   const [themes, setThemes] = useState<ThemeOption[]>([]);
+  const [locations, setLocations] = useState<LocationOption[]>([]);
   const [categories, setCategories] = useState<Category[]>([emptyCategory()]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -88,6 +97,10 @@ export default function NewMenuPage() {
     fetch("/api/themes")
       .then((r) => r.json())
       .then((data) => setThemes(data.themes || []))
+      .catch(() => {});
+    fetch("/api/locations")
+      .then((r) => r.json())
+      .then((data) => setLocations(data.locations || []))
       .catch(() => {});
   }, []);
 
@@ -214,6 +227,7 @@ export default function NewMenuPage() {
         layout,
         status,
         themeId: selectedTheme || undefined,
+        locationId: selectedLocation || undefined,
         categories: categories.map((cat, catIdx) => ({
           name: cat.name,
           nameAr: cat.nameAr,
@@ -370,6 +384,28 @@ export default function NewMenuPage() {
           onSelect={setSelectedTheme}
           label={t("selectTheme")}
         />
+
+        {/* Location assignment */}
+        {locations.length > 0 && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              {t("assignLocation")}
+            </label>
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 focus:outline-none"
+            >
+              <option value="">{t("allLocations")}</option>
+              {locations.map((loc) => (
+                <option key={loc.id} value={loc.id}>
+                  {loc.nameAr || loc.name}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-gray-400">{t("locationHint")}</p>
+          </div>
+        )}
       </div>
 
       {/* Categories */}
