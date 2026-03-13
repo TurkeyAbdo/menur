@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [error, setError] = useState(
     urlError === "OAuthAccountNotLinked"
       ? t("errors.oauthAccountNotLinked")
-      : urlError === "OAuthSignin"
+      : urlError === "OAuthSignin" || urlError === "OAuthCreateAccount"
         ? t("errors.oauthSigninError")
         : ""
   );

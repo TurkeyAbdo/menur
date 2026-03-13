@@ -26,6 +26,7 @@ model User {
   email          String           @unique
   name           String?
   password       String? // null for social login
+  image          String? // required by NextAuth PrismaAdapter (OAuth profile image)
   avatar         String?
   role           Role             @default(OWNER)
   provider       AuthProvider     @default(EMAIL)

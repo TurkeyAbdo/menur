@@ -91,7 +91,7 @@ function Sidebar({
                     : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
-                <item.icon className="h-5 w-5" />
+                <item.icon className="h-5 w-5 shrink-0 rtl:scale-x-[-1]" />
                 {t(item.key)}
               </Link>
             );
@@ -104,7 +104,7 @@ function Sidebar({
             onClick={() => signOut({ callbackUrl: "/" })}
             className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-50"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-5 w-5 shrink-0 rtl:scale-x-[-1]" />
             {tc("logout")}
           </button>
         </div>
